@@ -1,0 +1,34 @@
+unit MainUnit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, CreateObjects;
+
+type
+  TMainForm = class(TForm)
+    procedure buttonClick(Sender: TObject);
+  private
+    { Private-Deklarationen }
+  public
+    { Public-Deklarationen }
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TMainForm.buttonClick(Sender: TObject);
+var
+  Button: TButton;
+begin
+  Button:= Sender as TButton;
+end;
+
+end.
