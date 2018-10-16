@@ -14,5 +14,9 @@
     <Transaction>2018.10.16 10:42:11.698,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Ressources.rc=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Neu1.rc</Transaction>
     <Transaction>2018.10.16 10:50:47.989,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
     <Transaction>2018.10.16 10:50:53.754,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Colors.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 11:01:58.856,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 11:02:46.515,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\FileLoaderUnit.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 11:15:11.315,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 11:15:16.570,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Error.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

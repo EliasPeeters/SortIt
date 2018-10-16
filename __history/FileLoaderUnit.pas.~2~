@@ -9,14 +9,12 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
   procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
-  function AnimationSpeed(var ArrayForWriting: Array of String);
 
 
 implementation
 
-uses
-  MainUnit, Error;
-
+  type
+    TStringArray = array of String;
 
 procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
 var
@@ -55,40 +53,6 @@ begin
     ShowMessage('Looks like this file does not exist');
   end;
 end;
-
-
-
-function AnimationSpeed(var ArrayForWriting: Array of String);
-var
-  StorageString: String;
-  AnimationSpeedString: String;
-  FoundInLine, i, ConfigTXTLength: Integer;
-  ConfigTXT: TextFile;
-begin
-
-  //if Array is empty fill it
-  if ArrayForWriting[0]= '' then
-    TextFileToArray;
-
-  for I := 1 to StrToInt(ArrayForWriting[0])  do
-  begin
-    StorageString:= ArrayForWriting[i];
-    StorageString:= Copy(StorageString, 1, 15);
-    if StorageString = 'animation-speed' then
-    begin
-      result:= StrToFloat(Copy(ArrayForWriting[i], 20, Length(ArrayForWriting[i])-19));
-      break;
-    end;
-  end;
-
-  if i-1 = StrToInt(ArrayForWriting[0]) then
-  begin
-    error(306);
-    Abort;
-  end;
-
-end;
-
 
 end.
 

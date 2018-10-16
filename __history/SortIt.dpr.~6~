@@ -8,8 +8,7 @@ uses
   CreateObjects in 'CreateObjects.pas',
   OpenImage in 'OpenImage.pas',
   Colors in 'Colors.pas',
-  FileLoaderUnit in 'FileLoaderUnit.pas',
-  Error in 'Error.pas';
+  FileLoaderUnit in 'FileLoaderUnit.pas';
 
 {$R *.res}
 

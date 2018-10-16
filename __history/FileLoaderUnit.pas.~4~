@@ -15,7 +15,7 @@ uses
 implementation
 
 uses
-  MainUnit, Error;
+  MainUnit;
 
 
 procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
@@ -83,7 +83,9 @@ begin
 
   if i-1 = StrToInt(ArrayForWriting[0]) then
   begin
-    error(306);
+    ErrorBoolean:= true;
+
+    if not(ErrorFirst) then error(306);
     Abort;
   end;
 
