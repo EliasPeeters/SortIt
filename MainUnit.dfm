@@ -13,6 +13,10 @@ object MainForm: TMainForm
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnMouseWheel = FormMouseWheel
   PixelsPerInch = 96
   TextHeight = 13
+  object ApplicationEvents: TApplicationEvents
+    OnMessage = ApplicationEventsMessage
+  end
 end

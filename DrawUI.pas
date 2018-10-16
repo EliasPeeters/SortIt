@@ -9,10 +9,11 @@ uses
 
   procedure DrawBox(Bitm: TBitmap);
   procedure FillListBox(NewListBox: TNewListbox; Content: Array of Integer);
+  procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
 
 implementation
 
-uses Colors;
+uses Colors, Single;
 
 procedure DrawBox(Bitm: TBitmap);
 begin
@@ -27,21 +28,36 @@ begin
   end;
 end;
 
+procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
+begin
+  NewListbox.ScrollLevel:= NewScrollLevel;
+  if NewListbox.ScrollLevel < 0 then
+    NewListbox.ScrollLevel:= 0;
+
+  if NewListBox.ScrollLevel > NewListbox.NumberOfItems-1 then
+    NewListbox.ScrollLevel:= NewListbox.NumberOfItems-1;
+  FillListBox(NewListBox, ArrayNumber);
+  NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
+end;
+
 procedure FillListBox(NewListBox: TNewListbox; Content: Array of Integer);
 var
-  I: Integer;
+  I, CurrentBox: Integer;
 begin
   DrawBox(NewListbox.Box.Bitmap);
   with NewListbox.Box.Bitmap.Canvas do
   begin
+    NewListbox.SelectedItem:= 5;
+
     for I := NewListbox.ScrollLevel to NewListbox.NumberOfItems do
     begin
+      CurrentBox:= i-NewListbox.ScrollLevel;
       if I = NewListbox.Selecteditem then
       begin
         Brush.Style:= bsSolid;
-        Brush.Color:= LightGrey;
+        Brush.Color:= LightBlueSelected;
         Font.Color:= clBlack;
-        Rectangle(0, (i*20+30)-5, NewListbox.Box.Bitmap.Width, (i+1)*20+30-3);
+        Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox+1)*20+30-3);
 
       end
       else
@@ -49,13 +65,17 @@ begin
         Font.Color:= clBlack;
       end;
       Brush.Style:= bsClear;
-      //NumberWidthStorage:= TextWidth(IntToStr(Numbers[i]));
-      TextOut(40, I*20+30, IntToStr(Content[i]));
+      TextOut(40, CurrentBox*20+30, IntToStr(Content[i+NewListBox.ScrollLevel]));
       Brush.Style:= bsSolid;
       Brush.Color:= LightGrey;
-      Rectangle(0, (I*20+30)-5, NewListbox.Box.Bitmap.Width, (I*20+30)-2);
+
+      //if i <> NewListbox.NumberOfItems then
+
+      Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox*20+30)-2);
 
     end;
+
+    Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
   end;
 
 end;

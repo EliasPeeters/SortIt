@@ -40,7 +40,7 @@ type
     Box: TBox;
     Area: TClickableArea;
     Dark: Boolean;
-    Content: Array of String;
+    Content: Array of Integer;
     SelectedItem: Integer;
     NumberOfItems: Integer;
     Image: TImage;

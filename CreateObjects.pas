@@ -71,7 +71,7 @@ begin
   NewListbox.Box.Bitmap:= Bitmap;
   ConvertBoxToArea(NewListbox.Box, NewListbox.Area);
   NewListbox.Dark:= false;
-  NewListbox.NumberOfItems:= Round(Height-60 div 20);
+  NewListbox.NumberOfItems:= (Trunc((Height-60) div 20));
   NewListbox.Box.Bitmap:= Bitmap;
   NewListbox.Box.Bitmap:= TBitmap.Create;
   NewListbox.Box.Bitmap.Height:= NewListbox.Box.Height;
@@ -79,6 +79,7 @@ begin
   NewListbox.Image:= Image;
   CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
   //DrawBox(NewListbox.Box.Bitmap);
+  //NewListbox.Content:= Content;
   FillListbox(Newlistbox, Content);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;

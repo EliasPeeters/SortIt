@@ -21,9 +21,15 @@ implementation
 uses
   MainUnit;
 
-procedure CreateSingle();
+
+procedure SetLengthCustom();
 begin
-  setLength(ArrayNumber, 30);
+  setLength(ArrayNumber, 40);
+end;
+
+procedure CreateSingle();
+begin;
+  SetLengthCustom();
   CreateRandomArray(ArrayNumber, 30);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
 end;
@@ -32,6 +38,7 @@ procedure CreateRandomArray(var Numbers: Array of Integer; MaxNum: Integer);
 var
   I: Integer;
 begin
+  SetLengthCustom;
   for I := 0 to length(Numbers)-1 do
   begin
     Numbers[i]:= Random(MaxNum);
