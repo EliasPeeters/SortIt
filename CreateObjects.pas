@@ -5,15 +5,15 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, Types, DrawUI;
+  Vcl.Imaging.pngimage, Types;
 
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
-  procedure CreateListbox(var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer);
+  procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer; Image: TImage; Bitmap: TBitmap);
 
 implementation
 
-uses MainUnit, OpenImage;
+uses MainUnit, OpenImage, DrawUI;
 
 procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
 begin
@@ -46,7 +46,10 @@ begin
     Top:= TopInteger;
     Proportional:= True;
   end;
-  LoadImage(LoadImageName, ImageName);
+  if LoadImageName <> '' then
+  begin
+    LoadImage(LoadImageName, ImageName);
+  end;
   TMainForm.DefineImageOnClick(ImageName);
 end;
 
@@ -58,15 +61,24 @@ begin
   Area.y2:= Box.y + Box.Height;
 end;
 
-procedure CreateListbox(var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer);
+procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer; Image: TImage; Bitmap: TBitmap);
 begin
   NewListbox.Box.Height:= Height;
   NewListbox.Box.Width:= Width;
   NewListbox.Box.x:= x;
   NewListbox.Box.y:= y;
+  NewListbox.Box.Bitmap:= Bitmap;
   ConvertBoxToArea(NewListbox.Box, NewListbox.Area);
   NewListbox.Dark:= false;
   NewListbox.NumberOfItems:= Round(Height-60 div 20);
+  NewListbox.Box.Bitmap:= Bitmap;
+  NewListbox.Box.Bitmap:= TBitmap.Create;
+  NewListbox.Box.Bitmap.Height:= NewListbox.Box.Height;
+  NewListBox.Box.Bitmap.Width:= NewListBox.Box.Width;
+  NewListbox.Image:= Image;
+  CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
+  DrawBox(NewListbox.Box.Bitmap);
+  NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
 
 end.

@@ -1,9 +1,10 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
+  BorderStyle = bsDialog
   Caption = 'MainForm'
-  ClientHeight = 289
-  ClientWidth = 554
+  ClientHeight = 800
+  ClientWidth = 1260
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

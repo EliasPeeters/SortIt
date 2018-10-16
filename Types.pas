@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage;
 
 
 
@@ -31,6 +32,7 @@ type
     x: Integer;
     y: Integer;
     Dark: Boolean;
+    Bitmap: TBitmap;
   End;
 
   TNewListbox = Record
@@ -41,6 +43,7 @@ type
     Content: Array of String;
     SelectedItem: Integer;
     NumberOfItems: Integer;
+    Image: TImage;
   end;
 
 implementation
