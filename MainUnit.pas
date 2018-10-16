@@ -5,9 +5,10 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit;
+  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single;
 
 type
+
   TMainForm = class(TForm)
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
@@ -67,6 +68,7 @@ begin
   CreateButton(Test, self, 100, 100, 100, 100, 'Test');
   TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
+  CreateSingle;
 end;
 
 end.

@@ -66,8 +66,8 @@ var
 begin
 
   //if Array is empty fill it
-  if ArrayForWriting[0]= '' then
-    TextFileToArray(ArrayForWriting, 'config.txt');
+
+  TextFileToArray(ArrayForWriting, 'config.txt');
 
   for I := 1 to StrToInt(ArrayForWriting[0])  do
   begin

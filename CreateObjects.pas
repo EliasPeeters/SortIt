@@ -5,10 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage;
+  Vcl.Imaging.pngimage, Types, DrawUI;
 
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
+  procedure CreateListbox(var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer);
 
 implementation
 
@@ -49,5 +50,23 @@ begin
   TMainForm.DefineImageOnClick(ImageName);
 end;
 
+procedure ConvertBoxToArea(var Box: TBox; var Area: TClickAbleArea);
+begin
+  Area.x1:= Box.x;
+  Area.y1:= Box.y;
+  Area.x2:= Box.x + Box.Width;
+  Area.y2:= Box.y + Box.Height;
+end;
+
+procedure CreateListbox(var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer);
+begin
+  NewListbox.Box.Height:= Height;
+  NewListbox.Box.Width:= Width;
+  NewListbox.Box.x:= x;
+  NewListbox.Box.y:= y;
+  ConvertBoxToArea(NewListbox.Box, NewListbox.Area);
+  NewListbox.Dark:= false;
+  NewListbox.NumberOfItems:= Round(Height-60 div 20);
+end;
 
 end.

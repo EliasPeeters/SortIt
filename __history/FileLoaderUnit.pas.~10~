@@ -1,0 +1,93 @@
+unit FileLoaderUnit;
+
+interface
+
+
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+  procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
+  function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
+
+
+implementation
+
+uses
+  MainUnit, Error;
+
+
+procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
+var
+   WorkingFile: TextFile;
+   TextFileLength, I: Integer;
+   StorageString: String;
+begin
+  if FileExists(TextFileName) then
+  begin
+    AssignFile(WorkingFile, TextFileName);
+    Reset(WorkingFile);
+    TextFileLength:= 0;
+    while not eof(WorkingFile) do
+    begin
+      Readln(WorkingFile, StorageString);
+      TextFileLength:= TextFileLength+1;
+    end;
+    CloseFile(WorkingFile);
+
+    AssignFile(WorkingFile, TextFileName);
+    Reset(WorkingFile);
+    //setLength(ArrayForWriting, 10);
+    ArrayForWriting[0]:= IntToStr(TextFileLength);
+
+    for I := 1 to TextFileLength do
+    begin
+      Readln(WorkingFile, StorageString);
+      ArrayForWriting[i]:= StorageString;
+
+    end;
+    CloseFile(WorkingFile);
+  end
+  else
+  begin
+    ShowMessage('Looks like this file does not exist');
+  end;
+end;
+
+
+
+function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
+var
+  StorageString: String;
+  AnimationSpeedString: String;
+  FoundInLine, i, ConfigTXTLength: Integer;
+  ConfigTXT: TextFile;
+begin
+
+  //if Array is empty fill it
+  if ArrayForWriting[0]= '' then
+    TextFileToArray(ArrayForWriting, 'config.txt');
+
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, 15);
+    if StorageString = 'animation-speed' then
+    begin
+      result:= StrToFloat(Copy(ArrayForWriting[i], 18, Length(ArrayForWriting[i])-17));
+      break;
+    end;
+  end;
+
+  if i-1 = StrToInt(ArrayForWriting[0]) then
+  begin
+    errorProcedure(306, MainForm);
+    Abort;
+  end;
+
+end;
+
+
+end.
+
