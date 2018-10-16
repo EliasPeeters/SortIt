@@ -3,12 +3,16 @@
 	<Transactions>
     <Transaction>1899.12.30 00:00:00.000.056,=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Unit1.pas</Transaction>
     <Transaction>2018.10.16 00:52:33.230,=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Unit1.pas</Transaction>
-    <Transaction>2018.10.16 00:52:48.716,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\MainUnit.pas=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Unit1.pas</Transaction>
     <Transaction>2018.10.16 00:52:48.716,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\MainUnit.dfm=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Unit1.dfm</Transaction>
+    <Transaction>2018.10.16 00:52:48.716,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\MainUnit.pas=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Unit1.pas</Transaction>
     <Transaction>2018.10.16 00:52:53.378,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\SortIt.dproj=\\Mac\Home\Documents\Embarcadero\Studio\Projekte\Project1.dproj</Transaction>
     <Transaction>2018.10.16 00:55:04.517,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
     <Transaction>2018.10.16 00:55:12.225,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\CreateObjects.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
     <Transaction>2018.10.16 10:39:27.029,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
     <Transaction>2018.10.16 10:39:33.427,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\OpenImage.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 10:42:01.584,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Neu1.rc</Transaction>
+    <Transaction>2018.10.16 10:42:11.698,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Ressources.rc=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Neu1.rc</Transaction>
+    <Transaction>2018.10.16 10:50:47.989,=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
+    <Transaction>2018.10.16 10:50:53.754,\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Colors.pas=\\Mac\Home\Documents\Programming\Embarcadero\SortIt\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

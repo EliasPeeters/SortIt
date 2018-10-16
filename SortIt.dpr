@@ -1,10 +1,13 @@
 program SortIt;
 
+{$R 'Ressources.res' 'Ressources.rc'}
+
 uses
   Vcl.Forms,
   MainUnit in 'MainUnit.pas' {MainForm},
   CreateObjects in 'CreateObjects.pas',
-  OpenImage in 'OpenImage.pas';
+  OpenImage in 'OpenImage.pas',
+  Colors in 'Colors.pas';
 
 {$R *.res}
 
