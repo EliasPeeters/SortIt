@@ -9,7 +9,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
 
   procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
-  function AnimationSpeed(var ArrayForWriting: Array of String);
+  function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
 
 
 implementation
@@ -35,7 +35,6 @@ begin
       TextFileLength:= TextFileLength+1;
     end;
     CloseFile(WorkingFile);
-    SetLength(ArrayForWriting, TextFileLength);
 
     AssignFile(WorkingFile, TextFileName);
     Reset(WorkingFile);
@@ -58,7 +57,7 @@ end;
 
 
 
-function AnimationSpeed(var ArrayForWriting: Array of String);
+function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
 var
   StorageString: String;
   AnimationSpeedString: String;
@@ -68,7 +67,7 @@ begin
 
   //if Array is empty fill it
   if ArrayForWriting[0]= '' then
-    TextFileToArray;
+    TextFileToArray(ArrayForWriting, 'config.txt');
 
   for I := 1 to StrToInt(ArrayForWriting[0])  do
   begin
@@ -83,7 +82,7 @@ begin
 
   if i-1 = StrToInt(ArrayForWriting[0]) then
   begin
-    error(306);
+    errorProcedure(306, MainForm);
     Abort;
   end;
 

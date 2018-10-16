@@ -7,10 +7,11 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, CreateObjects, OpenImage;
 
+  procedure ErrorProcedure(ErrorInteger: Integer; Form: TForm);
 
 implementation
 
-procedure TMainForm.Error(ErrorInteger: Integer; Form: TForm);
+procedure ErrorProcedure(ErrorInteger: Integer; Form: TForm);
 var
   Stor: Double;
   Error: Boolean;
