@@ -9,11 +9,12 @@ uses
 
   var
     ArrayNumber: Array of Integer;
-    NumberList: TNewListbox;
-    NumberListImage: TImage;
-    NumberListBitmap: TBitmap;
+    SingleNumberList: TNewListbox;
+    SingleNumberListImage: TImage;
+    SingleNumberListBitmap: TBitmap;
 
    procedure CreateSingle();
+   procedure CreateRandomArray(var Numbers: Array of Integer; MaxNum: Integer);
 
 implementation
 
@@ -23,7 +24,18 @@ uses
 procedure CreateSingle();
 begin
   setLength(ArrayNumber, 30);
-  CreateListbox(MainForm, Numberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, NumberListImage, NumberListBitmap);
+  CreateRandomArray(ArrayNumber, 30);
+  CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
+end;
+
+procedure CreateRandomArray(var Numbers: Array of Integer; MaxNum: Integer);
+var
+  I: Integer;
+begin
+  for I := 0 to length(Numbers)-1 do
+  begin
+    Numbers[i]:= Random(MaxNum);
+  end;
 end;
 
 end.

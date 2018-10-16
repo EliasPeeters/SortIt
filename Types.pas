@@ -44,6 +44,7 @@ type
     SelectedItem: Integer;
     NumberOfItems: Integer;
     Image: TImage;
+    ScrollLevel: Integer;
   end;
 
 implementation

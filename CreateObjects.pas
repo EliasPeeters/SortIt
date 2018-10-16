@@ -63,6 +63,7 @@ end;
 
 procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer; Image: TImage; Bitmap: TBitmap);
 begin
+  NewListbox.ScrollLevel:= 0;
   NewListbox.Box.Height:= Height;
   NewListbox.Box.Width:= Width;
   NewListbox.Box.x:= x;
@@ -77,7 +78,8 @@ begin
   NewListBox.Box.Bitmap.Width:= NewListBox.Box.Width;
   NewListbox.Image:= Image;
   CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
-  DrawBox(NewListbox.Box.Bitmap);
+  //DrawBox(NewListbox.Box.Bitmap);
+  FillListbox(Newlistbox, Content);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
 

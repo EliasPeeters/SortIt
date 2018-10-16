@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single;
+  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, DrawUI;
 
 type
 
@@ -52,6 +52,9 @@ var
 begin
   Button:= Sender as TButton;
   Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
+  CreateRandomArray(ArrayNumber, 30);
+  FillListBox(SingleNumberList, ArrayNumber);
+  SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
 end;
 
 procedure TMainForm.ImageClick(Sender: TObject);
