@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors;
+  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit;
 
 type
   TMainForm = class(TForm)
@@ -24,6 +24,7 @@ var
   MainForm: TMainForm;
   Test: TButton;
   Im: TImage;
+  FileStorage: Array[0..100] of String;
 
   {
     1: Button
@@ -49,8 +50,7 @@ var
   Button: TButton;
 begin
   Button:= Sender as TButton;
-  Button.Caption:= '2';
-  LoadImage('Bar', Im);
+  Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
 end;
 
 procedure TMainForm.ImageClick(Sender: TObject);
@@ -64,6 +64,8 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   DefineColors;
+  CreateButton(Test, self, 100, 100, 100, 100, 'Test');
+  TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
 end;
 

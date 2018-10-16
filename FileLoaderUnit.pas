@@ -75,7 +75,7 @@ begin
     StorageString:= Copy(StorageString, 1, 15);
     if StorageString = 'animation-speed' then
     begin
-      result:= StrToFloat(Copy(ArrayForWriting[i], 20, Length(ArrayForWriting[i])-19));
+      result:= StrToFloat(Copy(ArrayForWriting[i], 18, Length(ArrayForWriting[i])-17));
       break;
     end;
   end;
