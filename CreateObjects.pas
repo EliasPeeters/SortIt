@@ -8,10 +8,11 @@ uses
   Vcl.Imaging.pngimage;
 
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
+  procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
 
 implementation
 
-uses MainUnit;
+uses MainUnit, OpenImage;
 
 procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
 begin
@@ -29,6 +30,23 @@ begin
     Visible:= true;
   end;
   TMainForm.DefineButtonOnclick(ButtonName);
+end;
+
+procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
+begin
+  ImageName:= TImage.Create(Form);
+
+  with ImageName do
+  begin
+    Parent := Form;
+    Height := HeightInteger;
+    Width := WidthInteger;
+    Left:= LeftInteger;
+    Top:= TopInteger;
+    Proportional:= True;
+  end;
+  LoadImage(LoadImageName, ImageName);
+  TMainForm.DefineImageOnClick(ImageName);
 end;
 
 

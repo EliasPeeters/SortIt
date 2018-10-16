@@ -13,6 +13,7 @@ type
     procedure ImageClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     Constructor DefineButtonOnClick(Button: TButton);
+    Constructor DefineImageOnClick(Image: TImage);
   private
     { Private-Deklarationen }
   public
@@ -35,6 +36,11 @@ implementation
 Constructor TMainForm.DefineButtonOnClick(Button: TButton);
 begin
   Button.OnClick:= ButtonClick;
+end;
+
+Constructor TMainForm.DefineImageOnClick(Image: TImage);
+begin
+  Image.OnClick:= ImageClick;
 end;
 
 procedure TMainForm.buttonClick(Sender: TObject);

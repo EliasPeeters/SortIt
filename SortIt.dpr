@@ -3,7 +3,8 @@ program SortIt;
 uses
   Vcl.Forms,
   MainUnit in 'MainUnit.pas' {MainForm},
-  CreateObjects in 'CreateObjects.pas';
+  CreateObjects in 'CreateObjects.pas',
+  OpenImage in 'OpenImage.pas';
 
 {$R *.res}
 
