@@ -11,6 +11,8 @@ uses
 
 type
 
+  TArrayOfInteger = Array of Integer;
+
   TText = Record
     Text: String;
     x: Integer;
@@ -40,7 +42,7 @@ type
     Box: TBox;
     Area: TClickableArea;
     Dark: Boolean;
-    Content: Array of Integer;
+    Content: TArrayOfInteger;
     SelectedItem: Integer;
     NumberOfItems: Integer;
     Image: TImage;

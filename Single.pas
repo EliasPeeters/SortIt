@@ -8,23 +8,34 @@ uses
   Vcl.Imaging.pngimage, Types, CreateObjects;
 
   var
-    ArrayNumber: Array of Integer;
+    ArrayNumber: TArrayOfInteger;
     SingleNumberList: TNewListbox;
     SingleNumberListImage: TImage;
     SingleNumberListBitmap: TBitmap;
 
    procedure CreateSingle();
-   procedure CreateRandomArray(var Numbers: Array of Integer; MaxNum: Integer);
+   procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);
+   procedure SingleScroll(WheelData: Integer);
+
 
 implementation
 
 uses
-  MainUnit;
+  MainUnit, DrawUI;
 
 
 procedure SetLengthCustom();
 begin
   setLength(ArrayNumber, 40);
+end;
+
+procedure SingleScroll(WheelData: Integer);
+begin
+  if MainForm.CursorIsInArea(SingleNumberList.Area) then
+  begin
+    NewListboxScroll(SingleNumberList, Wheeldata div 120 + SingleNumberList.ScrollLevel);
+    Test.Caption:= IntToStr(SingleNumberList.ScrollLevel);
+  end;
 end;
 
 procedure CreateSingle();
@@ -35,7 +46,7 @@ begin;
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
 end;
 
-procedure CreateRandomArray(var Numbers: Array of Integer; MaxNum: Integer);
+procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);
 var
   I: Integer;
 begin

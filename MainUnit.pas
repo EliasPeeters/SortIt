@@ -94,10 +94,10 @@ end;
 procedure TMainForm.FormScroll(Wheeldata: Integer);
 begin
   Wheeldata:= Wheeldata*-1;
-  if CursorIsInArea(SingleNumberList.Area) then
+
+  if SingleOpened then
   begin
-    NewListboxScroll(SingleNumberList, Wheeldata div 120 + SingleNumberList.ScrollLevel);
-    Test.Caption:= IntToStr(SingleNumberList.ScrollLevel);
+    SingleScroll(Wheeldata);
   end;
 end;
 
@@ -122,7 +122,7 @@ begin
   Button:= Sender as TButton;
   Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
   CreateRandomArray(ArrayNumber, 30);
-  FillListBox(SingleNumberList, ArrayNumber);
+  FillListBox(SingleNumberList);
   SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
 end;
 

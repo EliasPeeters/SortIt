@@ -9,7 +9,7 @@ uses
 
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
-  procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer; Image: TImage; Bitmap: TBitmap);
+  procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
 
 implementation
 
@@ -61,7 +61,7 @@ begin
   Area.y2:= Box.y + Box.Height;
 end;
 
-procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: Array of Integer; Image: TImage; Bitmap: TBitmap);
+procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
 begin
   NewListbox.ScrollLevel:= 0;
   NewListbox.Box.Height:= Height;
@@ -77,10 +77,12 @@ begin
   NewListbox.Box.Bitmap.Height:= NewListbox.Box.Height;
   NewListBox.Box.Bitmap.Width:= NewListBox.Box.Width;
   NewListbox.Image:= Image;
+  NewListbox.Content:= Content;
+  NewListbox.SelectedItem:= -1;
   CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
   //DrawBox(NewListbox.Box.Bitmap);
   //NewListbox.Content:= Content;
-  FillListbox(Newlistbox, Content);
+  FillListbox(Newlistbox);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
 

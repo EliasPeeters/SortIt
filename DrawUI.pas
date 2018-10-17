@@ -4,11 +4,11 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Math,
   Vcl.Imaging.pngimage, Types;
 
   procedure DrawBox(Bitm: TBitmap);
-  procedure FillListBox(NewListBox: TNewListbox; Content: Array of Integer);
+  procedure FillListBox(NewListBox: TNewListbox);
   procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
 
 implementation
@@ -36,19 +36,18 @@ begin
 
   if NewListBox.ScrollLevel > length(ArrayNumber)-1 then
     NewListbox.ScrollLevel:= length(ArrayNumber)-1;
-  FillListBox(NewListBox, ArrayNumber);
+  FillListBox(NewListBox);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
 
-procedure FillListBox(NewListBox: TNewListbox; Content: Array of Integer);
+procedure FillListBox(NewListBox: TNewListbox);
 var
   I, CurrentBox: Integer;
+  ScrollBarPosition: Integer;
 begin
   DrawBox(NewListbox.Box.Bitmap);
   with NewListbox.Box.Bitmap.Canvas do
   begin
-    NewListbox.SelectedItem:= 5;
-
     for I := NewListbox.ScrollLevel to NewListbox.NumberOfItems+NewListbox.ScrollLevel do
     begin
       CurrentBox:= i-NewListbox.ScrollLevel;
@@ -65,9 +64,9 @@ begin
         Font.Color:= clBlack;
       end;
       Brush.Style:= bsClear;
-      if I < length(Content) then
+      if I < length(Newlistbox.Content) then
       begin
-        TextOut(40, CurrentBox*20+30, IntToStr(Content[i]));
+        TextOut(40, CurrentBox*20+30, IntToStr(NewListbox.Content[i]));
         Brush.Style:= bsSolid;
         Brush.Color:= LightGrey;
 
@@ -76,8 +75,19 @@ begin
         Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox*20+30)-2);
       end;
     end;
-
-    Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
+    if NewListbox.ScrollLevel <> 0 then
+    begin
+      Scrollbarposition:= Ceil((NewListbox.Box.Height-10-50) / Length(NewListBox.Content))*NewListBox.ScrollLevel;
+    end
+    else
+    begin
+      ScrollBarPosition:= 0;
+    end;
+    Brush.Style:= bsSolid;
+    Brush.Color:= LightBlueSelected;
+    Pen.Color:= LightBlueSelected;
+    RoundRect(NewListbox.Box.Width-5, ScrollBarPosition+10, NewListbox.Box.Width, ScrollBarPosition+50, 4, 4);
+    //Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
   end;
 
 end;
