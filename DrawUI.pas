@@ -17,8 +17,6 @@ implementation
 
 uses Colors, Single;
 
-
-
 procedure DrawBox(Bitm: TBitmap);
 begin
   with Bitm.Canvas do
@@ -109,16 +107,16 @@ end;
 procedure StatusBar(Status: TStatus);
 var
   StatusBarWidth: Integer;
+  TextOutRect: TRect;
 begin
   with Status.Box.Bitmap.Canvas do
   begin
     Brush.Color:= StatusBarColor;
     Pen.Style:= psClear;
-    RoundRect(Status.StatusBar.x+2,
+    Rectangle(Status.StatusBar.x+2,
           Status.StatusBar.y+2,
           Status.StatusBar.x+Status.StatusBar.Width-2,
-          Status.StatusBar.y+Status.StatusBar.Height-2,
-          30, 30);
+          Status.StatusBar.y+Status.StatusBar.Height-2);
     StatusBarWidth:= (Status.Box.Width div 100) * Status.Status;
     Brush.Color:= LightBoxColor;
     Rectangle(Status.StatusBar.x+StatusBarWidth+2, Status.StatusBar.y+2, Status.StatusBar.x+Status.StatusBar.Width-2, Status.StatusBar.y+Status.StatusBar.Height-2);
@@ -133,11 +131,10 @@ begin
     Brush.Color:= LightBoxColor;
     Pen.Color:= LightGrey;
     Pen.Width:= 4;
-    RoundRect(Status.StatusBar.x,
+    Rectangle(Status.StatusBar.x,
               Status.StatusBar.y,
               Status.StatusBar.x+Status.StatusBar.Width,
-              Status.StatusBar.y+Status.StatusBar.Height,
-              30, 30);
+              Status.StatusBar.y+Status.StatusBar.Height);
   end;
   StatusBar(Status);
   Status.Image.Picture.Bitmap:= Status.Box.Bitmap;
