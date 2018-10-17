@@ -12,10 +12,11 @@ var
   SideBarBitmap, TopBarBitmap: TBitmap;
 
   procedure CreateMainUI();
+  procedure DrawMainUI();
 
 implementation
 
-uses MainUnit;
+uses MainUnit, DrawUI;
 
 procedure CreateSideBar();
 begin
@@ -23,6 +24,11 @@ begin
   SideBarBitmap.Height:= 800;
   SideBarBitmap.Width:= 70;
   CreateImage(SideBarImage, MainForm, 800, 70, 0, 0, '');
+end;
+
+procedure DrawSideBar();
+begin
+  TopSideBar(SideBarBitmap);
   SideBarImage.Picture.Bitmap:= SideBarBitmap;
 end;
 
@@ -32,6 +38,11 @@ begin
   TopBarBitmap.Height:= 50;
   TopBarBitmap.Width:= 1260;
   CreateImage(TopBarImage, MainForm, 50, 1260, 0, 0, '');
+end;
+
+procedure DrawTopBar();
+begin
+  TopSideBar(TopBarBitmap);
   TopBarImage.Picture.Bitmap:= TopBarBitmap;
 end;
 
@@ -39,6 +50,12 @@ procedure CreateMainUI();
 begin
   CreateTopBar;
   CreateSideBar;
+end;
+
+procedure DrawMainUI();
+begin
+  DrawTopBar;
+  DrawSideBar;
 end;
 
 end.

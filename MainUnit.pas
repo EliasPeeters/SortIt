@@ -23,6 +23,7 @@ type
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     function CursorIsInArea(Area: TClickAbleArea):Boolean;
     procedure ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);
+    procedure LoadCompleteUI();
   private
     { Private-Deklarationen }
   public
@@ -36,6 +37,9 @@ var
   FileStorage: Array[0..100] of String;
   CursorPosition: TPoint;
   SingleOpened, DuoOpened, QuadOpened, SixOpened : Boolean;
+
+  DarkModeBoolean: Boolean;
+  AnimationSpeedExt: Extended;
 
 
 
@@ -121,9 +125,15 @@ var
 begin
   Button:= Sender as TButton;
   Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
-  CreateRandomArray(ArrayNumber, 30);
-  FillListBox(SingleNumberList);
-  SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
+  //CreateRandomArray(ArrayNumber, 30);
+  //FillListBox(SingleNumberList);
+  //SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
+  //LoadConfig(FileStorage);
+
+  if DarkModeBoolean then DarkModeBoolean:= false
+  else if not(DarkModeBoolean) then DarkModeBoolean:= true;
+
+  LoadCompleteUI;
 end;
 
 procedure TMainForm.ImageClick(Sender: TObject);
@@ -134,15 +144,28 @@ begin
   //LoadImage('Bar', Im);
 end;
 
+procedure TMainForm.LoadCompleteUI();
+begin
+  DefineColors;
+  MainForm.Color:= LightGrey;
+  DrawMainUI;
+  DrawSingle;
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  LoadConfig(FileStorage);
   DefineColors;
   CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
   TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
   CreateSingle;
   CreateMainUI;
+  LoadCompleteUI;
+
 end;
+
+
 
 procedure TMainForm.FormMouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);

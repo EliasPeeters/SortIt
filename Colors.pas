@@ -15,15 +15,34 @@ var
   LightBoxColor: TColor;
   LightBlueSelected: TColor;
   LightBackground: TColor;
+  TextColor, DiagramColor: TColor;
 
 
 implementation
 
+uses MainUnit;
+
 procedure DefineColors;
 begin
-  LightGrey:= rgb(231,231, 231);
-  LightBoxColor:= clWhite;
-  LightBlueSelected:= rgb(96, 157, 254);
+  if not(DarkModeBoolean) then
+  begin
+    LightGrey:= rgb(231,231, 231);
+    LightBoxColor:= clWhite;
+    LightBlueSelected:= rgb(96, 157, 254);
+    //LightBlueSelected:= rgb(226, 190, 76);
+    TextColor:= clBlack;
+    DiagramColor:= LightBlueSelected;
+  end;
+
+  if DarkModeBoolean then
+  begin
+    LightGrey:= rgb(26, 27, 32);
+    LightBoxColor:= rgb(50, 50, 60);
+    //LightBlueSelected:= rgb(226, 190, 76);
+    LightBlueSelected:= rgb(96, 157, 254);
+    TextColor:= clWhite;
+    DiagramColor:= LightBlueSelected;
+  end;
 end;
 
 end.

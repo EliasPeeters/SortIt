@@ -114,7 +114,7 @@ begin
   CreateImage(Diagrambox.Image, Form, DiagramBox.Box.Height, DiagramBox.Box.Width, DiagramBox.Box.x, DiagramBox.Box.y, '');
   DrawBox(DiagramBox.Box.Bitmap);
   DrawbarChart(Diagrambox);
-  DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
+  //DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
 end;
 
 end.

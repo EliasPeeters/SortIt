@@ -3,7 +3,7 @@ unit DrawDiagram;
 interface
   uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Types;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Types, Colors;
 
 
  procedure DrawBarChart(DiagramBox: TDiagrambox);
@@ -23,8 +23,8 @@ begin
   x1:= DiagramBox.Diagram.x;
   with DiagramBox.Box.Bitmap.Canvas do
   begin
-    Brush.Color:= clWhite;
-    Pen.Color:= clWhite;
+    Brush.Color:= LightBoxColor;
+    Pen.Color:= LightBoxColor;
     Rectangle(DiagramBox.Diagram.x,DiagramBox.Diagram.y, DiagramBox.Diagram.Width, DiagramBox.Diagram.Height);
 
     MoveTo(DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
@@ -50,8 +50,8 @@ begin
     if DiagramBox.SelectedItem < 0 then
     begin
       Pen.Style:= psSolid;
-      Pen.Color:= clwhite;
-      Brush.Color:= rgb(88, 206, 162);
+      Pen.Color:= LightBoxColor;
+      Brush.Color:= DiagramColor;
 
 
       for I := 0 to length(DiagramBox.Content)-1 do
@@ -65,8 +65,8 @@ begin
     else
     begin
       Pen.Style:= psSolid;
-      Pen.Color:= clwhite;
-      Brush.Color:= rgb(233, 233, 233);
+      Pen.Color:= LightBoxColor;
+      Brush.Color:= DiagramColor;
 
       for I := 0 to length(DiagramBox.Content)-1 do
       begin
@@ -80,6 +80,8 @@ begin
     end;
 
   end;
+
+  DiagramBox.Image.Picture.Bitmap:= DiagramBox.Box.Bitmap;
 end;
 
 end.

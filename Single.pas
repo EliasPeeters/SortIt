@@ -17,6 +17,7 @@ uses
     MaxNum: Integer;
 
    procedure CreateSingle();
+   procedure DrawSingle();
    procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);
    procedure SingleScroll(WheelData: Integer);
 
@@ -24,7 +25,7 @@ uses
 implementation
 
 uses
-  MainUnit, DrawUI;
+  MainUnit, DrawUI, DrawDiagram;
 
 
 procedure SetLengthCustom();
@@ -49,6 +50,13 @@ begin;
   CreateRandomArray(ArrayNumber, MaxNum);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
   CreateDiagramBox(MainForm, SingleDiagram, 100, 100, 650, 650, ArrayNumber, SingleDiagramImage, SingleDiagramBitmap, MaxNum, 600, 600, 25, 25);
+end;
+
+procedure DrawSingle();
+begin
+  FillListBox(SingleNumberList);
+  DrawBox(SingleDiagram.Box.Bitmap);
+  DrawbarChart(SingleDiagram);
 end;
 
 procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);

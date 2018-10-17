@@ -10,7 +10,8 @@ uses
 
   procedure TextFileToArray(var ArrayForWriting: Array of String; TextFileName: String);
   function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
-
+  function DarkMode(var ArrayForWriting: Array of String): Boolean;
+  procedure LoadConfig(var ArrayForWriting: Array of String);
 
 implementation
 
@@ -67,7 +68,6 @@ begin
 
   //if Array is empty fill it
 
-  TextFileToArray(ArrayForWriting, 'config.txt');
 
   for I := 1 to StrToInt(ArrayForWriting[0])  do
   begin
@@ -86,6 +86,53 @@ begin
     Abort;
   end;
 
+end;
+
+function DarkMode(var ArrayForWriting: Array of String): Boolean;
+var
+  StorageString: String;
+  AnimationSpeedString: String;
+  FoundInLine, i, ConfigTXTLength: Integer;
+  ConfigTXT: TextFile;
+begin
+
+  //if Array is empty fill it
+
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, 9);
+    if StorageString = 'dark-mode' then
+    begin
+      StorageString:= Copy(ArrayForWriting[i], 12, StrToInt(ArrayForWriting[0]));
+      break;
+    end;
+  end;
+
+  if StorageString = 'false' then
+  begin
+    result:= false;
+  end
+  else if StorageString = 'true' then
+  begin
+    result:= true;
+  end;
+
+
+  if i-1 = StrToInt(ArrayForWriting[0]) then
+  begin
+    errorProcedure(306, MainForm);
+    Abort;
+  end;
+
+end;
+
+procedure LoadConfig(var ArrayForWriting: Array of String);
+begin
+
+  TextFileToArray(ArrayForWriting, 'config.txt');
+  DarkModeBoolean:= DarkMode(ArrayForWriting);
+  AnimationSpeedExt:= AnimationSpeed(ArrayForWriting);
 end;
 
 

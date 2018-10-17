@@ -10,6 +10,7 @@ uses
   procedure DrawBox(Bitm: TBitmap);
   procedure FillListBox(NewListBox: TNewListbox);
   procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
+  procedure TopSideBar(Bitm: TBitmap);
 
 implementation
 
@@ -27,6 +28,16 @@ begin
     Brush.Color:= LightBoxColor;
     Pen.Color:= LightBoxColor;
     RoundRect(0,0,Bitm.Width, Bitm.Height, 30, 30);
+  end;
+end;
+
+procedure TopSideBar(Bitm: TBitmap);
+begin
+  with Bitm.Canvas do
+  begin
+    Brush.Color:= LightBoxColor;
+    Pen.Color:= LightBoxColor;
+    Rectangle(0,0, Bitm.Width, Bitm.Height);
   end;
 end;
 
@@ -57,13 +68,13 @@ begin
       begin
         Brush.Style:= bsSolid;
         Brush.Color:= LightBlueSelected;
-        Font.Color:= clBlack;
+        Font.Color:= TextColor;
         Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox+1)*20+30-3);
 
       end
       else
       begin
-        Font.Color:= clBlack;
+        Font.Color:= TextColor;
       end;
       Brush.Style:= bsClear;
       if I < length(Newlistbox.Content) then
@@ -91,7 +102,7 @@ begin
     RoundRect(NewListbox.Box.Width-5, ScrollBarPosition+10, NewListbox.Box.Width, ScrollBarPosition+50, 4, 4);
     //Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
   end;
-
+  NewListbox.Image.Picture.Bitmap:= NewListbox.Box.Bitmap;
 end;
 
 end.
