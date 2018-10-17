@@ -49,6 +49,25 @@ type
     ScrollLevel: Integer;
   end;
 
+  TDiagram = Record
+    Height: Integer;
+    Width: Integer;
+    x: Integer;
+    y: Integer;
+    DiagramTyp: Integer;
+    HeightMode: Boolean;
+    ColorMode: Boolean;
+  End;
+
+  TDiagramBox = Record
+    Box: TBox;
+    Content: TArrayOfInteger;
+    Image: TImage;
+    SelectedItem: Integer;
+    MaxNum: Integer;
+    Diagram: TDiagram;
+  End;
+
 implementation
 
 end.

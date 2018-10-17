@@ -15,6 +15,8 @@ implementation
 
 uses Colors, Single;
 
+
+
 procedure DrawBox(Bitm: TBitmap);
 begin
   with Bitm.Canvas do

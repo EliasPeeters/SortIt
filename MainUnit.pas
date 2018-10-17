@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, DrawUI,
-  Vcl.AppEvnts;
+  Vcl.AppEvnts, MainUI;
 
 type
 
@@ -137,10 +137,11 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   DefineColors;
-  CreateButton(Test, self, 100, 100, 100, 100, IntToStr(SingleNumberList.ScrollLevel));
+  CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
   TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
   CreateSingle;
+  CreateMainUI;
 end;
 
 procedure TMainForm.FormMouseWheel(Sender: TObject; Shift: TShiftState;

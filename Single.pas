@@ -10,8 +10,11 @@ uses
   var
     ArrayNumber: TArrayOfInteger;
     SingleNumberList: TNewListbox;
-    SingleNumberListImage: TImage;
-    SingleNumberListBitmap: TBitmap;
+    SingleDiagram: TDiagramBox;
+    SingleNumberListImage, SingleDiagramImage: TImage;
+    SingleNumberListBitmap, SingleDiagramBitmap: TBitmap;
+
+    MaxNum: Integer;
 
    procedure CreateSingle();
    procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);
@@ -40,10 +43,12 @@ end;
 
 procedure CreateSingle();
 begin;
+  MaxNum:= 30;
   SingleOpened:= true;
   SetLengthCustom();
-  CreateRandomArray(ArrayNumber, 30);
+  CreateRandomArray(ArrayNumber, MaxNum);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
+  CreateDiagramBox(MainForm, SingleDiagram, 100, 100, 650, 650, ArrayNumber, SingleDiagramImage, SingleDiagramBitmap, MaxNum, 600, 600, 25, 25);
 end;
 
 procedure CreateRandomArray(var Numbers: TArrayOfInteger; MaxNum: Integer);

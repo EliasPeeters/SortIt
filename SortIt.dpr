@@ -12,7 +12,9 @@ uses
   Error in 'Error.pas',
   Types in 'Types.pas',
   Single in 'Single.pas',
-  DrawUI in 'DrawUI.pas';
+  DrawUI in 'DrawUI.pas',
+  DrawDiagram in 'DrawDiagram.pas',
+  MainUI in 'MainUI.pas';
 
 {$R *.res}
 

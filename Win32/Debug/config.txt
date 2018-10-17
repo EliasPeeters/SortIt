@@ -2,5 +2,6 @@ SortingMachine
 by Elias Peeters
 
 {
-animation-speed: 3
+animation-speed: 1,5
+dark-mode: false
 }
