@@ -35,9 +35,6 @@ var
   Im: TImage;
   FileStorage: Array[0..100] of String;
   CursorPosition: TPoint;
-  SingleOpened, DuoOpened, QuadOpened, SixOpened : Boolean;
-
-
 
   {
     1: Button

@@ -29,7 +29,6 @@ end;
 
 procedure CreateSingle();
 begin;
-  SingleOpened:= true;
   SetLengthCustom();
   CreateRandomArray(ArrayNumber, 30);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);

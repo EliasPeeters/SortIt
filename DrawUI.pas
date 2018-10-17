@@ -34,8 +34,8 @@ begin
   if NewListbox.ScrollLevel < 0 then
     NewListbox.ScrollLevel:= 0;
 
-  if NewListBox.ScrollLevel > NewListbox.NumberOfItems-1 then
-    NewListbox.ScrollLevel:= NewListbox.NumberOfItems-1;
+  if NewListBox.ScrollLevel > length(ArrayNumber)-1 then
+    NewListbox.ScrollLevel:= length(ArrayNumber)-1;
   FillListBox(NewListBox, ArrayNumber);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
@@ -49,7 +49,7 @@ begin
   begin
     NewListbox.SelectedItem:= 5;
 
-    for I := NewListbox.ScrollLevel to NewListbox.NumberOfItems do
+    for I := NewListbox.ScrollLevel to NewListbox.NumberOfItems+NewListbox.ScrollLevel do
     begin
       CurrentBox:= i-NewListbox.ScrollLevel;
       if I = NewListbox.Selecteditem then
@@ -65,14 +65,16 @@ begin
         Font.Color:= clBlack;
       end;
       Brush.Style:= bsClear;
-      TextOut(40, CurrentBox*20+30, IntToStr(Content[i+NewListBox.ScrollLevel]));
-      Brush.Style:= bsSolid;
-      Brush.Color:= LightGrey;
+      if I < length(Content) then
+      begin
+        TextOut(40, CurrentBox*20+30, IntToStr(Content[i]));
+        Brush.Style:= bsSolid;
+        Brush.Color:= LightGrey;
 
-      //if i <> NewListbox.NumberOfItems then
+        //if i <> NewListbox.NumberOfItems then
 
-      Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox*20+30)-2);
-
+        Rectangle(0, (CurrentBox*20+30)-5, NewListbox.Box.Bitmap.Width, (CurrentBox*20+30)-2);
+      end;
     end;
 
     Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
