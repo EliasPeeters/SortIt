@@ -68,6 +68,20 @@ type
     Diagram: TDiagram;
   End;
 
+  TStatusBar = Record
+    Height: Integer;
+    Width: Integer;
+    x: Integer;
+    y: Integer;
+  End;
+
+  TStatus = Record
+    Box: TBox;
+    Image: TImage;
+    Status: Integer;
+    StatusBar: TStatusBar;
+  End;
+
 implementation
 
 end.

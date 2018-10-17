@@ -51,7 +51,7 @@ begin;
   CreateRandomArray(ArrayNumber, MaxNum);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
   CreateDiagramBox(MainForm, SingleDiagram, 100, 100, 650, 650, ArrayNumber, SingleDiagramImage, SingleDiagramBitmap, MaxNum, 600, 600, 25, 25);
-  CreateStatus(MainForm, StatusBar, 900, 100, 66, 340, StatusBarImage, StatusBarBitmap, 30, 290, 25, 19);
+  CreateStatus(MainForm, StatusBar, 900, 100, 66, 340, StatusBarImage, StatusBarBitmap, 30, 290, 25, 16);
 end;
 
 procedure DrawSingle();
@@ -59,7 +59,6 @@ begin
   FillListBox(SingleNumberList);
   DrawBox(SingleDiagram.Box.Bitmap);
   DrawbarChart(SingleDiagram);
-  StatusBar.Status:= 60;
   DrawStatus(StatusBar);
 end;
 

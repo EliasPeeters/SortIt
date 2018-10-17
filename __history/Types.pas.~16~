@@ -11,6 +11,8 @@ uses
 
 type
 
+  TArrayOfInteger = Array of Integer;
+
   TText = Record
     Text: String;
     x: Integer;
@@ -40,12 +42,31 @@ type
     Box: TBox;
     Area: TClickableArea;
     Dark: Boolean;
-    Content: Array of String;
+    Content: TArrayOfInteger;
     SelectedItem: Integer;
     NumberOfItems: Integer;
     Image: TImage;
-    Bitmap: TBitmap;
+    ScrollLevel: Integer;
   end;
+
+  TDiagram = Record
+    Height: Integer;
+    Width: Integer;
+    x: Integer;
+    y: Integer;
+    DiagramTyp: Integer;
+    HeightMode: Boolean;
+    ColorMode: Boolean;
+  End;
+
+  TDiagramBox = Record
+    Box: TBox;
+    Content: TArrayOfInteger;
+    Image: TImage;
+    SelectedItem: Integer;
+    MaxNum: Integer;
+    Diagram: TDiagram;
+  End;
 
 implementation
 

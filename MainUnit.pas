@@ -130,9 +130,9 @@ begin
   //SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
   //LoadConfig(FileStorage);
 
-  if DarkModeBoolean then DarkModeBoolean:= false
-  else if not(DarkModeBoolean) then DarkModeBoolean:= true;
-
+  {if DarkModeBoolean then DarkModeBoolean:= false
+  else if not(DarkModeBoolean) then DarkModeBoolean:= true;}
+  LoadConfig(FileStorage);
   LoadCompleteUI;
 end;
 
@@ -156,7 +156,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   LoadConfig(FileStorage);
   DefineColors;
-  CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
+  //CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
   TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
   CreateSingle;

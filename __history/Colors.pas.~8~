@@ -15,7 +15,7 @@ var
   LightBoxColor: TColor;
   LightBlueSelected: TColor;
   LightBackground: TColor;
-  TextColor, DiagramColor, StatusBarColor: TColor;
+  TextColor, DiagramColor: TColor;
 
 
 implementation
@@ -32,7 +32,6 @@ begin
     //LightBlueSelected:= rgb(226, 190, 76);
     TextColor:= clBlack;
     DiagramColor:= LightBlueSelected;
-    StatusBarColor:= rgb(107, 205, 0);
   end;
 
   if DarkModeBoolean then

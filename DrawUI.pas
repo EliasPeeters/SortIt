@@ -11,6 +11,7 @@ uses
   procedure FillListBox(NewListBox: TNewListbox);
   procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
   procedure TopSideBar(Bitm: TBitmap);
+  procedure DrawStatus(Status: TStatus);
 
 implementation
 
@@ -103,6 +104,43 @@ begin
     //Rectangle(0, ((NewListbox.NumberOfItems+1)*20+30)-5, NewListbox.Box.Bitmap.Width, ((NewListbox.NumberOfItems+1)*20+30)-2);
   end;
   NewListbox.Image.Picture.Bitmap:= NewListbox.Box.Bitmap;
+end;
+
+procedure StatusBar(Status: TStatus);
+var
+  StatusBarWidth: Integer;
+begin
+  with Status.Box.Bitmap.Canvas do
+  begin
+    Brush.Color:= StatusBarColor;
+    Pen.Style:= psClear;
+    RoundRect(Status.StatusBar.x+2,
+          Status.StatusBar.y+2,
+          Status.StatusBar.x+Status.StatusBar.Width-2,
+          Status.StatusBar.y+Status.StatusBar.Height-2,
+          30, 30);
+    StatusBarWidth:= (Status.Box.Width div 100) * Status.Status;
+    Brush.Color:= LightBoxColor;
+    Rectangle(Status.StatusBar.x+StatusBarWidth+2, Status.StatusBar.y+2, Status.StatusBar.x+Status.StatusBar.Width-2, Status.StatusBar.y+Status.StatusBar.Height-2);
+  end;
+end;
+
+procedure DrawStatus(Status: TStatus);
+begin
+  DrawBox(Status.Box.Bitmap);
+  with Status.Box.Bitmap.Canvas do
+  begin
+    Brush.Color:= LightBoxColor;
+    Pen.Color:= LightGrey;
+    Pen.Width:= 4;
+    RoundRect(Status.StatusBar.x,
+              Status.StatusBar.y,
+              Status.StatusBar.x+Status.StatusBar.Width,
+              Status.StatusBar.y+Status.StatusBar.Height,
+              30, 30);
+  end;
+  StatusBar(Status);
+  Status.Image.Picture.Bitmap:= Status.Box.Bitmap;
 end;
 
 end.

@@ -59,7 +59,6 @@ begin
   FillListBox(SingleNumberList);
   DrawBox(SingleDiagram.Box.Bitmap);
   DrawbarChart(SingleDiagram);
-  StatusBar.Status:= 60;
   DrawStatus(StatusBar);
 end;
 

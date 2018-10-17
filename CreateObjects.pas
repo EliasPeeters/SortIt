@@ -11,6 +11,7 @@ uses
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
   procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
   procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
+  procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
 
 implementation
 
@@ -115,6 +116,34 @@ begin
   DrawBox(DiagramBox.Box.Bitmap);
   DrawbarChart(Diagrambox);
   //DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
+end;
+
+procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
+begin
+  with Status.Box do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  Status.Box.Bitmap:= Bitmap;
+  Status.Box.Bitmap:= TBitmap.Create;
+  with Status.Box.Bitmap do
+  begin
+    Height:= Status.Box.Height;
+    Width:= Status.Box.Width;
+  end;
+  Status.Image:= Image;
+  CreateImage(Status.Image, Form, Status.Box.Height, Status.Box.Width, Status.Box.x, Status.Box.y, '');
+
+  with Status.Statusbar do
+  begin
+    x:= StatusBarX;
+    y:= StatusBarY;
+    Height:= StatusBarHeight;
+    Width:= StatusBarWidth;
+  end;
 end;
 
 end.
