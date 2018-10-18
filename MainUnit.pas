@@ -12,20 +12,36 @@ type
 
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
+    Panel1: TPanel;
+    TitleBar: TImage;
+
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
+
     procedure FormCreate(Sender: TObject);
     procedure FormClick();
+
     procedure FormScroll(Wheeldata: Integer);
+
     Constructor DefineButtonOnClick(Button: TButton);
     Constructor DefineImageOnClick(Image: TImage);
+
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     function CursorIsInArea(Area: TClickAbleArea):Boolean;
     procedure ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);
     procedure LoadCompleteUI();
+    procedure Panel1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+
   private
     { Private-Deklarationen }
+
+  protected
+    { Portected-Deklarationen }
+
   public
     { Public-Deklarationen }
   end;
@@ -136,6 +152,14 @@ begin
   LoadCompleteUI;
 end;
 
+Procedure MySpecialMouseDownStuff(Sender: TObject; Button: TMouseButton;
+                           Shift: TShiftState; X, Y: Integer);
+begin
+  //T
+end;
+
+
+
 procedure TMainForm.ImageClick(Sender: TObject);
 var
   Image: TImage;
@@ -152,8 +176,43 @@ begin
   DrawSingle;
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
+procedure SetTransparent(Aform: TForm; AValue: Boolean);
 begin
+  Aform.TransparentColor := AValue;
+  Aform.TransparentColorValue := Aform.Color;
+end;
+
+procedure TMainForm.Panel1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+    begin
+      ReleaseCapture;
+      Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+    end;
+end;
+
+procedure TMainForm.TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+  begin
+    ReleaseCapture;
+    Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+  end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+var
+  regn: HRGN;
+begin
+  regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
+  SetWindowRgn(Handle, regn, True);
+
   LoadConfig(FileStorage);
   DefineColors;
   //CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
@@ -162,8 +221,9 @@ begin
   CreateSingle;
   CreateMainUI;
   LoadCompleteUI;
-
+  //SetTransparent(self, true);
 end;
+
 
 
 

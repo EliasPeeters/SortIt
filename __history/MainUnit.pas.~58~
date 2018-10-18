@@ -12,8 +12,10 @@ type
 
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
+    Panel1: TPanel;
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
+    procedure ImageMouseDown(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClick();
     procedure FormScroll(Wheeldata: Integer);
@@ -23,6 +25,10 @@ type
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     function CursorIsInArea(Area: TClickAbleArea):Boolean;
     procedure ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);
+    procedure LoadCompleteUI();
+    procedure Panel1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+
   private
     { Private-Deklarationen }
   public
@@ -37,8 +43,8 @@ var
   CursorPosition: TPoint;
   SingleOpened, DuoOpened, QuadOpened, SixOpened : Boolean;
 
-  DarkMode: Boolean;
-  AnimationSpeed: Boolean;
+  DarkModeBoolean: Boolean;
+  AnimationSpeedExt: Extended;
 
 
 
@@ -124,9 +130,22 @@ var
 begin
   Button:= Sender as TButton;
   Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
-  CreateRandomArray(ArrayNumber, 30);
-  FillListBox(SingleNumberList);
-  SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
+  //CreateRandomArray(ArrayNumber, 30);
+  //FillListBox(SingleNumberList);
+  //SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
+  //LoadConfig(FileStorage);
+
+  {if DarkModeBoolean then DarkModeBoolean:= false
+  else if not(DarkModeBoolean) then DarkModeBoolean:= true;}
+  LoadConfig(FileStorage);
+  LoadCompleteUI;
+end;
+
+procedure TMainForm.ImageMouseDown(Sender: TObject);
+var
+  Image: TImage;
+begin
+  Image:= Sender as TImage;
 end;
 
 procedure TMainForm.ImageClick(Sender: TObject);
@@ -137,18 +156,40 @@ begin
   //LoadImage('Bar', Im);
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
-var
-  TestBoo: Boolean;
+procedure TMainForm.LoadCompleteUI();
 begin
   DefineColors;
-  CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
+  MainForm.Color:= LightGrey;
+  DrawMainUI;
+  DrawSingle;
+end;
+
+procedure TMainForm.Panel1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+    begin
+      ReleaseCapture;
+      Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+    end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  LoadConfig(FileStorage);
+  DefineColors;
+  //CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
   TextFileToArray(FileStorage, 'config.txt');
   MainForm.Color:= LightGrey;
   CreateSingle;
   CreateMainUI;
-  TestBoo:= DarkMode(FileStorage);
+  LoadCompleteUI;
+
 end;
+
+
 
 procedure TMainForm.FormMouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);

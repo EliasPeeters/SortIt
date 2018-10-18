@@ -82,6 +82,10 @@ type
     StatusBar: TStatusBar;
   End;
 
+  TTopBar = Record
+    Area: TClickableArea;
+  End;
+
 implementation
 
 end.

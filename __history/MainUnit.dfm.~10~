@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  BorderStyle = bsNone
+  BorderStyle = bsSingle
   Caption = 'MainForm'
   ClientHeight = 800
   ClientWidth = 1260
@@ -16,13 +16,6 @@ object MainForm: TMainForm
   OnMouseWheel = FormMouseWheel
   PixelsPerInch = 96
   TextHeight = 13
-  object TitleBar: TImage
-    Left = 0
-    Top = 0
-    Width = 1260
-    Height = 50
-    OnMouseDown = TitleBarMouseDown
-  end
   object Panel1: TPanel
     Left = 992
     Top = 600

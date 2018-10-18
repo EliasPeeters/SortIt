@@ -8,12 +8,11 @@ uses
   Vcl.Imaging.pngimage, Types, CreateObjects;
 
 var
-  SideBarImage: TImage;
+  SideBarImage, TopBarImage: TImage;
   SideBarBitmap, TopBarBitmap: TBitmap;
 
   procedure CreateMainUI();
   procedure DrawMainUI();
-  procedure DrawTopBar();
 
 implementation
 
@@ -33,24 +32,23 @@ begin
   SideBarImage.Picture.Bitmap:= SideBarBitmap;
 end;
 
-
-
+procedure CreateTopBar();
+begin
+  TopBarBitmap:= TBitmap.Create;
+  TopBarBitmap.Height:= 50;
+  TopBarBitmap.Width:= 1260;
+  CreateImage(TopBarImage, MainForm, 50, 1260, 0, 0, '');
+end;
 
 procedure DrawTopBar();
 begin
-  TopBarBitmap:= TBitmap.Create;
-  with TopBarBitmap do
-  begin
-    Height:= 50;
-    Width:= 1260;
-  end;
   TopSideBar(TopBarBitmap);
-  MainForm.TitleBar.Picture.Bitmap:= TopBarBitmap;
+  TopBarImage.Picture.Bitmap:= TopBarBitmap;
 end;
 
 procedure CreateMainUI();
 begin
-  //CreateTopBar;
+  CreateTopBar;
   CreateSideBar;
 end;
 
