@@ -12,10 +12,12 @@ uses
   procedure NewListboxScroll(var NewListBox: TNewListbox; NewScrollLevel: Integer);
   procedure TopSideBar(Bitm: TBitmap);
   procedure DrawStatus(Status: TStatus);
+  procedure DrawSettings(Settings: TSettings);
+  procedure DrawButtonStyle1(Button: TCustomButton);
 
 implementation
 
-uses Colors, Single;
+uses Colors, Single, OpenImage;
 
 procedure DrawBox(Bitm: TBitmap);
 begin
@@ -138,6 +140,39 @@ begin
   end;
   StatusBar(Status);
   Status.Image.Picture.Bitmap:= Status.Box.Bitmap;
+end;
+
+procedure DrawSettings(Settings: TSettings);
+begin
+  DrawBox(Settings.Box.Bitmap);
+  Settings.Image.Picture.Bitmap:= Settings.Box.Bitmap;
+  LoadImage('Circle', Settings.DiagramSelector1.Image);
+  LoadImage('Bar', Settings.DiagramSelector2.Image);
+  LoadImage('Column', Settings.DiagramSelector3.Image);
+end;
+
+procedure DrawButtonStyle1(Button: TCustomButton);
+var
+RectForUse: TRect;
+begin
+  with Button.Bitmap.Canvas do
+  begin
+    Brush.Color:= clWhite;
+    Pen.Color:= clWhite;
+    Rectangle(0,0, Button.Width, Button.Height);
+    Brush.Color:= LightBoxColor;
+    Pen.Color:= LightGrey;
+    Pen.Width:= 5;
+    RoundRect(0,0,Button.Width, Button.Height, Button.Height div 2, Button.Height div 2);
+    RectForUse.Left:= 0;
+    RectForUse.Top:= 0;
+    RectForUse.Bottom:= Button.Height;
+    RectForUse.Right:= Button.Width;
+    Font.Size:= 20;
+    TextRect(RectForUse,Button.Caption,[tfVerticalCenter,tfCenter,tfSingleLine]);
+  end;
+
+  Button.Image.Picture.Bitmap:= Button.Bitmap;
 end;
 
 end.

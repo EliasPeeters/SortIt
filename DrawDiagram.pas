@@ -6,17 +6,39 @@ interface
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Types, Colors;
 
 
- procedure DrawBarChart(DiagramBox: TDiagrambox);
+  procedure DrawDiagramProcedure(Diagrambox: TDiagrambox);
 
 
 implementation
 
+
+uses DrawUI;
+
+
+
+function GiveColorBack(NumberofItems, Item: Integer):TColor;
+var
+  HueWert: Integer;
+begin
+  HueWert:= (360 div NumberofItems)*Item;
+  while HueWert > 360 do Huewert:= Huewert div 360;
+
+  if (HueWert >= 0) and (HueWert < 60) then result:= rgb(255, Round((255 / 60) * Huewert), 0)
+  else if (HueWert > 60) and (HueWert <= 120) then result:= rgb(Round(255 - (255 / 60 * Huewert)), 255 , 0)
+  else if (HueWert > 120) and (HueWert <= 180) then result:= rgb(0, 255 , Round(255 / 60 * Huewert))
+  else if (HueWert > 180) and (HueWert <= 240) then result:= rgb(0, Round(255 - (255 / 60 * Huewert)) , 255)
+  else if (HueWert > 240) and (HueWert <= 300) then result:= rgb(Round(255 / 60 * Huewert), 0 , 255)
+  else if (HueWert > 300) and (HueWert <= 360) then
+  result:= rgb(255 , 0 , Round(255 - (255 / 60 * Huewert)))
+
+end;
 
 procedure DrawBarChart(DiagramBox: TDiagrambox);
 var
   BarWidth, BarHeight, x1, ExtraDistanz, GreyColor, I: Integer;
 
 begin
+  DrawBox(DiagramBox.Box.Bitmap);
   barWidth:= DiagramBox.Diagram.Width div (length(DiagramBox.Content));
   //ExtraDistanz:= BarWidth div length(DiagramBox.Content);
   ExtraDistanz:= 0;
@@ -83,6 +105,54 @@ begin
 
   DiagramBox.Image.Picture.Bitmap:= DiagramBox.Box.Bitmap;
 end;
+
+
+procedure DrawPie(Canvas: TCanvas; x1, y1, Height, Width: Integer; Anfangswinkel, Endwinkel: Extended);
+var
+  Anfangswinkelx, Anfangswinkely: Integer;
+  Endwinkelx, Endwinkely: Integer;
+  Radius: Integer;
+begin
+  Radius:= Width div 2;
+  Anfangswinkely:= Round(sin(Anfangswinkel-pi /2) * Radius + Radius+y1);
+  Anfangswinkelx:= Round(cos(Anfangswinkel-pi /2) * Radius + Radius+x1);
+
+  Endwinkely:= Round(sin(Endwinkel-pi /2) *Radius+Radius+y1);
+  Endwinkelx:= Round(cos(Endwinkel-pi /2)*Radius+Radius+x1);
+
+  Canvas.Pie(x1, y1, x1+Height, y1+Width, Anfangswinkelx, Anfangswinkely, Endwinkelx, Endwinkely);
+
+  //test
+end;
+
+procedure DrawCirleChart(DiagramBox: TDiagrambox);
+var
+I: Integer;
+Winkel, LengthInt: Extended;
+test: TColor;
+begin
+  DrawBox(DiagramBox.Box.Bitmap);
+  with DiagramBox.Box.Bitmap.Canvas do
+  begin
+    Winkel:= 2 * pi / Length(Diagrambox.Content);
+    for I := 1 to Length(DiagramBox.Content) do
+    begin
+      Brush.Color:= GiveColorBack(DiagramBox.MaxNum, Diagrambox.Content[i]);
+      Pen.Color:= Brush.Color;
+      DrawPie(Diagrambox.Box.Bitmap.Canvas, 50, 50, 550, 550, Winkel*(i), Winkel*(i-1));
+    end;
+  end;
+  DiagramBox.Image.Picture.Bitmap:= DiagramBox.Box.Bitmap;
+end;
+
+procedure DrawDiagramProcedure(Diagrambox: TDiagrambox);
+begin
+  if Diagrambox.Diagram.DiagramTyp = 0 then DrawCirleChart(Diagrambox)
+  else if Diagrambox.Diagram.DiagramTyp = 1 then DrawBarChart(Diagrambox);
+
+
+end;
+
 
 end.
 

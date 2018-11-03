@@ -12,7 +12,6 @@ type
 
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
-    Panel1: TPanel;
     TitleBar: TImage;
 
     procedure buttonClick(Sender: TObject);
@@ -56,6 +55,7 @@ var
 
   DarkModeBoolean: Boolean;
   AnimationSpeedExt: Extended;
+  DefautlDiagramtype: Integer;
 
 
 
@@ -108,7 +108,10 @@ end;
 
 procedure TMainForm.FormClick();
 begin
-  //
+  if SingleOpened then
+  begin
+    SinglePress();
+  end;
 end;
 
 procedure TMainForm.FormScroll(Wheeldata: Integer);

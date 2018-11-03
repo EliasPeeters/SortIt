@@ -12,6 +12,9 @@ uses
   procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
   procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
   procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
+  procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage);
+  procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+
 
 implementation
 
@@ -61,6 +64,14 @@ begin
   Area.y1:= Box.y;
   Area.x2:= Box.x + Box.Width;
   Area.y2:= Box.y + Box.Height;
+end;
+
+procedure ConvertImageToArea(var Image: TImage; var Area: TClickAbleArea);
+begin
+  Area.x1:= Image.Left;
+  Area.y1:= Image.Top;
+  Area.x2:= Image.Left + Image.Width;
+  Area.y2:= Image.Top + Image.Height;
 end;
 
 procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
@@ -114,8 +125,8 @@ begin
   Diagrambox.Content:= Content;
   CreateImage(Diagrambox.Image, Form, DiagramBox.Box.Height, DiagramBox.Box.Width, DiagramBox.Box.x, DiagramBox.Box.y, '');
   DrawBox(DiagramBox.Box.Bitmap);
-  DrawbarChart(Diagrambox);
-  //DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
+  //DrawbarChart(Diagrambox);
+  DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
 end;
 
 procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
@@ -144,6 +155,63 @@ begin
     Height:= StatusBarHeight;
     Width:= StatusBarWidth;
   end;
+end;
+
+procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage);
+
+
+begin
+  with Settings.Box do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  Settings.Box.Bitmap:= Bitmap;
+  Settings.Box.Bitmap:= TBitmap.Create;
+  with Settings.Box.Bitmap do
+  begin
+    Height:= Settings.Box.Height;
+    Width:= Settings.Box.Width;
+  end;
+  Settings.Image:= Image;
+  CreateImage(Settings.Image, Form, Settings.Box.Height, Settings.Box.Width, Settings.Box.x, Settings.Box.y, '');
+  CreateImage(Settings.DiagramSelector1.Image, Form, 83, 83, 928, 300, '');
+  CreateImage(Settings.DiagramSelector2.Image, Form, 83, 83, 1028, 300, '');
+  CreateImage(Settings.DiagramSelector3.Image, Form, 83, 83, 1128, 300, '');
+
+  ConvertImageToArea(Settings.DiagramSelector1.Image, Settings.DiagramSelector1.Area);
+  ConvertImageToArea(Settings.DiagramSelector2.Image, Settings.DiagramSelector2.Area);
+  ConvertImageToArea(Settings.DiagramSelector3.Image, Settings.DiagramSelector3.Area);
+
+end;
+
+procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+begin
+  Button.Bitmap:= Bitmap;
+  Button.Bitmap:= TBitmap.Create;
+  with Button do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  with Button.Bitmap do
+  begin
+    Height:= Button.Height;
+    Width:= Button.Width;
+  end;
+  Button.Image:= Image;
+  CreateImage(Button.Image, Form, Button.Height, Button.Width, Button.x, Button.y, '');
+  Button.Area.x1:= xInt;
+  Button.Area.y1:= yInt;
+  Button.Area.x2:= xInt+WidthInt;
+  Button.Area.y2:= yInt+HeightInt;
+  Button.Caption:= Caption;
+
+
 end;
 
 end.

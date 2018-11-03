@@ -4,4 +4,5 @@ by Elias Peeters
 {
 animation-speed: 1,5
 dark-mode: false
+default-diagram-type: 0
 }

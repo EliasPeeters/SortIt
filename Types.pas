@@ -11,7 +11,6 @@ uses
 
 type
 
-  TArrayOfInteger = Array of Integer;
 
   TText = Record
     Text: String;
@@ -36,6 +35,14 @@ type
     Dark: Boolean;
     Bitmap: TBitmap;
   End;
+
+  TArrayOfInteger = Array of Integer;
+
+  TNewImage = Record
+    Image: TImage;
+    Area: TClickableArea;
+  End;
+
 
   TNewListbox = Record
     Name: String;
@@ -84,6 +91,35 @@ type
 
   TTopBar = Record
     Area: TClickableArea;
+  End;
+
+  TVertSelectorDuo = Record
+    x: Integer;
+    y: Integer;
+    Height: Integer;
+    Width: Integer;
+    FirstSelect: String;
+    SecondSelector: String;
+  End;
+
+  TCustomButton = Record
+    x: Integer;
+    y: Integer;
+    Height: Integer;
+    Width: Integer;
+    Image: TImage;
+    Bitmap: TBitmap;
+    Caption: String;
+    Area: TClickAbleArea;
+  End;
+
+
+  TSettings = Record
+    Box: TBox;
+    Image: TImage;
+    DiagramSelector1: TNewImage;
+    DiagramSelector2: TNewImage;
+    DiagramSelector3: TNewImage;
   End;
 
 implementation

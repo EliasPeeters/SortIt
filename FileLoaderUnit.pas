@@ -88,6 +88,34 @@ begin
 
 end;
 
+function ReadFileInt(var ArrayForWriting: Array of String; Input: String): Integer;
+var
+  StorageString: String;
+  AnimationSpeedString: String;
+  FoundInLine, i, ConfigTXTLength: Integer;
+  ConfigTXT: TextFile;
+begin
+
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, length(input));
+    if StorageString = input then
+    begin
+      result:= StrToInt(Copy(ArrayForWriting[i], length(input)+3,
+      Length(ArrayForWriting[i])-length(input)+1));
+      break;
+    end;
+  end;
+
+  if i-1 = StrToInt(ArrayForWriting[0]) then
+  begin
+    errorProcedure(306, MainForm);
+    Abort;
+  end;
+
+end;
+
 function DarkMode(var ArrayForWriting: Array of String): Boolean;
 var
   StorageString: String;
@@ -133,6 +161,7 @@ begin
   TextFileToArray(ArrayForWriting, 'config.txt');
   DarkModeBoolean:= DarkMode(ArrayForWriting);
   AnimationSpeedExt:= AnimationSpeed(ArrayForWriting);
+  DefautlDiagramtype:= ReadFileInt(ArrayForWriting, 'default-diagram-type');
 end;
 
 

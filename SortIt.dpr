@@ -14,7 +14,8 @@ uses
   Single in 'Single.pas',
   DrawUI in 'DrawUI.pas',
   DrawDiagram in 'DrawDiagram.pas',
-  MainUI in 'MainUI.pas';
+  MainUI in 'MainUI.pas',
+  QuickSort in 'QuickSort.pas';
 
 {$R *.res}
 
