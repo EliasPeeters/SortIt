@@ -33,6 +33,10 @@ uses
     SingleEditArrayLengthImage: TImage;
     SingleEditArrayLengthBitmap: TBitmap;
 
+    SingleEditSpeed: TEditField;
+    SingleEditSpeedImage: TImage;
+    SingleEditSpeedBitmap: TBitmap;
+
     MaxNum: Integer;
 
    procedure CreateSingle();
@@ -63,6 +67,7 @@ end;
 procedure SingleKeyPress(Key: Char);
 begin
   if SingleEditArrayLength.Selected then EditFieldInput(SingleEditArrayLength, Key);
+  if SingleEditSpeed.Selected then EditFieldInput(SingleEditSpeed, Key);
 
 end;
 
@@ -108,12 +113,24 @@ begin
     DrawEditField(SingleEditArrayLength);
   end;
 
+  if MainForm.CursorIsInArea(SingleEditSpeed.Area) then
+  begin
+    SingleEditSpeed.Selected:= true;
+    DrawEditField(SingleEditSpeed);
+  end
+  else
+  begin
+    SingleEditSpeed.Selected:= false;
+    if (SingleEditSpeed.Text = '') or (SingleEditSpeed.Text = '0') then SingleEditSpeed.Text := '20';
+    DrawEditField(SingleEditSpeed);
+  end;
+
   if MainForm.CursorIsInArea(SingleSortButton.Area) then
   begin
     TThread.CreateAnonymousThread(
       procedure
       begin
-        QuickSortProcedure(ArrayNumber, SingleDiagram);
+        QuickSortProcedure(ArrayNumber, SingleDiagram, StrToInt(SingleEditSpeed.Text));
       end
       ).Start();
   end;
@@ -165,7 +182,9 @@ begin;
   CreateVertSelector(MainForm, SingleHeightModeSelector, 925, 400, 25, 290, SingleHeightModeSelectorImage, SingleHeightModeSelectorBitmap, ReadLang('HeightMode'));
   CreateVertSelector(MainForm, SingleGradientModeSelector, 925, 450, 25, 290, SingleGradientModeSelectorImage, SingleGradientModeSelectorBitmap, ReadLang('GradientMode'));
   CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, SingleEditArrayLengthImage, SingleEditArrayLengthBitmap, ReadLang('ArrayLength'));
-  SingleEditArrayLength.Text := '20'
+  CreateEditField(MainForm, SingleEditSpeed, 1085, 500, 50, 130, SingleEditSpeedImage, SingleEditSpeedBitmap, ReadLang('Speed'));
+  SingleEditArrayLength.Text := '20';
+  SingleEditSpeed.Text := '100'
 end;
 
 procedure DestroySingle();
@@ -182,6 +201,7 @@ begin
   SingleSettings.DiagramSelector3.Image.Free;
   SingleGradientModeSelector.Image.Free;
   SingleEditArrayLength.Image.Free;
+  SingleEditSpeed.Image.Free;
 end;
 
 procedure DrawSingle();
@@ -206,6 +226,7 @@ begin
   SingleDiagram.Image.Picture.Bitmap:= SingleDiagram.Box.Bitmap;
   DrawDiagramProcedure(SingleDiagram);
   DrawEditField(SingleEditArrayLength);
+  DrawEditField(SingleEditSpeed);
 end;
 
 end.

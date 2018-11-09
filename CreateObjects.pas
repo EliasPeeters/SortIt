@@ -281,7 +281,7 @@ begin
   CreateImage(Editfield.Image, Form, Editfield.Box.Height, Editfield.Box.Width, Editfield.Box.x, Editfield.Box.y, '');
   ImageToArea(Editfield.Image, Editfield.Area);
   Editfield.Caption:= Caption;
-  Editfield.Selected:= true;
+  Editfield.Selected:= false;
   Editfield.Text:= '0';
 
 end;

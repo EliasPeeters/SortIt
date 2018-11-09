@@ -8,11 +8,12 @@ interface
   Vcl.Imaging.pngimage;
 
   procedure Quick(var Numbers: Array of Integer; firstElement, lastElement: Integer; Diagram: TDiagrambox);
-  procedure QuickSortProcedure(var Numbers: Array of Integer; Diagram: TDiagramBox);
+  procedure QuickSortProcedure(var Numbers: Array of Integer; Diagram: TDiagramBox; SpeedInt: Integer);
 
 
   var
     helpint: integer = 0;
+    speed: integer;
 
 implementation
 uses DrawDiagram, DrawUI, Single, Duo;
@@ -43,9 +44,11 @@ begin
 
 end;
 
-procedure QuickSortProcedure(var Numbers: Array of Integer; Diagram: TDiagramBox);
+procedure QuickSortProcedure(var Numbers: Array of Integer; Diagram: TDiagramBox; SpeedInt: Integer);
 begin
+    speed:= Speedint;
   Quick(Numbers, 0, length(Numbers), Diagram);
+
 end;
 
 

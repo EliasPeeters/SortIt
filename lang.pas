@@ -23,6 +23,7 @@ begin
   LanguageDE[1]:= 'HeightMode: Höhen Modus';
   LanguageDE[2]:= 'GradientMode: Verlaufs Mode';
   LanguageDE[3]:= 'ArrayLength: Zahlen Anzahl';
+  LanguageDE[4]:= 'Speed: Geschwindigkeit';
 end;
 
 procedure AssignLanguageEN();
@@ -32,6 +33,7 @@ begin
   LanguageEN[1]:= 'HeightMode: Height Mode';
   LanguageEN[2]:= 'GradientMode: Gradient Mode';
   LanguageEN[3]:= 'ArrayLength: Array Length';
+  LanguageEN[4]:= 'Speed: Speed';
 end;
 
 procedure AssingLanguages();

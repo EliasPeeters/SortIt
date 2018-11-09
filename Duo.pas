@@ -84,14 +84,14 @@ begin
     TThread.CreateAnonymousThread(
       procedure
       begin
-        QuickSortProcedure(ArrayNumber, DuoDiagrambox1);
+        QuickSortProcedure(ArrayNumber, DuoDiagrambox1, 100);
       end
       ).Start();
 
     TThread.CreateAnonymousThread(
       procedure
       begin
-        QuickSortProcedure(ArrayNumber, DuoDiagrambox2);
+        QuickSortProcedure(ArrayNumber, DuoDiagrambox2, 100);
       end
       ).Start();
   end;
