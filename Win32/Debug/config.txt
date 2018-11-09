@@ -1,8 +1,7 @@
-SortingMachine
-by Elias Peeters
-
 {
-animation-speed: 1,5
+animation-speed: 3
 dark-mode: false
-default-diagram-type: 0
+default-diagram-type: 1
+language: en
+last-opened: 0
 }

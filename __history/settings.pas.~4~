@@ -1,0 +1,87 @@
+unit settings;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, colors, CreateObjects;
+type
+  TSettingsForm = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure DrawSettingsTopBar;
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure DrawColorThemeSelector;
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private-Deklarationen }
+  public
+    { Public-Deklarationen }
+  end;
+
+var
+  SettingsForm: TSettingsForm;
+  TopBarBitmap: TBitmap;
+  TopBarImage, LightSelector, DarkSelector: TImage;
+
+implementation
+
+uses MainUnit, FileLoaderUnit;
+
+{$R *.dfm}
+
+procedure TSettingsForm.FormCreate(Sender: TObject);
+var
+  regn: HRGN;
+begin
+  regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
+  SetWindowRgn(Handle, regn, True);
+  SettingsForm.Color:= Grey;
+  DrawSettingsTopBar;
+  DrawColorThemeSelector;
+
+end;
+
+procedure TSettingsForm.FormMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+  const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+  begin
+    ReleaseCapture;
+    Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+  end;
+end;
+
+procedure TSettingsForm.Button2Click(Sender: TObject);
+begin
+  FileLoaderUnit.ChangeLanguage(FileStorage, 'en');
+end;
+
+procedure TSettingsForm.DrawColorThemeSelector;
+begin
+  CreateImage(LightSelector, SettingsForm, 100, SettingsForm.Width, 0, 70, '');
+  LightSelector.Canvas.Rectangle(0,0, 100, 100);
+end;
+
+
+procedure TSettingsForm.DrawSettingsTopBar;
+begin
+  TopBarBitmap:= TBitmap.Create;
+  TopBarBitmap.Height:= 50;
+  TopBarBitmap.Width:= SettingsForm.Width;
+  CreateImage(TopBarImage, SettingsForm, 50, SettingsForm.Width, 0,0, '');
+  with TopBarBitmap.Canvas do
+  begin
+    brush.Color:= clBoxColor;
+    pen.Color:= clBoxColor;
+    Rectangle(0,0, SettingsForm.Width, 50);
+  end;
+  TopBarImage.Picture.Bitmap:= TopBarBitmap;
+end;
+
+end.

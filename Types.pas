@@ -93,13 +93,24 @@ type
     Area: TClickableArea;
   End;
 
-  TVertSelectorDuo = Record
+  TCustomCords = Record
     x: Integer;
     y: Integer;
     Height: Integer;
     Width: Integer;
-    FirstSelect: String;
-    SecondSelector: String;
+  End;
+
+  TSelectorSlider = Record
+    Image: TImage;
+    Bitmap: TBitmap;
+    x: Integer;
+    y: Integer;
+    Height: Integer;
+    Width: Integer;
+    Slider: TCustomCords;
+    Caption: String;
+    Selected: Integer;
+    Area: TClickAbleArea;
   End;
 
   TCustomButton = Record

@@ -23,13 +23,13 @@ begin
   HueWert:= (360 div NumberofItems)*Item;
   while HueWert > 360 do Huewert:= Huewert div 360;
 
-  if (HueWert >= 0) and (HueWert < 60) then result:= rgb(255, Round((255 / 60) * Huewert), 0)
+  if (HueWert >= 0) and (HueWert <= 60) then result:= rgb(255, Round((255 / 60) * Huewert), 0)
   else if (HueWert > 60) and (HueWert <= 120) then result:= rgb(Round(255 - (255 / 60 * Huewert)), 255 , 0)
   else if (HueWert > 120) and (HueWert <= 180) then result:= rgb(0, 255 , Round(255 / 60 * Huewert))
   else if (HueWert > 180) and (HueWert <= 240) then result:= rgb(0, Round(255 - (255 / 60 * Huewert)) , 255)
   else if (HueWert > 240) and (HueWert <= 300) then result:= rgb(Round(255 / 60 * Huewert), 0 , 255)
   else if (HueWert > 300) and (HueWert <= 360) then
-  result:= rgb(255 , 0 , Round(255 - (255 / 60 * Huewert)))
+  result:= rgb(255 , 0 , Round(255 - (255 / 60 * Huewert)));
 
 end;
 
@@ -45,8 +45,8 @@ begin
   x1:= DiagramBox.Diagram.x;
   with DiagramBox.Box.Bitmap.Canvas do
   begin
-    Brush.Color:= LightBoxColor;
-    Pen.Color:= LightBoxColor;
+    Brush.Color:= clBoxColor;
+    Pen.Color:= clBoxColor;
     Rectangle(DiagramBox.Diagram.x,DiagramBox.Diagram.y, DiagramBox.Diagram.Width, DiagramBox.Diagram.Height);
 
     MoveTo(DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
@@ -72,7 +72,7 @@ begin
     if DiagramBox.SelectedItem < 0 then
     begin
       Pen.Style:= psSolid;
-      Pen.Color:= LightBoxColor;
+      Pen.Color:= clBoxColor;
       Brush.Color:= DiagramColor;
 
 
@@ -87,7 +87,7 @@ begin
     else
     begin
       Pen.Style:= psSolid;
-      Pen.Color:= LightBoxColor;
+      Pen.Color:= clBoxColor;
       Brush.Color:= DiagramColor;
 
       for I := 0 to length(DiagramBox.Content)-1 do
@@ -139,7 +139,7 @@ begin
     begin
       Brush.Color:= GiveColorBack(DiagramBox.MaxNum, Diagrambox.Content[i]);
       Pen.Color:= Brush.Color;
-      DrawPie(Diagrambox.Box.Bitmap.Canvas, 50, 50, 550, 550, Winkel*(i), Winkel*(i-1));
+      DrawPie(Diagrambox.Box.Bitmap.Canvas, Diagrambox.Diagram.x, Diagrambox.Diagram.y, Diagrambox.Diagram.height, Diagrambox.Diagram.Width, Winkel*(i), Winkel*(i-1));
     end;
   end;
   DiagramBox.Image.Picture.Bitmap:= DiagramBox.Box.Bitmap;

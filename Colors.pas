@@ -11,11 +11,12 @@ uses
   procedure DefineColors;
 
 var
-  LightGrey: TColor;
-  LightBoxColor: TColor;
-  LightBlueSelected: TColor;
-  LightBackground: TColor;
+  Grey: TColor;
+  clBoxColor: TColor;
+  clSelectColor: TColor;
+  clBackground: TColor;
   TextColor, DiagramColor, StatusBarColor: TColor;
+  clSettingsBackground: TColor;
 
 
 implementation
@@ -26,25 +27,27 @@ procedure DefineColors;
 begin
   if not(DarkModeBoolean) then
   begin
-    LightGrey:= rgb(231,231, 231);
-    LightBoxColor:= clWhite;
-    LightBlueSelected:= rgb(96, 157, 254);
+    Grey:= rgb(231,231, 231);
+    clBoxColor:= clWhite;
+    clSelectColor:= rgb(96, 157, 254);
     //LightBlueSelected:= rgb(226, 190, 76);
     TextColor:= clBlack;
-    DiagramColor:= LightBlueSelected;
+    DiagramColor:= clSelectColor;
     StatusBarColor:= rgb(107, 205, 0);
+    clSettingsBackground:= rgb(220,220, 220)
   end;
 
   if DarkModeBoolean then
   begin
-    LightGrey:= rgb(26, 27, 32);
-    LightBoxColor:= rgb(50, 50, 60);
+    Grey:= rgb(26, 27, 32);
+    clBoxColor:= rgb(50, 50, 60);
     //LightBlueSelected:= rgb(226, 190, 76);
-    LightBlueSelected:= rgb(96, 157, 254);
+    clSelectColor:= rgb(96, 157, 254);
     //LightBlueSelected:= clWhite;
     TextColor:= clWhite;
-    DiagramColor:= LightBlueSelected;
+    DiagramColor:= clSelectColor;
     StatusBarColor:= rgb(107, 205, 0);
+    clSettingsBackground:= rgb(20,20, 25)
   end;
 end;
 

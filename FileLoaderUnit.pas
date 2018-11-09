@@ -12,6 +12,9 @@ uses
   function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
   function DarkMode(var ArrayForWriting: Array of String): Boolean;
   procedure LoadConfig(var ArrayForWriting: Array of String);
+  function ReadFileInt(var ArrayForWriting: Array of String; Input: String): Integer;
+  procedure ChangeLanguage(ArrayForWriting: Array of String; NeueLanguge: String);
+  procedure ChangeDarkMode(ArrayForWriting: Array of String; DarkModeBoolean: String);
 
 implementation
 
@@ -56,6 +59,60 @@ begin
   end;
 end;
 
+procedure ArrayToTextFile(var ArrayForWriting: Array of String; TextFileName: String);
+var
+WorkingFile: TextFile;
+I: Integer;
+Test: String;
+begin
+    AssignFile(WorkingFile, TextFileName);
+    Rewrite(WorkingFile);
+    for I := 1 to StrToInt(ArrayForWriting[0]) do
+    begin
+      Test:= ArrayForWriting[i];
+      Writeln(WorkingFile, ArrayForWriting[i]);
+    end;
+    //Writeln(WorkingFile, '}');
+    CloseFile(WorkingFile);
+end;
+
+procedure ChangeLanguage(ArrayForWriting: Array of String; NeueLanguge: String);
+var
+  StorageString: String;
+  I: Integer;
+begin
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, 8);
+    if StorageString = 'language' then
+    begin
+      break;
+    end;
+  end;
+
+  ArrayForWriting[i]:= 'language: ' + NeueLanguge;
+  ArrayToTextFile(ArrayForWriting, 'config.txt');
+end;
+
+procedure ChangeDarkMode(ArrayForWriting: Array of String; DarkModeBoolean: String);
+var
+  StorageString: String;
+  I: Integer;
+begin
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, 9);
+    if StorageString = 'dark-mode' then
+    begin
+      break;
+    end;
+  end;
+
+  ArrayForWriting[i]:= 'dark-mode: ' + DarkModeBoolean;
+  ArrayToTextFile(ArrayForWriting, 'config.txt');
+end;
 
 
 function AnimationSpeed(var ArrayForWriting: Array of String): Extended;
@@ -113,6 +170,33 @@ begin
     errorProcedure(306, MainForm);
     Abort;
   end;
+end;
+
+function ReadFileString(var ArrayForWriting: Array of String; Input: String): String;
+var
+  StorageString: String;
+  AnimationSpeedString: String;
+  FoundInLine, i, ConfigTXTLength: Integer;
+  ConfigTXT: TextFile;
+begin
+
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, length(input));
+    if StorageString = input then
+    begin
+      result:= Copy(ArrayForWriting[i], length(input)+3,
+      Length(ArrayForWriting[i])-length(input)+1);
+      break;
+    end;
+  end;
+
+  if i-1 = StrToInt(ArrayForWriting[0]) then
+  begin
+    errorProcedure(306, MainForm);
+    Abort;
+  end;
 
 end;
 
@@ -157,11 +241,11 @@ end;
 
 procedure LoadConfig(var ArrayForWriting: Array of String);
 begin
-
   TextFileToArray(ArrayForWriting, 'config.txt');
   DarkModeBoolean:= DarkMode(ArrayForWriting);
   AnimationSpeedExt:= AnimationSpeed(ArrayForWriting);
   DefautlDiagramtype:= ReadFileInt(ArrayForWriting, 'default-diagram-type');
+  Language:= ReadFileString(ArrayForWriting, 'language');
 end;
 
 

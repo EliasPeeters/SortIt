@@ -5,14 +5,15 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, DrawUI,
-  Vcl.AppEvnts, MainUI;
+  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, Duo, DrawUI,
+  Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings;
 
 type
 
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
     TitleBar: TImage;
+    Button1: TButton;
 
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
@@ -30,10 +31,9 @@ type
     function CursorIsInArea(Area: TClickAbleArea):Boolean;
     procedure ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);
     procedure LoadCompleteUI();
-    procedure Panel1MouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure Button1Click(Sender: TObject);
 
   private
     { Private-Deklarationen }
@@ -56,6 +56,7 @@ var
   DarkModeBoolean: Boolean;
   AnimationSpeedExt: Extended;
   DefautlDiagramtype: Integer;
+  Language, TEstString: String;
 
 
 
@@ -108,9 +109,20 @@ end;
 
 procedure TMainForm.FormClick();
 begin
-  if SingleOpened then
+  if not(CursorIsInArea(SideBarArea)) then
   begin
-    SinglePress();
+    if SingleOpened then
+    begin
+      SinglePress();
+    end
+    else if DuoOpened then
+     begin
+       DuoPress();
+     end;
+  end
+  else
+  begin
+    MainUIPress();
   end;
 end;
 
@@ -121,6 +133,11 @@ begin
   if SingleOpened then
   begin
     SingleScroll(Wheeldata);
+  end
+
+  else if DuoOpened then
+  begin
+    DuoScroll(Wheeldata);
   end;
 end;
 
@@ -136,6 +153,11 @@ begin
   begin
     CursorPosition:= ScreenToClient(Mouse.CursorPos);
   end;
+end;
+
+procedure TMainForm.Button1Click(Sender: TObject);
+begin
+  SettingsForm.Show;
 end;
 
 procedure TMainForm.buttonClick(Sender: TObject);
@@ -155,12 +177,6 @@ begin
   LoadCompleteUI;
 end;
 
-Procedure MySpecialMouseDownStuff(Sender: TObject; Button: TMouseButton;
-                           Shift: TShiftState; X, Y: Integer);
-begin
-  //T
-end;
-
 
 
 procedure TMainForm.ImageClick(Sender: TObject);
@@ -174,27 +190,19 @@ end;
 procedure TMainForm.LoadCompleteUI();
 begin
   DefineColors;
-  MainForm.Color:= LightGrey;
+  MainForm.Color:= Grey;
   DrawMainUI;
-  DrawSingle;
+  if ReadFileInt(FileStorage, 'last-opened') = 0 then
+  begin
+    CreateSingle;
+    DrawSingle;
+  end;
 end;
 
 procedure SetTransparent(Aform: TForm; AValue: Boolean);
 begin
   Aform.TransparentColor := AValue;
   Aform.TransparentColorValue := Aform.Color;
-end;
-
-procedure TMainForm.Panel1MouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-const
-  SC_DRAGMOVE = $F012;
-begin
-  if Button = mbLeft then
-    begin
-      ReleaseCapture;
-      Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
-    end;
 end;
 
 procedure TMainForm.TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -215,13 +223,14 @@ var
 begin
   regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
   SetWindowRgn(Handle, regn, True);
-
+  AssignLanguageDE;
+  AssignLanguageEN;
   LoadConfig(FileStorage);
+  TEstString:= ReadLang('SortButton');
   DefineColors;
   //CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
   TextFileToArray(FileStorage, 'config.txt');
-  MainForm.Color:= LightGrey;
-  CreateSingle;
+  MainForm.Color:= Grey;
   CreateMainUI;
   LoadCompleteUI;
   //SetTransparent(self, true);

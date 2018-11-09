@@ -8,29 +8,80 @@ uses
   Vcl.Imaging.pngimage, Types, CreateObjects;
 
 var
-  SideBarImage: TImage;
+  SideBarImage, SingleImage, DuoImage, QuadImage, SixImage: TImage;
   SideBarBitmap, TopBarBitmap: TBitmap;
+  SideBarArea, SingleArea, DuoArea: TClickAbleArea;
 
   procedure CreateMainUI();
   procedure DrawMainUI();
   procedure DrawTopBar();
+  procedure MainUIPress();
 
 implementation
 
-uses MainUnit, DrawUI;
+uses MainUnit, DrawUI, Convert, OpenImage, Single, Duo, Colors;
+
+
+
+procedure SwitchAllImagesSideBar();
+begin
+  LoadImage('Single', SingleImage);
+  LoadImage('Duo', DuoImage);
+  LoadImage('Quad', QuadImage);
+  LoadImage('Six', SixImage);
+end;
+
+procedure MainUIPress();
+begin
+  if MainForm.CursorIsInArea(SingleArea) then
+  begin
+    SwitchAllImagesSideBar();
+    LoadImage('SinglePressed', SingleImage);
+    DestroyDuo;
+    CreateSingle;
+    DrawSingle;
+  end;
+
+  if MainForm.CursorIsInArea(DuoArea) then
+  begin
+  SwitchAllImagesSideBar();
+    LoadImage('DuoPressed', DuoImage);
+    DestroySingle;
+    CreateDuo;
+    DrawDuo;
+  end;
+end;
 
 procedure CreateSideBar();
 begin
   SideBarBitmap:= TBitmap.Create;
   SideBarBitmap.Height:= 800;
   SideBarBitmap.Width:= 70;
+  with SidebarArea do
+  begin
+    x1:= 0;
+    y1:= 0;
+    x2:= 70;
+    y2:= 800;
+  end;
   CreateImage(SideBarImage, MainForm, 800, 70, 0, 0, '');
+end;
+
+procedure SideBarIcons();
+begin
+  CreateImage(SingleImage, MainForm, 70, 70, 0, 200, 'Single');
+  CreateImage(DuoImage, MainForm, 70, 70, 0, 270, 'Duo');
+  CreateImage(QuadImage, MainForm, 70, 70, 0, 340, 'Quad');
+  CreateImage(SixImage, MainForm, 70, 70, 0, 410, 'Six');
+  ImageToArea(SingleImage, SingleArea);
+  ImageToArea(DuoImage, DuoArea);
 end;
 
 procedure DrawSideBar();
 begin
   TopSideBar(SideBarBitmap);
   SideBarImage.Picture.Bitmap:= SideBarBitmap;
+  SideBarIcons;
 end;
 
 
@@ -58,6 +109,7 @@ procedure DrawMainUI();
 begin
   DrawTopBar;
   DrawSideBar;
+  MainForm.Color:= Grey;
 end;
 
 end.

@@ -10,8 +10,12 @@ interface
   procedure Quick(var Numbers: Array of Integer; firstElement, lastElement: Integer; Diagram: TDiagrambox);
   procedure QuickSortProcedure(var Numbers: Array of Integer; Diagram: TDiagramBox);
 
+
+  var
+    helpint: integer = 0;
+
 implementation
-uses DrawDiagram;
+uses DrawDiagram, DrawUI, Single, Duo;
 
 procedure Switch(var Numbers2: Array of Integer; Number1, Number2: Integer; Diagram: TDiagramBox);
 var
@@ -20,12 +24,22 @@ begin
   temp:= Numbers2[Number1];
   Numbers2[Number1]:= Numbers2[Number2];
   Numbers2[Number2]:= temp;
-  TThread.Synchronize(nil,
-    procedure
-    begin
-      DrawDiagramProcedure(Diagram);
-    end
-    );
+  if HelpInt > 1 then
+  begin
+    TThread.Synchronize(nil,
+      procedure
+      begin
+        DrawDiagramProcedure(Diagram);
+        FillListBox(DuoNumberList);
+      end
+      );
+      sleep(100);
+      HelpInt:= 0;
+  end
+  else
+  begin
+    HelpInt:= HelpInt+1;
+  end;
 
 end;
 

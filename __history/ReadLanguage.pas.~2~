@@ -1,0 +1,18 @@
+unit ReadLanguage;
+
+interface
+
+implementation
+
+uses MainUnit;
+
+function ReadLang(PlaceString: String):String;
+begin
+  if Language = 'de' then
+  begin
+
+  end;
+
+end;
+
+end.

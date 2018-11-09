@@ -1,0 +1,28 @@
+unit ReadLanguage;
+
+interface
+
+function ReadLang(PlaceString: String):String;
+
+implementation
+
+uses MainUnit, de;
+
+function ReadLang(PlaceString: String):String;
+var
+  I: Integer;
+begin
+  if Language = 'de' then
+  begin
+    for I := 0 to length(LanguageDE) do
+    begin
+      if Copy(LanguageDE[i], 0, length(PlaceString)) = PlaceString then
+      begin
+        result:= 'test';
+      end;
+    end;
+  end;
+
+end;
+
+end.

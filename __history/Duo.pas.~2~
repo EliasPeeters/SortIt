@@ -1,0 +1,17 @@
+unit Duo;
+
+interface
+
+implementation
+
+procedure CreateDuo();
+begin
+
+end;
+
+procedure DrawDuo();
+begin
+  //test
+end;
+
+end.

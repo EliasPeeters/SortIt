@@ -1,0 +1,71 @@
+﻿unit SliderSelector;
+
+interface
+
+uses Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Colors;
+
+  procedure DrawVertSelectorDuo(Selector: TSelectorSlider);
+  procedure MoveSlider(Selector: TSelectorSlider);
+
+implementation
+
+uses MainUnit;
+
+
+procedure DrawVertSelectorDuo(Selector: TSelectorSlider);
+begin
+  with Selector.Bitmap.Canvas do
+  begin
+
+
+    if Selector.Selected = 0 then
+    begin
+      Brush.Color:= LightBoxColor;
+      Pen.Color:= LightBoxColor;
+      Rectangle(0,0,Selector.Slider.Width, Selector.Slider.Height);
+      Pen.Color:= LightGrey;
+      RoundRect(0,0,Selector.Slider.Width, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+      Brush.Color:= LightBlueSelected;
+      RoundRect(0,0,Selector.Slider.Width div 2, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+    end;
+  end;
+  Selector.Image.Picture.Bitmap:= Selector.Bitmap;
+end;
+
+
+
+procedure MoveSlider(Selector: TSelectorSlider);
+var
+I: Integer;
+begin
+  //T
+  for I := 0 to (Selector.Slider.Width div 2)*Round(AnimationSpeedExt) do
+  begin
+    with Selector.Bitmap.Canvas do
+    begin
+      TThread.Synchronize(nil,
+      procedure
+      begin
+        Brush.Color:= LightBoxColor;
+        Pen.Color:= LightBoxColor;
+        Rectangle(0,0,Selector.Slider.Width, Selector.Slider.Height);
+        Pen.Color:= LightGrey;
+        RoundRect(0,0,Selector.Slider.Width, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+        Brush.Color:= LightBlueSelected;
+        if Selector.Selected = 0 then
+            RoundRect(0+i div Round(AnimationSpeedExt), 0, Selector.Slider.Width div 2 +i div Round(AnimationSpeedExt), Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+        if Selector.Selected = 1 then
+          RoundRect(Selector.Slider.Width div 2-i, 0, Selector.Slider.Width-i, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+
+        Selector.Image.Picture.Bitmap:= Selector.Bitmap;
+      end
+      );
+      sleep(10);
+    end;
+
+  end;
+end;
+
+end.

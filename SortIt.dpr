@@ -15,7 +15,14 @@ uses
   DrawUI in 'DrawUI.pas',
   DrawDiagram in 'DrawDiagram.pas',
   MainUI in 'MainUI.pas',
-  QuickSort in 'QuickSort.pas';
+  QuickSort in 'QuickSort.pas',
+  SliderSelector in 'SliderSelector.pas',
+  Convert in 'Convert.pas',
+  ReadLanguage in 'ReadLanguage.pas',
+  lang in 'lang.pas',
+  Duo in 'Duo.pas',
+  Sorting in 'Sorting.pas',
+  settings in 'settings.pas' {SettingsForm};
 
 {$R *.res}
 
@@ -23,5 +30,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TSettingsForm, SettingsForm);
   Application.Run;
 end.

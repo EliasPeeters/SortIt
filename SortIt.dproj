@@ -117,6 +117,16 @@
         <DCCReference Include="DrawDiagram.pas"/>
         <DCCReference Include="MainUI.pas"/>
         <DCCReference Include="QuickSort.pas"/>
+        <DCCReference Include="SliderSelector.pas"/>
+        <DCCReference Include="Convert.pas"/>
+        <DCCReference Include="ReadLanguage.pas"/>
+        <DCCReference Include="lang.pas"/>
+        <DCCReference Include="Duo.pas"/>
+        <DCCReference Include="Sorting.pas"/>
+        <DCCReference Include="settings.pas">
+            <Form>SettingsForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

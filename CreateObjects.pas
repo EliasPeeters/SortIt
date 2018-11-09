@@ -12,8 +12,9 @@ uses
   procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
   procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
   procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
-  procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage);
+  procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
   procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+  procedure CreateVertSelector(Form: TForm; var Selector: TSelectorSlider; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
 
 
 implementation
@@ -95,8 +96,7 @@ begin
   CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
   //DrawBox(NewListbox.Box.Bitmap);
   //NewListbox.Content:= Content;
-  FillListbox(Newlistbox);
-  NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
+
 end;
 
 procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
@@ -124,9 +124,7 @@ begin
   Diagrambox.Image:= Image;
   Diagrambox.Content:= Content;
   CreateImage(Diagrambox.Image, Form, DiagramBox.Box.Height, DiagramBox.Box.Width, DiagramBox.Box.x, DiagramBox.Box.y, '');
-  DrawBox(DiagramBox.Box.Bitmap);
-  //DrawbarChart(Diagrambox);
-  DiagramBox.Image.Picture.Bitmap:= Diagrambox.Box.Bitmap;
+
 end;
 
 procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
@@ -157,7 +155,7 @@ begin
   end;
 end;
 
-procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage);
+procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
 
 
 begin
@@ -176,14 +174,30 @@ begin
     Width:= Settings.Box.Width;
   end;
   Settings.Image:= Image;
-  CreateImage(Settings.Image, Form, Settings.Box.Height, Settings.Box.Width, Settings.Box.x, Settings.Box.y, '');
-  CreateImage(Settings.DiagramSelector1.Image, Form, 83, 83, 928, 300, '');
-  CreateImage(Settings.DiagramSelector2.Image, Form, 83, 83, 1028, 300, '');
-  CreateImage(Settings.DiagramSelector3.Image, Form, 83, 83, 1128, 300, '');
 
-  ConvertImageToArea(Settings.DiagramSelector1.Image, Settings.DiagramSelector1.Area);
-  ConvertImageToArea(Settings.DiagramSelector2.Image, Settings.DiagramSelector2.Area);
-  ConvertImageToArea(Settings.DiagramSelector3.Image, Settings.DiagramSelector3.Area);
+  if Mode = 0 then
+  begin
+    CreateImage(Settings.Image, Form, Settings.Box.Height, Settings.Box.Width, Settings.Box.x, Settings.Box.y, '');
+    CreateImage(Settings.DiagramSelector1.Image, Form, 83, 83, 928, 300, '');
+    CreateImage(Settings.DiagramSelector2.Image, Form, 83, 83, 1028, 300, '');
+    CreateImage(Settings.DiagramSelector3.Image, Form, 83, 83, 1128, 300, '');
+
+    ConvertImageToArea(Settings.DiagramSelector1.Image, Settings.DiagramSelector1.Area);
+    ConvertImageToArea(Settings.DiagramSelector2.Image, Settings.DiagramSelector2.Area);
+    ConvertImageToArea(Settings.DiagramSelector3.Image, Settings.DiagramSelector3.Area);
+  end;
+
+  if Mode = 1 then
+  begin
+    CreateImage(Settings.Image, Form, Settings.Box.Height, Settings.Box.Width, Settings.Box.x, Settings.Box.y, '');
+    CreateImage(Settings.DiagramSelector1.Image, Form, 70, 70, 120, 670, '');
+    CreateImage(Settings.DiagramSelector2.Image, Form, 70, 70, 200, 670, '');
+    CreateImage(Settings.DiagramSelector3.Image, Form, 70, 70, 280, 670, '');
+
+    ConvertImageToArea(Settings.DiagramSelector1.Image, Settings.DiagramSelector1.Area);
+    ConvertImageToArea(Settings.DiagramSelector2.Image, Settings.DiagramSelector2.Area);
+    ConvertImageToArea(Settings.DiagramSelector3.Image, Settings.DiagramSelector3.Area);
+  end;
 
 end;
 
@@ -211,6 +225,37 @@ begin
   Button.Area.y2:= yInt+HeightInt;
   Button.Caption:= Caption;
 
+
+end;
+
+procedure CreateVertSelector(Form: TForm; var Selector: TSelectorSlider; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+begin
+  Selector.Bitmap:= Bitmap;
+  Selector.Bitmap:= TBitmap.Create;
+  with Selector do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  with Selector.Bitmap do
+  begin
+    Height:= Selector.Height;
+    Width:= Selector.Width;
+  end;
+  Selector.Image:= Image;
+  CreateImage(Selector.Image, Form, Selector.Height, Selector.Width, Selector.x, Selector.y, '');
+  Selector.Area.x1:= xInt;
+  Selector.Area.y1:= yInt;
+  Selector.Area.x2:= xInt+WidthInt;
+  Selector.Area.y2:= yInt+HeightInt;
+
+  Selector.Caption:= Caption;
+  Selector.Slider.x:= xInt;
+  Selector.Slider.y:= yInt;
+  Selector.Slider.Height:= HeightInt;
+  Selector.Slider.Width:= HeightInt *2;
 
 end;
 
