@@ -13,7 +13,6 @@ type
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
     TitleBar: TImage;
-    Button1: TButton;
 
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
@@ -34,6 +33,7 @@ type
     procedure TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Button1Click(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
 
   private
     { Private-Deklarationen }
@@ -238,6 +238,14 @@ end;
 
 
 
+
+procedure TMainForm.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if SingleOpened then
+  begin
+    SingleKeyPress(Key);
+  end;
+end;
 
 procedure TMainForm.FormMouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);

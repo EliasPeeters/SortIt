@@ -25,6 +25,14 @@ uses
     SingleHeightModeSelectorImage: TImage;
     SingleHeightModeSelectorBitmap: TBitmap;
 
+    SingleGradientModeSelector: TSelectorSlider;
+    SingleGradientModeSelectorImage: TImage;
+    SingleGradientModeSelectorBitmap: TBitmap;
+
+    SingleEditArrayLength: TEditField;
+    SingleEditArrayLengthImage: TImage;
+    SingleEditArrayLengthBitmap: TBitmap;
+
     MaxNum: Integer;
 
    procedure CreateSingle();
@@ -32,12 +40,13 @@ uses
    procedure DestroySingle();
    procedure SingleScroll(WheelData: Integer);
    procedure SinglePress();
+   procedure SingleKeyPress(Key: Char);
 
 
 implementation
 
 uses
-  MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage;
+  MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage, EditField;
 
 
 
@@ -49,6 +58,12 @@ begin
     NewListboxScroll(SingleNumberList, Wheeldata div 120 + SingleNumberList.ScrollLevel);
     Test.Caption:= IntToStr(SingleNumberList.ScrollLevel);
   end;
+end;
+
+procedure SingleKeyPress(Key: Char);
+begin
+  if SingleEditArrayLength.Selected then EditFieldInput(SingleEditArrayLength, Key);
+
 end;
 
 procedure SinglePress();
@@ -80,6 +95,19 @@ begin
     DrawDiagramProcedure(SingleDiagram);
   end;
 
+  if MainForm.CursorIsInArea(SingleEditArrayLength.Area) then
+  begin
+    SingleEditArrayLength.Selected:= true;
+    DrawEditField(SingleEditArrayLength);
+  end
+  else
+  begin
+    SingleEditArrayLength.Selected:= false;
+    if (SingleEditArrayLength.Text = '') or (SingleEditArrayLength.Text = '0') then SingleEditArrayLength.Text := '20';
+
+    DrawEditField(SingleEditArrayLength);
+  end;
+
   if MainForm.CursorIsInArea(SingleSortButton.Area) then
   begin
     TThread.CreateAnonymousThread(
@@ -103,8 +131,21 @@ begin
           SingleHeightModeSelector.Selected:= 1;
       end
       ).Start();
+  end;
 
+  if MainForm.CursorIsInArea(SingleGradientModeSelector.Area) then
+  begin
 
+    TThread.CreateAnonymousThread(
+      procedure
+      begin
+        MoveSlider(SingleGradientModeSelector);
+        if SingleGradientModeSelector.Selected = 1 then
+          SingleGradientModeSelector.Selected:= 0
+        else if SingleGradientModeSelector.Selected = 0 then
+          SingleGradientModeSelector.Selected:= 1;
+      end
+      ).Start();
   end;
 end;
 
@@ -122,6 +163,9 @@ begin;
   SingleDiagram.Diagram.DiagramTyp:= DefautlDiagramtype;
   CreateCustomButton(MainForm, SingleSortButton, 925, 670, 50, 290, SingleSortButtonImage, SingleSortButtonBitmap, ReadLang('SortButton'));
   CreateVertSelector(MainForm, SingleHeightModeSelector, 925, 400, 25, 290, SingleHeightModeSelectorImage, SingleHeightModeSelectorBitmap, ReadLang('HeightMode'));
+  CreateVertSelector(MainForm, SingleGradientModeSelector, 925, 450, 25, 290, SingleGradientModeSelectorImage, SingleGradientModeSelectorBitmap, ReadLang('GradientMode'));
+  CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, SingleEditArrayLengthImage, SingleEditArrayLengthBitmap, ReadLang('ArrayLength'));
+  SingleEditArrayLength.Text := '20'
 end;
 
 procedure DestroySingle();
@@ -136,6 +180,8 @@ begin
   SingleSettings.DiagramSelector1.Image.Free;
   SingleSettings.DiagramSelector2.Image.Free;
   SingleSettings.DiagramSelector3.Image.Free;
+  SingleGradientModeSelector.Image.Free;
+  SingleEditArrayLength.Image.Free;
 end;
 
 procedure DrawSingle();
@@ -153,11 +199,13 @@ begin
   SingleHeightModeSelector.Selected:= 0;
   DrawButtonStyle1(SingleSortButton);
   DrawVertSelectorDuo(SingleHeightModeSelector);
+  DrawVertSelectorDuo(SingleGradientModeSelector);
   FillListbox(SingleNumberlist);
   SingleNumberlist.Image.Picture.Bitmap:= SingleNumberlist.Box.Bitmap;
   DrawBox(SingleDiagram.Box.Bitmap);
   SingleDiagram.Image.Picture.Bitmap:= SingleDiagram.Box.Bitmap;
   DrawDiagramProcedure(SingleDiagram);
+  DrawEditField(SingleEditArrayLength);
 end;
 
 end.

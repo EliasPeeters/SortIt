@@ -133,6 +133,17 @@ type
     DiagramSelector3: TNewImage;
   End;
 
+  TEditField = Record
+    Box: TBox;
+    Image: TImage;
+    Area: TClickAbleArea;
+    Bitmap: TBitmap;
+    Selected: Boolean;
+    Text: String;
+    Caption: String;
+    Error: Boolean;
+  End;
+
 implementation
 
 end.

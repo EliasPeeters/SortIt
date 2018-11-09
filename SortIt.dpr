@@ -22,7 +22,8 @@ uses
   lang in 'lang.pas',
   Duo in 'Duo.pas',
   Sorting in 'Sorting.pas',
-  settings in 'settings.pas' {SettingsForm};
+  settings in 'settings.pas' {SettingsForm},
+  EditField in 'EditField.pas';
 
 {$R *.res}
 

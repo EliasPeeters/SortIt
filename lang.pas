@@ -21,6 +21,8 @@ begin
   SetLength(LanguageDE, 5);
   LanguageDE[0]:= 'SortButton: Sortieren';
   LanguageDE[1]:= 'HeightMode: Höhen Modus';
+  LanguageDE[2]:= 'GradientMode: Verlaufs Mode';
+  LanguageDE[3]:= 'ArrayLength: Zahlen Anzahl';
 end;
 
 procedure AssignLanguageEN();
@@ -28,6 +30,8 @@ begin
   SetLength(LanguageEN, 5);
   LanguageEN[0]:= 'SortButton: Sort';
   LanguageEN[1]:= 'HeightMode: Height Mode';
+  LanguageEN[2]:= 'GradientMode: Gradient Mode';
+  LanguageEN[3]:= 'ArrayLength: Array Length';
 end;
 
 procedure AssingLanguages();
