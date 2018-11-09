@@ -26,7 +26,13 @@ begin
     Rectangle(0,0,Selector.Width, Selector.Height);
     Pen.Color:= Grey;
     RoundRect(0,0,Selector.Slider.Width, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
-    Brush.Color:= clSelectColor;
+
+    if Selector.Selected = 1 then
+      Brush.Color:= clSelectColor
+
+    else
+      Brush.Color:= Grey;
+
     if Selector.Selected = 0 then
       RoundRect(0,0,Selector.Slider.Width div 2, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
 
@@ -36,7 +42,7 @@ begin
     RectForUse.Top:= 0;
     RectForUse.Bottom:= Selector.Height;
     RectForUse.Right:= Selector.Width-Selector.Slider.Width;
-    Font.Size:= 14;
+    Font.Size:= 11;
     Font.Color:= TextColor;
     Brush.Color:= clBoxColor;
     TextRect(RectForUse,Selector.Caption,[tfVerticalCenter,tfSingleLine])
@@ -64,7 +70,11 @@ begin
         Rectangle(0,0,Selector.Slider.Width, Selector.Slider.Height);
         Pen.Color:= Grey;
         RoundRect(0,0,Selector.Slider.Width, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
-        Brush.Color:= clSelectColor;
+
+        if Selector.Selected = 1 then
+          Brush.Color:= Grey
+        else
+          Brush.Color:= clSelectColor;
         if Selector.Selected = 0 then
             RoundRect(0+ (i * Round(AnimationSpeedExt)) , 0, Selector.Slider.Width div 2 +(i * Round(AnimationSpeedExt)), Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
         if Selector.Selected = 1 then

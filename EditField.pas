@@ -10,11 +10,46 @@ uses
 
   procedure DrawEditField(var EditField: TEditField);
   procedure EditFieldInput(var EditField: TEditField; Key: Char);
+  procedure AnimateEditField(EditField: TEditField);
 
 implementation
 
 uses
-  Colors;
+  Colors, MainUnit;
+
+procedure AnimateEditField(EditField: TEditField);
+var
+  I,x1, MaxI: Integer;
+begin
+  EditField.Bitmap.Canvas.Brush.Color:= clSelectColor;
+  EditField.Bitmap.Canvas.Pen.Color:= clSelectColor;
+  MaxI:= Round(MainUnit.AnimationSpeedExt * 4);
+  for I := 1 to Round(MainUnit.AnimationSpeedExt * 4) do
+  begin
+    TThread.Synchronize(nil,
+      procedure
+      begin
+
+
+        with EditField.Bitmap.Canvas do
+        begin
+          x1:=Round((EditField.Box.Width div 2) - (EditField.Box.Width div 2 - ((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt * 4) * MaxI)));
+          Rectangle(x1,
+                    EditField.Box.Height div 2 -2,
+                    EditField.Box.Width div 2 + Round(((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt * 4)) * I),
+                    EditField.Box.Height div 2);
+          MaxI:= MaxI-1;
+        end;
+        EditField.Image.Picture.Bitmap:= EditField.Bitmap;
+      end
+      );
+
+    sleep(Round(AnimationSpeedExt*4));
+  end;
+  EditField.Bitmap.Canvas.Rectangle(0, EditField.Box.Height div 2 -2, EditField.Box.Width, EditField.Box.Height div 2);
+  EditField.Image.Picture.Bitmap:= EditField.Bitmap;
+
+end;
 
 procedure DrawEditField(var EditField: TEditField);
 var
@@ -70,7 +105,7 @@ procedure EditFieldInput(var EditField: TEditField; Key: Char);
 var
   Input: String;
 begin
-  Input:= 'r';
+  Input:= 'error';
   if Key = Char(48) then Input:= '0'
   else if Key = Char(49) then Input:= '1'
   else if Key = Char(50) then Input:= '2'
@@ -82,11 +117,18 @@ begin
   else if Key = Char(56) then Input:= '8'
   else if Key = Char(57) then Input:= '9'
   else if Key = Char(44) then Input:= ','
-  else if Key = Char(#8) then Input:= ' ';
+  else if Key = Char(#8) then Input:= '#8'
+  else if Key = Char(#$D) then Input:= '#$D';
 
-  if (Input <> ' ') and (Input <> 'r') then EditField.Text:= EditField.Text + Input
-  else if Input = ' ' then EditField.Text:= Copy(EditField.Text, 0, length(EditField.Text)-1)
-  else if Input = 'r' then EditField.Error:= true;
+  if Input = '#8' then EditField.Text:= Copy(EditField.Text, 0, length(EditField.Text)-1)
+  else if Input = 'error' then EditField.Error:= true
+  else if Input = '#$D' then
+  begin
+    EditField.Selected:= false;
+    DrawEditField(EditField);
+      if (EditField.Text = '') or (EditField.Text = '0') then EditField.Text := '20';
+  end
+  else if (Input <> ' ') then EditField.Text:= EditField.Text + Input;
 
   DrawEditField(EditField);
 

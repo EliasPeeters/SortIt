@@ -4,4 +4,8 @@ dark-mode: false
 default-diagram-type: 1
 language: en
 last-opened: 0
+height-mode: 1
+arraylength: 300
+maxnum: 40
+sortingspeed: 100
 }

@@ -101,8 +101,8 @@ end;
 procedure CreateDuo();
 begin
   DuoOpened:= true;
-  SetLengthCustom(ArrayNumber);
-  CreateRandomArray(ArrayNumber, MaxNum);
+  SetLengthCustom(ArrayNumber, ArrayLength);
+  CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
   DuoDiagrambox1.MaxNum:= 360;
   DuoDiagrambox2.MaxNum:= 360;
   CreateDiagramBox(MainForm, DuoDiagrambox1, 100, 160, 480, 480, ArrayNumber, DuoDiagrambox1Image, DuoDiagrambox1Bitmap, MaxNum, 450, 450, 15, 15);

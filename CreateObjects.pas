@@ -15,7 +15,7 @@ uses
   procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
   procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
   procedure CreateVertSelector(Form: TForm; var Selector: TSelectorSlider; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
-  procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+  procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption, Text: String);
 
 
 implementation
@@ -115,6 +115,7 @@ begin
   DiagramBox.Diagram.x:= Dx;
   DiagramBox.Diagram.y:= Dy;
   DiagramBox.Diagram.ColorMode:= true;
+  DiagramBox.Diagram.HeightMode:= true;
 
   DiagramBox.MaxNum:= MaxNum;
   DiagramBox.SelectedItem:= -1;
@@ -257,11 +258,12 @@ begin
   Selector.Slider.y:= yInt;
   Selector.Slider.Height:= HeightInt;
   Selector.Slider.Width:= HeightInt *2;
+  //Selector.Value:= true;
 
 end;
 
 
-procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption, Text: String);
 begin
   Editfield.Bitmap:= Bitmap;
   Editfield.Bitmap:= TBitmap.Create;
@@ -282,7 +284,7 @@ begin
   ImageToArea(Editfield.Image, Editfield.Area);
   Editfield.Caption:= Caption;
   Editfield.Selected:= false;
-  Editfield.Text:= '0';
+  Editfield.Text:= Text;
 
 end;
 

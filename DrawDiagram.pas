@@ -43,65 +43,52 @@ begin
   //ExtraDistanz:= BarWidth div length(DiagramBox.Content);
   ExtraDistanz:= 0;
   x1:= DiagramBox.Diagram.x;
-  with DiagramBox.Box.Bitmap.Canvas do
-  begin
-    Brush.Color:= clBoxColor;
-    Pen.Color:= clBoxColor;
-    Rectangle(DiagramBox.Diagram.x,DiagramBox.Diagram.y, DiagramBox.Diagram.Width, DiagramBox.Diagram.Height);
-
-    MoveTo(DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
-    GreyColor:= 140;
-    Pen.Style:= psSolid;
-    Pen.Color:= rgb(GreyColor, GreyColor, GreyColor);
-    LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
-
-    GreyColor:= 190;
-    Pen.Style:= psDot;
-    Pen.Color:= rgb(GreyColor, GreyColor, GreyColor);
-
-    MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 1/4)+DiagramBox.Diagram.y);
-    LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 1/4)+DiagramBox.Diagram.y);
-
-    MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 2/4)+DiagramBox.Diagram.y);
-    LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 2/4)+DiagramBox.Diagram.y);
-
-    MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 3/4)+DiagramBox.Diagram.y);
-    LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 3/4)+DiagramBox.Diagram.y);
-
-
-    if DiagramBox.SelectedItem < 0 then
+    with DiagramBox.Box.Bitmap.Canvas do
     begin
-      Pen.Style:= psSolid;
+      Brush.Color:= clBoxColor;
       Pen.Color:= clBoxColor;
-      Brush.Color:= DiagramColor;
+      Rectangle(DiagramBox.Diagram.x,DiagramBox.Diagram.y, DiagramBox.Diagram.Width, DiagramBox.Diagram.Height);
 
-
-      for I := 0 to length(DiagramBox.Content)-1 do
-      begin
-        BarHeight:= (DiagramBox.Diagram.Height div DiagramBox.MaxNum)*DiagramBox.Content[i];
-        Rectangle(x1, DiagramBox.Diagram.Height+DiagramBox.Diagram.y, x1+barWidth, DiagramBox.Diagram.Height-BarHeight+DiagramBox.Diagram.y);
-        x1:= x1+BarWidth+ExtraDistanz;
-      end;
-    end
-
-    else
-    begin
+      MoveTo(DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
+      GreyColor:= 140;
       Pen.Style:= psSolid;
-      Pen.Color:= clBoxColor;
-      Brush.Color:= DiagramColor;
+      Pen.Color:= rgb(GreyColor, GreyColor, GreyColor);
+      LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, DiagramBox.Diagram.Height+DiagramBox.Diagram.y);
 
-      for I := 0 to length(DiagramBox.Content)-1 do
-      begin
-        if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
-        else Brush.Color:= rgb(233, 233, 233);
+      GreyColor:= 190;
+      Pen.Style:= psDot;
+      Pen.Color:= rgb(GreyColor, GreyColor, GreyColor);
 
-        BarHeight:= (DiagramBox.Diagram.Height div DiagramBox.MaxNum)*DiagramBox.Content[i];
-        Rectangle(x1, DiagramBox.Diagram.Height, x1+barWidth, DiagramBox.Diagram.Height-BarHeight);
-        x1:= x1+BarWidth+ExtraDistanz;
-      end;
+      MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 1/4)+DiagramBox.Diagram.y);
+      LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 1/4)+DiagramBox.Diagram.y);
+
+      MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 2/4)+DiagramBox.Diagram.y);
+      LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 2/4)+DiagramBox.Diagram.y);
+
+      MoveTo(DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 3/4)+DiagramBox.Diagram.y);
+      LineTo(DiagramBox.Diagram.Width+DiagramBox.Diagram.x, Round(DiagramBox.Diagram.Height * 3/4)+DiagramBox.Diagram.y);
+
+
+
+        Pen.Style:= psSolid;
+        Pen.Color:= clBoxColor;
+        //Brush.Color:= DiagramColor;
+
+        for I := 0 to length(DiagramBox.Content)-1 do
+        begin
+          if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
+          else Brush.Color:= DiagramColor;
+
+          BarHeight:= (DiagramBox.Diagram.Height div DiagramBox.MaxNum)*DiagramBox.Content[i];
+          if DiagramBox.Diagram.HeightMode = false then BarHeight:= DiagramBox.Diagram.Height;
+
+          Rectangle(x1, DiagramBox.Diagram.Height+DiagramBox.Diagram.y, x1+barWidth, DiagramBox.Diagram.Height-BarHeight+DiagramBox.Diagram.y);
+          x1:= x1+BarWidth+ExtraDistanz;
+        end;
+
+
     end;
 
-  end;
 
   DiagramBox.Image.Picture.Bitmap:= DiagramBox.Box.Bitmap;
 end;

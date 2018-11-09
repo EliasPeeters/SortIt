@@ -37,7 +37,9 @@ uses
     SingleEditSpeedImage: TImage;
     SingleEditSpeedBitmap: TBitmap;
 
-    MaxNum: Integer;
+    SingleEditMaxNum: TEditField;
+    SingleEditMaxNumImage: TImage;
+    SingleEditMaxNumBitmap: TBitmap;
 
    procedure CreateSingle();
    procedure DrawSingle();
@@ -50,7 +52,7 @@ uses
 implementation
 
 uses
-  MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage, EditField;
+  MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage, EditField, Convert;
 
 
 
@@ -68,6 +70,7 @@ procedure SingleKeyPress(Key: Char);
 begin
   if SingleEditArrayLength.Selected then EditFieldInput(SingleEditArrayLength, Key);
   if SingleEditSpeed.Selected then EditFieldInput(SingleEditSpeed, Key);
+  if SingleEditMaxNum.Selected then EditFieldInput(SingleEditMaxNum, Key);
 
 end;
 
@@ -103,26 +106,70 @@ begin
   if MainForm.CursorIsInArea(SingleEditArrayLength.Area) then
   begin
     SingleEditArrayLength.Selected:= true;
-    DrawEditField(SingleEditArrayLength);
+     TThread.CreateAnonymousThread(
+      procedure
+      begin
+        AnimateEditField(SingleEditArrayLength);
+      end
+      ).Start();
   end
   else
   begin
-    SingleEditArrayLength.Selected:= false;
-    if (SingleEditArrayLength.Text = '') or (SingleEditArrayLength.Text = '0') then SingleEditArrayLength.Text := '20';
+    if SingleEditArrayLength.Selected = true then
+    begin
+      SingleEditArrayLength.Selected:= false;
+      if (SingleEditArrayLength.Text = '') or (SingleEditArrayLength.Text = '0') then SingleEditArrayLength.Text := '20';
 
-    DrawEditField(SingleEditArrayLength);
+      DrawEditField(SingleEditArrayLength);
+      if ArrayLength <> StrToInt(SingleEditArrayLength.Text) then
+      begin
+        ArrayLength:= StrToInt(SingleEditArrayLength.Text);
+        CreateRandomArray(SingleDiagram.Content, MaxNum, ArrayLength);
+        SingleNumberList.Content:= SingleDiagram.Content;
+        DrawDiagramProcedure(SingleDiagram);
+        FillListBox(SingleNumberList);
+      end;
+    end;
   end;
 
   if MainForm.CursorIsInArea(SingleEditSpeed.Area) then
   begin
     SingleEditSpeed.Selected:= true;
-    DrawEditField(SingleEditSpeed);
+
+    TThread.CreateAnonymousThread(
+      procedure
+      begin
+        AnimateEditField(SingleEditSpeed);
+      end
+      ).Start();
+
+    //DrawEditField(SingleEditSpeed);
   end
   else
   begin
     SingleEditSpeed.Selected:= false;
     if (SingleEditSpeed.Text = '') or (SingleEditSpeed.Text = '0') then SingleEditSpeed.Text := '20';
     DrawEditField(SingleEditSpeed);
+  end;
+
+  if MainForm.CursorIsInArea(SingleEditMaxNum.Area) then
+  begin
+    SingleEditMaxNum.Selected:= true;
+
+    TThread.CreateAnonymousThread(
+      procedure
+      begin
+        AnimateEditField(SingleEditMaxNum);
+      end
+      ).Start();
+
+    //DrawEditField(SingleEditSpeed);
+  end
+  else
+  begin
+    SingleEditMaxNum.Selected:= false;
+    if (SingleEditMaxNum.Text = '') or (SingleEditMaxNum.Text = '0') then SingleEditMaxNum.Text := '20';
+    DrawEditField(SingleEditMaxNum);
   end;
 
   if MainForm.CursorIsInArea(SingleSortButton.Area) then
@@ -142,12 +189,13 @@ begin
       procedure
       begin
         MoveSlider(SingleHeightModeSelector);
-        if SingleHeightModeSelector.Selected = 1 then
-          SingleHeightModeSelector.Selected:= 0
-        else if SingleHeightModeSelector.Selected = 0 then
-          SingleHeightModeSelector.Selected:= 1;
+        SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
+        SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
+        DrawDiagramProcedure(SingleDiagram);
       end
       ).Start();
+
+
   end;
 
   if MainForm.CursorIsInArea(SingleGradientModeSelector.Area) then
@@ -157,21 +205,19 @@ begin
       procedure
       begin
         MoveSlider(SingleGradientModeSelector);
-        if SingleGradientModeSelector.Selected = 1 then
-          SingleGradientModeSelector.Selected:= 0
-        else if SingleGradientModeSelector.Selected = 0 then
-          SingleGradientModeSelector.Selected:= 1;
+        SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
+        SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
       end
       ).Start();
+
   end;
 end;
 
 procedure CreateSingle();
 begin;
-  MaxNum:= 360;
   SingleOpened:= true;
-  SetLengthCustom(ArrayNumber);
-  CreateRandomArray(ArrayNumber, MaxNum);
+  //SetLengthCustom(ArrayNumber,ArrayLength);
+  CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
   CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
   CreateDiagramBox(MainForm, SingleDiagram, 100, 100, 650, 650, ArrayNumber, SingleDiagramImage, SingleDiagramBitmap, MaxNum, 600, 600, 25, 25);
   CreateStatus(MainForm, SinlgeStatusBar, 900, 100, 66, 340, StatusBarImage, StatusBarBitmap, 30, 290, 25, 19);
@@ -181,10 +227,11 @@ begin;
   CreateCustomButton(MainForm, SingleSortButton, 925, 670, 50, 290, SingleSortButtonImage, SingleSortButtonBitmap, ReadLang('SortButton'));
   CreateVertSelector(MainForm, SingleHeightModeSelector, 925, 400, 25, 290, SingleHeightModeSelectorImage, SingleHeightModeSelectorBitmap, ReadLang('HeightMode'));
   CreateVertSelector(MainForm, SingleGradientModeSelector, 925, 450, 25, 290, SingleGradientModeSelectorImage, SingleGradientModeSelectorBitmap, ReadLang('GradientMode'));
-  CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, SingleEditArrayLengthImage, SingleEditArrayLengthBitmap, ReadLang('ArrayLength'));
-  CreateEditField(MainForm, SingleEditSpeed, 1085, 500, 50, 130, SingleEditSpeedImage, SingleEditSpeedBitmap, ReadLang('Speed'));
-  SingleEditArrayLength.Text := '20';
-  SingleEditSpeed.Text := '100'
+  CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, SingleEditArrayLengthImage, SingleEditArrayLengthBitmap, ReadLang('ArrayLength'), IntToStr(Arraylength));
+  CreateEditField(MainForm, SingleEditSpeed, 1085, 500, 50, 130, SingleEditSpeedImage, SingleEditSpeedBitmap, ReadLang('Speed'), IntToStr(SortingSpeed));
+  CreateEditField(MainForm, SingleEditMaxNum, 925, 570, 50, 130, SingleEditMaxNumImage, SingleEditMaxNumBitmap, ReadLang('MaxNum'), IntToStr(MaxNum));
+  SingleHeightModeSelector.Selected:= (HeightMode);
+  SingleDiagram.Diagram.HeightMode:= IntToBool(HeightMode);
 end;
 
 procedure DestroySingle();
@@ -202,6 +249,7 @@ begin
   SingleGradientModeSelector.Image.Free;
   SingleEditArrayLength.Image.Free;
   SingleEditSpeed.Image.Free;
+  SingleEditMaxNum.Image.Free;
 end;
 
 procedure DrawSingle();
@@ -216,7 +264,6 @@ begin
   if SingleDiagram.Diagram.DiagramTyp = 0 then LoadImage('CirclePressed', SingleSettings.DiagramSelector1.Image)
   else if SingleDiagram.Diagram.DiagramTyp = 1 then   LoadImage('BarPressed', SingleSettings.DiagramSelector2.Image)
   else if SingleDiagram.Diagram.DiagramTyp = 2 then   LoadImage('ColumnPressed', SingleSettings.DiagramSelector3.Image);
-  SingleHeightModeSelector.Selected:= 0;
   DrawButtonStyle1(SingleSortButton);
   DrawVertSelectorDuo(SingleHeightModeSelector);
   DrawVertSelectorDuo(SingleGradientModeSelector);
@@ -227,6 +274,7 @@ begin
   DrawDiagramProcedure(SingleDiagram);
   DrawEditField(SingleEditArrayLength);
   DrawEditField(SingleEditSpeed);
+  DrawEditField(SingleEditMaxNum);
 end;
 
 end.

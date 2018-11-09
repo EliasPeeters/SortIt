@@ -56,7 +56,11 @@ var
   DarkModeBoolean: Boolean;
   AnimationSpeedExt: Extended;
   DefautlDiagramtype: Integer;
+  HeightMode: Integer;
   Language, TEstString: String;
+  ArrayLength: Integer;
+  maxnum: Integer;
+  sortingSpeed: Integer;
 
 
 

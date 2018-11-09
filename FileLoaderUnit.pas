@@ -246,6 +246,12 @@ begin
   AnimationSpeedExt:= AnimationSpeed(ArrayForWriting);
   DefautlDiagramtype:= ReadFileInt(ArrayForWriting, 'default-diagram-type');
   Language:= ReadFileString(ArrayForWriting, 'language');
+  HeightMode:= ReadFileInt(ArrayForWriting, 'height-mode');
+  ArrayLength:= ReadFileInt(ArrayForWriting, 'arraylength');
+  maxnum:= ReadFileInt(ArrayForWriting, 'maxnum');
+  sortingspeed:= ReadFileInt(ArrayForWriting, 'sortingspeed');
+
+
 end;
 
 
