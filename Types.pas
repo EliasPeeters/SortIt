@@ -37,6 +37,7 @@ type
   End;
 
   TArrayOfInteger = Array of Integer;
+  TArrayOfString = Array of String;
 
   TNewImage = Record
     Image: TImage;
@@ -142,6 +143,35 @@ type
     Text: String;
     Caption: String;
     Error: Boolean;
+  End;
+
+  TTab = Record
+    x, y, Width, Height: Integer;
+    Area: TClickAbleArea;
+    Bitmap: TBitmap;
+    Image: TImage;
+    Caption: String;
+    Selected: Boolean;
+  End;
+
+  TGradientSelector = Record
+    x, y: Integer;
+    Area: TClickAbleArea;
+    Size: Integer;
+  End;
+
+  TDropDownMenu = Record
+    Cords: TCustomCords;
+    BitmapTop: TBitmap;
+    ImageTop: TImage;
+    ImageDropDown: TImage;
+    BitmapDropDown: TBitmap;
+    Opened: Boolean;
+    Items: TArrayOfString;
+    SelectedItem: Integer;
+    Area: TClickAbleArea;
+    ItemAreas: Array of TClickAbleArea;
+    HoverItem: Integer;
   End;
 
 implementation

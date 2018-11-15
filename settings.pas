@@ -95,7 +95,7 @@ begin
   begin
     if CursorIsInArea(LightThemeArea) then
     begin
-      ChangeDarkMode(FileStorage, 'false');
+      //ChangeDarkMode(FileStorage, 'false');
       DefineColors;
       LoadConfig(FileStorage);
       DrawMainUI;
@@ -106,7 +106,7 @@ begin
 
     if CursorIsInArea(DarkThemeArea) then
     begin
-      ChangeDarkMode(FileStorage, 'true');
+      //ChangeDarkMode(FileStorage, 'true');
       DefineColors;
       LoadConfig(FileStorage);
       DrawMainUI;

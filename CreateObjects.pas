@@ -68,6 +68,8 @@ begin
   Area.y2:= Box.y + Box.Height;
 end;
 
+
+
 procedure ConvertImageToArea(var Image: TImage; var Area: TClickAbleArea);
 begin
   Area.x1:= Image.Left;

@@ -1,0 +1,47 @@
+unit Tab;
+
+interface
+
+uses Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Colors, Types;
+
+  procedure CreateTab(Form: TForm; var Tab: TTab; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+
+
+implementation
+
+uses
+  CreateObjects, Convert;
+
+procedure CreateTab(Form: TForm; var Tab: TTab; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+begin
+  Tab.Bitmap:= Bitmap;
+  Tab.Bitmap:= TBitmap.Create;
+  with Tab do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  with Tab.Bitmap do
+  begin
+    Tab:= Tab.Height;
+    Tab:= Tab.Width;
+  end;
+  Tab.Image:= Image;
+  CreateImage(Tab.Image, Form, Tab.Height, Tab.Width, Tab.x, Tab.y, '');
+  Convert.ImageToArea(Tab.Image, Tab.Area);
+
+  Tab.Caption:= Caption;
+  Tab.Selected := false;
+  //Selector.Value:= true;
+end;
+
+procedure DrawTab(Tab: TTab);
+begin
+
+end;
+
+end.

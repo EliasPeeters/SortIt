@@ -1,0 +1,29 @@
+object ColorPickerForm: TColorPickerForm
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'ColorPickerForm'
+  ClientHeight = 338
+  ClientWidth = 639
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object TopBarImage: TImage
+    Left = 0
+    Top = 0
+    Width = 639
+    Height = 50
+    OnMouseDown = TopBarImageMouseDown
+  end
+  object ApplicationEvents1: TApplicationEvents
+    Left = 432
+    Top = 136
+  end
+end

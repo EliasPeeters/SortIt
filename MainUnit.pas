@@ -6,13 +6,14 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, Duo, DrawUI,
-  Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings;
+  Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings, ColorPicker;
 
 type
 
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
     TitleBar: TImage;
+    Button1: TButton;
 
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
@@ -34,6 +35,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure Button1Click(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormActivate(Sender: TObject);
 
   private
     { Private-Deklarationen }
@@ -61,6 +63,9 @@ var
   ArrayLength: Integer;
   maxnum: Integer;
   sortingSpeed: Integer;
+
+const
+  FontFamily: String = 'Bahnschrift';
 
 
 
@@ -111,6 +116,12 @@ begin
   Image.OnClick:= ImageClick;
 end;
 
+procedure TMainForm.FormActivate(Sender: TObject);
+begin
+
+  MainForm.ActiveControl:= nil;
+end;
+
 procedure TMainForm.FormClick();
 begin
   if not(CursorIsInArea(SideBarArea)) then
@@ -120,9 +131,9 @@ begin
       SinglePress();
     end
     else if DuoOpened then
-     begin
-       DuoPress();
-     end;
+   begin
+     DuoPress();
+   end;
   end
   else
   begin
@@ -156,6 +167,8 @@ begin
   if Msg.message=WM_MOUSEMOVE then
   begin
     CursorPosition:= ScreenToClient(Mouse.CursorPos);
+    if SingleOpened then SingleMouseMove;
+
   end;
 end;
 
@@ -238,6 +251,7 @@ begin
   CreateMainUI;
   LoadCompleteUI;
   //SetTransparent(self, true);
+  MainForm.ActiveControl:= nil;
 end;
 
 

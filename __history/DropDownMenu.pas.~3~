@@ -1,0 +1,54 @@
+unit DropDownMenu;
+
+interface
+
+uses Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Colors, Convert;
+
+  procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+  procedure DrawDropDown(var DropDown: TDropDownMenu);
+
+implementation
+
+uses CreateObjects;
+
+procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+begin
+
+  with DropDownMenu.Cords do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+
+  ConvertCordsToArea(DropDownMenu.Cords, DropDownMenu.Area);
+  DropDownMenu.BitmapTop:= BitmapTop;
+  DropDownMenu.BitmapDropDown:= BitmapDropDown;
+  DropDownMenu.BitmapTop:= TBitmap.Create;
+  DropDownMenu.BitmapDropDown:= TBitmap.Create;
+  DropDownMenu.BitmapTop.Height:= DropDownMenu.Cords.Height;
+  DropDownMenu.BitmapDropDown.Width:= DropDownMenu.Cords.Width;
+  DropDownMenu.BitmapDropDown.Height:= 0;
+  DropDownMenu.BitmapDropDown.Width:= DropDownMenu.Cords.Width;
+  DropDownMenu.ImageDropDown:= ImageDropDown;
+  DropDownMenu.Items:= Items;
+  DropDownMenu.Opened:= false;
+  DropDownMenu.SelectedItem:= -1;
+  //CreateImage(DropDownMenu.ImageDropDown, Form, 0, DropDownMenu.Cords.Width, DropDownMenu.Cords.x, DropDownMenu.Cords.y, '');
+  CreateImage(DropDownMenu.ImageTop, Form, DropDownMenu.Cords.Height, DropDownMenu.Cords.Width, DropDownMenu.Cords.x, DropDownMenu.Cords.y, '');
+end;
+
+procedure DrawDropDown(var DropDown: TDropDownMenu);
+begin
+  with DropDown.BitmapTop.Canvas do
+  begin
+    Brush.Color:= clRed;
+    Rectangle(0,0, DropDown.Cords.Width, DropDown.Cords.Height);
+  end;
+ DropDown.ImageTop.Picture.Bitmap:= DropDown.BitmapTop;
+end;
+
+end.

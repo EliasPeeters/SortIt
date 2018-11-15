@@ -9,9 +9,10 @@ object MainForm: TMainForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'Bahnschrift'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   OnMouseWheel = FormMouseWheel
@@ -23,6 +24,15 @@ object MainForm: TMainForm
     Width = 1260
     Height = 50
     OnMouseDown = TitleBarMouseDown
+  end
+  object Button1: TButton
+    Left = 224
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 0
+    OnClick = Button1Click
   end
   object ApplicationEvents: TApplicationEvents
     OnMessage = ApplicationEventsMessage

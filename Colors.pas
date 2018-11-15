@@ -9,6 +9,7 @@ uses
 
 
   procedure DefineColors;
+  function GiveColorBack(NumberofItems, Item: Integer):TColor;
 
 var
   Grey: TColor;
@@ -22,6 +23,22 @@ var
 implementation
 
 uses MainUnit;
+
+function GiveColorBack(NumberofItems, Item: Integer):TColor;
+var
+  HueWert: Extended;
+begin
+  HueWert:= (360 / NumberofItems)*Item;
+  while HueWert > 360 do Huewert:= Huewert / 360;
+
+  if HueWert <= 60 then result:= rgb(255, Round((255 / 60) * Huewert), 0)
+  else if HueWert <= 120 then result:= rgb(Round(255 - (255 / 60 * (Huewert - 60))), 255 , 0)
+  else if HueWert <= 180 then result:= rgb(0, 255 , Round(255 / 60 * (Huewert-120)))
+  else if HueWert <= 240 then result:= rgb(0, Round(255 - (255 / 60 * (Huewert-180))) , 255)
+  else if HueWert <= 300 then result:= rgb(Round(255 / 60 * (Huewert-240)), 0 , 255)
+  else if HueWert <= 360 then result:= rgb(255 , 0 , Round(255 - (255 / 60 * Round(Huewert-300))));
+
+end;
 
 procedure DefineColors;
 begin

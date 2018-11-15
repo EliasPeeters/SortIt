@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, Types, CreateObjects, QuickSort, SliderSelector, Sorting;
+  Vcl.Imaging.pngimage, Types, CreateObjects, QuickSort, SliderSelector, Sorting, DropDownMenu;
 
   var
     ArrayNumber: TArrayOfInteger;
@@ -41,13 +41,20 @@ uses
     SingleEditMaxNumImage: TImage;
     SingleEditMaxNumBitmap: TBitmap;
 
+    SingleAlgoSelctMenu: TDropDownMenu;
+    SingleAlgoSelctMenuImageTop: TImage;
+    SingleAlgoSelctMenuBitmapTop: TBitmap;
+    SingleAlgoSelctMenuImageDrop: TImage;
+    SingleAlgoSelctMenuBitmapDrop: TBitmap;
+    SingleAlgoSelctMenuItems: TArrayOfString;
+
    procedure CreateSingle();
    procedure DrawSingle();
    procedure DestroySingle();
    procedure SingleScroll(WheelData: Integer);
    procedure SinglePress();
    procedure SingleKeyPress(Key: Char);
-
+   procedure SingleMouseMove();
 
 implementation
 
@@ -75,141 +82,228 @@ begin
 end;
 
 procedure SinglePress();
+var i: integer;
 begin
-  if MainForm.CursorIsInArea(SingleSettings.DiagramSelector1.Area) then
+  if not(SingleAlgoSelctMenu.Opened) then
   begin
-    LoadImage('CirclePressed', SingleSettings.DiagramSelector1.Image);
-    LoadImage('Bar', SingleSettings.DiagramSelector2.Image);
-    LoadImage('Column', SingleSettings.DiagramSelector3.Image);
-    SingleDiagram.Diagram.DiagramTyp:= 0;
-    DrawDiagramProcedure(SingleDiagram);
-  end;
+    if MainForm.CursorIsInArea(SingleSettings.DiagramSelector1.Area) then
+    begin
+      LoadImage('CirclePressed', SingleSettings.DiagramSelector1.Image);
+      LoadImage('Bar', SingleSettings.DiagramSelector2.Image);
+      LoadImage('Column', SingleSettings.DiagramSelector3.Image);
+      SingleDiagram.Diagram.DiagramTyp:= 0;
+      DrawDiagramProcedure(SingleDiagram);
+    end;
 
-  if MainForm.CursorIsInArea(SingleSettings.DiagramSelector2.Area) then
-  begin
-    LoadImage('Circle', SingleSettings.DiagramSelector1.Image);
-    LoadImage('BarPressed', SingleSettings.DiagramSelector2.Image);
-    LoadImage('Column', SingleSettings.DiagramSelector3.Image);
-    SingleDiagram.Diagram.DiagramTyp:= 1;
-    DrawDiagramProcedure(SingleDiagram);
-  end;
+    if MainForm.CursorIsInArea(SingleSettings.DiagramSelector2.Area) then
+    begin
+      LoadImage('Circle', SingleSettings.DiagramSelector1.Image);
+      LoadImage('BarPressed', SingleSettings.DiagramSelector2.Image);
+      LoadImage('Column', SingleSettings.DiagramSelector3.Image);
+      SingleDiagram.Diagram.DiagramTyp:= 1;
+      DrawDiagramProcedure(SingleDiagram);
+    end;
 
-  if MainForm.CursorIsInArea(SingleSettings.DiagramSelector3.Area) then
-  begin
-    LoadImage('Circle', SingleSettings.DiagramSelector1.Image);
-    LoadImage('Bar', SingleSettings.DiagramSelector2.Image);
-    LoadImage('ColumnPressed', SingleSettings.DiagramSelector3.Image);
-    SingleDiagram.Diagram.DiagramTyp:= 2;
-    DrawDiagramProcedure(SingleDiagram);
-  end;
+    if MainForm.CursorIsInArea(SingleSettings.DiagramSelector3.Area) then
+    begin
+      LoadImage('Circle', SingleSettings.DiagramSelector1.Image);
+      LoadImage('Bar', SingleSettings.DiagramSelector2.Image);
+      LoadImage('ColumnPressed', SingleSettings.DiagramSelector3.Image);
+      SingleDiagram.Diagram.DiagramTyp:= 2;
+      DrawDiagramProcedure(SingleDiagram);
+    end;
 
-  if MainForm.CursorIsInArea(SingleEditArrayLength.Area) then
-  begin
-    SingleEditArrayLength.Selected:= true;
-     TThread.CreateAnonymousThread(
-      procedure
+
+
+    if MainForm.CursorIsInArea(SingleEditArrayLength.Area) then
+    begin
+      SingleEditArrayLength.Selected:= true;
+       TThread.CreateAnonymousThread(
+        procedure
+        begin
+          //SingleEditArrayLength.Bitmap.Canvas.Lock;
+          AnimateEditField(SingleEditArrayLength);
+          //SingleEditArrayLength.Bitmap.Canvas.UnLock;
+        end
+        ).Start();
+    end
+    else
+    begin
+      if SingleEditArrayLength.Selected = true then
       begin
-        AnimateEditField(SingleEditArrayLength);
-      end
-      ).Start();
+        SingleEditArrayLength.Selected:= false;
+        if (SingleEditArrayLength.Text = '') or (SingleEditArrayLength.Text = '0') then SingleEditArrayLength.Text := '20';
+
+        DrawEditField(SingleEditArrayLength);
+        if ArrayLength <> StrToInt(SingleEditArrayLength.Text) then
+        begin
+          ArrayLength:= StrToInt(SingleEditArrayLength.Text);
+          CreateRandomArray(SingleDiagram.Content, MaxNum, ArrayLength);
+          SingleNumberList.Content:= SingleDiagram.Content;
+          DrawDiagramProcedure(SingleDiagram);
+          FillListBox(SingleNumberList);
+        end;
+      end;
+    end;
+
+    if MainForm.CursorIsInArea(SingleEditSpeed.Area) then
+    begin
+      SingleEditSpeed.Selected:= true;
+
+      TThread.CreateAnonymousThread(
+        procedure
+        begin
+          //SingleEditSpeed.Bitmap.Canvas.Lock;
+          AnimateEditField(SingleEditSpeed);
+          //SingleEditSpeed.Bitmap.Canvas.UnLock;
+        end
+        ).Start();
+
+      //DrawEditField(SingleEditSpeed);
+    end
+    else
+    begin
+      SingleEditSpeed.Selected:= false;
+      if (SingleEditSpeed.Text = '') or (SingleEditSpeed.Text = '0') then SingleEditSpeed.Text := '20';
+      DrawEditField(SingleEditSpeed);
+    end;
+
+    if MainForm.CursorIsInArea(SingleEditMaxNum.Area) then
+    begin
+      SingleEditMaxNum.Selected:= true;
+
+      TThread.CreateAnonymousThread(
+        procedure
+        begin
+          //SingleEditMaxNum.Bitmap.Canvas.Lock;
+          AnimateEditField(SingleEditMaxNum);
+          //SingleEditMaxNum.Bitmap.Canvas.UnLock;
+        end
+        ).Start();
+
+      //DrawEditField(SingleEditSpeed);
+    end
+    else
+    begin
+      SingleEditMaxNum.Selected:= false;
+      if (SingleEditMaxNum.Text = '') or (SingleEditMaxNum.Text = '0') then SingleEditMaxNum.Text := '20';
+      DrawEditField(SingleEditMaxNum);
+    end;
+
+    if MainForm.CursorIsInArea(SingleSortButton.Area) then
+    begin
+      TThread.CreateAnonymousThread(
+        procedure
+        begin
+
+          QuickSortProcedure(ArrayNumber, SingleDiagram, StrToInt(SingleEditSpeed.Text));
+        end
+        ).Start();
+    end;
+
+    if MainForm.CursorIsInArea(SingleHeightModeSelector.Area) then
+    begin
+
+      TThread.CreateAnonymousThread(
+        procedure
+        begin
+          MoveSlider(SingleHeightModeSelector);
+          SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
+          SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
+          DrawDiagramProcedure(SingleDiagram);
+        end
+        ).Start();
+
+
+    end;
+
+    if MainForm.CursorIsInArea(SingleGradientModeSelector.Area) then
+    begin
+
+      TThread.CreateAnonymousThread(
+        procedure
+        begin
+          MoveSlider(SingleGradientModeSelector);
+          //SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
+          //SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
+        end
+        ).Start();
+
+    end;
+
   end
   else
   begin
-    if SingleEditArrayLength.Selected = true then
+    for I := 1 to 6 do
     begin
-      SingleEditArrayLength.Selected:= false;
-      if (SingleEditArrayLength.Text = '') or (SingleEditArrayLength.Text = '0') then SingleEditArrayLength.Text := '20';
-
-      DrawEditField(SingleEditArrayLength);
-      if ArrayLength <> StrToInt(SingleEditArrayLength.Text) then
+      if MainForm.CursorIsInArea(SingleAlgoSelctMenu.ItemAreas[i]) then
       begin
-        ArrayLength:= StrToInt(SingleEditArrayLength.Text);
-        CreateRandomArray(SingleDiagram.Content, MaxNum, ArrayLength);
-        SingleNumberList.Content:= SingleDiagram.Content;
-        DrawDiagramProcedure(SingleDiagram);
-        FillListBox(SingleNumberList);
+        SingleAlgoSelctMenu.SelectedItem:= i;
+        TThread.CreateAnonymousThread(
+        procedure
+        begin
+          AnimateDropDown(SingleAlgoSelctMenu);
+          SingleAlgoSelctMenu.Opened:= SwitchBool(SingleAlgoSelctMenu.Opened);
+
+        end
+        ).Start();
+        DrawDropDown(SingleAlgoSelctMenu);
+        SingleAlgoSelctMenu.ImageTop.Picture.Bitmap:= SingleAlgoSelctMenu.BitmapTop;
       end;
     end;
   end;
 
-  if MainForm.CursorIsInArea(SingleEditSpeed.Area) then
-  begin
-    SingleEditSpeed.Selected:= true;
-
-    TThread.CreateAnonymousThread(
-      procedure
-      begin
-        AnimateEditField(SingleEditSpeed);
-      end
-      ).Start();
-
-    //DrawEditField(SingleEditSpeed);
-  end
-  else
-  begin
-    SingleEditSpeed.Selected:= false;
-    if (SingleEditSpeed.Text = '') or (SingleEditSpeed.Text = '0') then SingleEditSpeed.Text := '20';
-    DrawEditField(SingleEditSpeed);
-  end;
-
-  if MainForm.CursorIsInArea(SingleEditMaxNum.Area) then
-  begin
-    SingleEditMaxNum.Selected:= true;
-
-    TThread.CreateAnonymousThread(
-      procedure
-      begin
-        AnimateEditField(SingleEditMaxNum);
-      end
-      ).Start();
-
-    //DrawEditField(SingleEditSpeed);
-  end
-  else
-  begin
-    SingleEditMaxNum.Selected:= false;
-    if (SingleEditMaxNum.Text = '') or (SingleEditMaxNum.Text = '0') then SingleEditMaxNum.Text := '20';
-    DrawEditField(SingleEditMaxNum);
-  end;
-
-  if MainForm.CursorIsInArea(SingleSortButton.Area) then
-  begin
-    TThread.CreateAnonymousThread(
-      procedure
-      begin
-        QuickSortProcedure(ArrayNumber, SingleDiagram, StrToInt(SingleEditSpeed.Text));
-      end
-      ).Start();
-  end;
-
-  if MainForm.CursorIsInArea(SingleHeightModeSelector.Area) then
+  if MainForm.CursorIsInArea(SingleAlgoSelctMenu.Area) then
   begin
 
     TThread.CreateAnonymousThread(
-      procedure
-      begin
-        MoveSlider(SingleHeightModeSelector);
-        SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
-        SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
-        DrawDiagramProcedure(SingleDiagram);
-      end
-      ).Start();
-
+    procedure
+    var
+      I: Integer;
+    begin
+      AnimateDropDown(SingleAlgoSelctMenu);
+      SingleAlgoSelctMenu.Opened:= SwitchBool(SingleAlgoSelctMenu.Opened);
+    end
+    ).Start();
 
   end;
 
-  if MainForm.CursorIsInArea(SingleGradientModeSelector.Area) then
+end;
+
+procedure SingleMouseMove();
+var
+  I: Integer;
+  IsInHoverMode: Boolean;
+  tempArea: TClickAbleArea;
+begin
+  if SingleAlgoSelctMenu.Opened then
   begin
-
-    TThread.CreateAnonymousThread(
-      procedure
+    IsInHoverMode:= false;
+    for I := 1 to 7 do
+    begin
+      if MainForm.CursorIsInArea(SingleAlgoSelctMenu.ItemAreas[i]) then
       begin
-        MoveSlider(SingleGradientModeSelector);
-        SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
-        SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
+        if not(SingleAlgoSelctMenu.HoverItem = i) and not(SingleAlgoSelctMenu.HoverItem = -1) then
+        begin
+          SingleAlgoSelctMenu.HoverItem:= i;
+          DrawTextOnDropdownMenu(SingleAlgoSelctMenu);
+          IsInHoverMode:= true;
+        end;
       end
-      ).Start();
-
+    end;
+    tempArea.x1:= SingleAlgoSelctMenu.ItemAreas[1].x1;
+    tempArea.y1:= SingleAlgoSelctMenu.ItemAreas[1].y1;
+    tempArea.x2:= SingleAlgoSelctMenu.ItemAreas[5].x2;
+    tempArea.y2:= SingleAlgoSelctMenu.ItemAreas[5].y2;
+    {
+    if not(MainForm.CursorIsInArea(tempArea)) then
+    begin
+      if SingleAlgoSelctMenu.HoverItem <> -1 then
+      begin
+        SingleAlgoSelctMenu.HoverItem:= -1;
+        DrawTextOnDropdownMenu(SingleAlgoSelctMenu);
+      end;
+    end;}
   end;
 end;
 
@@ -224,7 +318,7 @@ begin;
   CreateSettingsBox(MainForm, SingleSettings, 900, 190, 560, 340, SingleSettingsImage, SingleSettingsBitmap, SingleDiagramSelector1,
     SingleDiagramSelector2, SingleDiagramSelector3, 0);
   SingleDiagram.Diagram.DiagramTyp:= DefautlDiagramtype;
-  CreateCustomButton(MainForm, SingleSortButton, 925, 670, 50, 290, SingleSortButtonImage, SingleSortButtonBitmap, ReadLang('SortButton'));
+  CreateCustomButton(MainForm, SingleSortButton, 925, 660, 60, 290, SingleSortButtonImage, SingleSortButtonBitmap, ReadLang('SortButton'));
   CreateVertSelector(MainForm, SingleHeightModeSelector, 925, 400, 25, 290, SingleHeightModeSelectorImage, SingleHeightModeSelectorBitmap, ReadLang('HeightMode'));
   CreateVertSelector(MainForm, SingleGradientModeSelector, 925, 450, 25, 290, SingleGradientModeSelectorImage, SingleGradientModeSelectorBitmap, ReadLang('GradientMode'));
   CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, SingleEditArrayLengthImage, SingleEditArrayLengthBitmap, ReadLang('ArrayLength'), IntToStr(Arraylength));
@@ -232,6 +326,8 @@ begin;
   CreateEditField(MainForm, SingleEditMaxNum, 925, 570, 50, 130, SingleEditMaxNumImage, SingleEditMaxNumBitmap, ReadLang('MaxNum'), IntToStr(MaxNum));
   SingleHeightModeSelector.Selected:= (HeightMode);
   SingleDiagram.Diagram.HeightMode:= IntToBool(HeightMode);
+  CreateDropDownMenu(MainForm, SingleAlgoSelctMenu, 925, 220, 60, 290, SingleAlgoSelctMenuItems, SingleAlgoSelctMenuImageTop,SingleAlgoSelctMenuBitmapTop, SingleAlgoSelctMenuImageDrop, SingleAlgoSelctMenuBitmapDrop);
+  FillSortingAlgoArray(SingleAlgoSelctMenuItems);
 end;
 
 procedure DestroySingle();
@@ -250,6 +346,8 @@ begin
   SingleEditArrayLength.Image.Free;
   SingleEditSpeed.Image.Free;
   SingleEditMaxNum.Image.Free;
+  SingleAlgoSelctMenu.ImageTop.Free;
+  SingleAlgoSelctMenu.ImageDropDown.Free;
 end;
 
 procedure DrawSingle();
@@ -275,6 +373,8 @@ begin
   DrawEditField(SingleEditArrayLength);
   DrawEditField(SingleEditSpeed);
   DrawEditField(SingleEditMaxNum);
+  DrawDropDown(SingleAlgoSelctMenu);
+  //LoadImage('CirclePressed', SingleAlgoSelctMenu.ImageTop);
 end;
 
 end.

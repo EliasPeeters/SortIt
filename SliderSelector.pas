@@ -45,6 +45,7 @@ begin
     Font.Size:= 11;
     Font.Color:= TextColor;
     Brush.Color:= clBoxColor;
+    Font.Name:= FontFamily;
     TextRect(RectForUse,Selector.Caption,[tfVerticalCenter,tfSingleLine])
 
   end;

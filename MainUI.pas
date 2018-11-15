@@ -33,7 +33,7 @@ end;
 
 procedure MainUIPress();
 begin
-  if MainForm.CursorIsInArea(SingleArea) then
+  if (MainForm.CursorIsInArea(SingleArea)) and (SingleOpened = false)  then
   begin
     SwitchAllImagesSideBar();
     LoadImage('SinglePressed', SingleImage);
@@ -42,7 +42,7 @@ begin
     DrawSingle;
   end;
 
-  if MainForm.CursorIsInArea(DuoArea) then
+  if (MainForm.CursorIsInArea(DuoArea)) and (DuoOpened = false) then
   begin
   SwitchAllImagesSideBar();
     LoadImage('DuoPressed', DuoImage);

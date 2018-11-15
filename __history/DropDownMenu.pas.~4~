@@ -1,0 +1,127 @@
+unit DropDownMenu;
+
+interface
+
+uses Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Colors, Convert;
+
+  procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+  procedure DrawDropDown(var DropDown: TDropDownMenu);
+  procedure AnimateDropDown(DropDown: TDropDownMenu);
+
+implementation
+
+uses CreateObjects, MainUnit;
+
+procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+begin
+
+  with DropDownMenu.Cords do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+
+  ConvertCordsToArea(DropDownMenu.Cords, DropDownMenu.Area);
+  DropDownMenu.BitmapTop:= BitmapTop;
+  DropDownMenu.BitmapDropDown:= BitmapDropDown;
+  DropDownMenu.BitmapTop:= TBitmap.Create;
+  DropDownMenu.BitmapDropDown:= TBitmap.Create;
+  DropDownMenu.BitmapTop.Height:= DropDownMenu.Cords.Height;
+  DropDownMenu.BitmapTop.Width:= DropDownMenu.Cords.Width;
+  DropDownMenu.BitmapDropDown.Height:= 0;
+  DropDownMenu.BitmapDropDown.Width:= DropDownMenu.Cords.Width;
+  DropDownMenu.ImageDropDown:= ImageDropDown;
+  DropDownMenu.Items:= Items;
+  DropDownMenu.Opened:= false;
+  DropDownMenu.SelectedItem:= -1;
+  CreateImage(DropDownMenu.ImageDropDown, Form, 0, DropDownMenu.Cords.Width, DropDownMenu.Cords.x, DropDownMenu.Cords.y, '');
+  CreateImage(DropDownMenu.ImageTop, Form, DropDownMenu.Cords.Height, DropDownMenu.Cords.Width, DropDownMenu.Cords.x, DropDownMenu.Cords.y, '');
+end;
+
+procedure DrawDropDown(var DropDown: TDropDownMenu);
+begin
+  with DropDown.BitmapTop.Canvas do
+  begin
+    Pen.Color:= grey;
+    Pen.Width:= 3;
+    Brush.Color:= clBoxColor;
+    RoundRect(5,5,DropDown.Cords.Width-5, DropDown.Cords.Height-5, DropDown.Cords.Height-10,  DropDown.Cords.Height-10);
+    Font.Size:= (DropDown.Cords.Height-10) div 4;
+    if DropDown.SelectedItem < 0 then
+    begin
+      Font.Color:= grey;
+      TextOut(DropDown.Cords.Height div 3 * 2, 20, 'Select Algorythm')
+    end
+    else
+    begin
+      Font.Color:= TextColor;
+      TextOut(DropDown.Cords.Height div 3 * 2, 20, DropDown.Items[DropDown.SelectedItem]);
+    end;
+    Pen.Color:= clSelectColor;
+    Pen.Width:= 2;
+    if DropDown.Opened then
+    begin
+      MoveTo(DropDown.Cords.Width-50, DropDown.Cords.Height div 2);
+      LineTo(DropDown.Cords.Width-40, DropDown.Cords.Height div 2 - 8);
+      LineTo(DropDown.Cords.Width-30, DropDown.Cords.Height div 2);
+    end
+    else
+    begin
+      MoveTo(DropDown.Cords.Width-50, DropDown.Cords.Height div 2);
+      LineTo(DropDown.Cords.Width-40, DropDown.Cords.Height div 2 + 8);
+      LineTo(DropDown.Cords.Width-30, DropDown.Cords.Height div 2);
+    end;
+  end;
+ DropDown.ImageTop.Picture.Bitmap:= DropDown.BitmapTop;
+end;
+
+procedure AnimateDropDown(DropDown: TDropDownMenu);
+
+begin
+
+  TThread.CreateAnonymousThread(
+  procedure
+  var
+  I: Integer;
+  begin
+
+
+        if DropDown.Opened then
+        begin
+          for I := 1 to 8 do
+          begin
+
+          end;
+        end
+        else
+        begin
+          for I := 1 to 8 do
+          begin
+            TThread.Synchronize(nil,
+            procedure
+            begin
+              DropDown.BitmapTop.Canvas.Brush.Color:= clBoxColor;
+              DropDown.BitmapTop.Canvas.Pen.Color:= clBoxColor;
+              DropDown.BitmapTop.Canvas.Rectangle(DropDown.Cords.Width-60, 15, DropDown.Cords.Width-20, DropDown.Cords.Height - 15);
+              DropDown.BitmapTop.Canvas.Pen.Color:= clSelectColor;
+              DropDown.BitmapTop.Canvas.MoveTo(DropDown.Cords.Width-50, DropDown.Cords.Height div 2 + i);
+              DropDown.BitmapTop.Canvas.LineTo(DropDown.Cords.Width-40, DropDown.Cords.Height div 2 + 8 -I);
+              DropDown.BitmapTop.Canvas.LineTo(DropDown.Cords.Width-30, DropDown.Cords.Height div 2 +i);
+              DropDown.ImageTop.Picture.Bitmap:= DropDown.BitmapTop;
+            end
+            );
+            sleep(Round(AnimationSpeedExt*10));
+          end;
+        end;
+
+
+  end
+  ).Start();
+
+end;
+
+end.

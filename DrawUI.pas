@@ -17,7 +17,7 @@ uses
 
 implementation
 
-uses Colors, Single, OpenImage;
+uses Colors, Single, OpenImage, MainUnit;
 
 procedure DrawBox(Bitm: TBitmap);
 begin
@@ -80,6 +80,7 @@ begin
       Brush.Style:= bsClear;
       if I < length(Newlistbox.Content) then
       begin
+        Font.Name:= FontFamily;
         TextOut(40, CurrentBox*20+30, IntToStr(NewListbox.Content[i]));
         Brush.Style:= bsSolid;
         Brush.Color:= Grey;
@@ -164,13 +165,14 @@ begin
     Rectangle(0,0, Button.Width, Button.Height);
     Brush.Color:= clBoxColor;
     Pen.Color:= Grey;
-    Pen.Width:= 5;
-    RoundRect(0,0,Button.Width, Button.Height, Button.Height div 2, Button.Height div 2);
+    Pen.Width:= 3;
+    RoundRect(5,5,Button.Width-5, Button.Height-5, Button.Height-10, Button.Height-10);
     RectForUse.Left:= 0;
     RectForUse.Top:= 0;
     RectForUse.Bottom:= Button.Height;
     RectForUse.Right:= Button.Width;
     Font.Size:= 20;
+    Font.Name:= FontFamily;
     TextRect(RectForUse,Button.Caption,[tfVerticalCenter,tfCenter,tfSingleLine]);
   end;
 

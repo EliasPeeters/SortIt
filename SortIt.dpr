@@ -23,14 +23,19 @@ uses
   Duo in 'Duo.pas',
   Sorting in 'Sorting.pas',
   settings in 'settings.pas' {SettingsForm},
-  EditField in 'EditField.pas';
+  EditField in 'EditField.pas',
+  ColorPicker in 'ColorPicker.pas' {ColorPickerForm},
+  Tab in 'Tab.pas',
+  DropDownMenu in 'DropDownMenu.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TSettingsForm, SettingsForm);
+  Application.CreateForm(TColorPickerForm, ColorPickerForm);
   Application.Run;
 end.

@@ -23,8 +23,8 @@ var
 begin
   EditField.Bitmap.Canvas.Brush.Color:= clSelectColor;
   EditField.Bitmap.Canvas.Pen.Color:= clSelectColor;
-  MaxI:= Round(MainUnit.AnimationSpeedExt * 4);
-  for I := 1 to Round(MainUnit.AnimationSpeedExt * 4) do
+  MaxI:= Round(MainUnit.AnimationSpeedExt );
+  for I := 1 to Round(MainUnit.AnimationSpeedExt) do
   begin
     TThread.Synchronize(nil,
       procedure
@@ -33,21 +33,26 @@ begin
 
         with EditField.Bitmap.Canvas do
         begin
-          x1:=Round((EditField.Box.Width div 2) - (EditField.Box.Width div 2 - ((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt * 4) * MaxI)));
+          x1:=Round((EditField.Box.Width div 2) - (EditField.Box.Width div 2 - ((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt) * MaxI)));
           Rectangle(x1,
                     EditField.Box.Height div 2 -2,
-                    EditField.Box.Width div 2 + Round(((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt * 4)) * I),
+                    EditField.Box.Width div 2 + Round(((EditField.Box.Width / 1/2) / (MainUnit.AnimationSpeedExt)) * I),
                     EditField.Box.Height div 2);
           MaxI:= MaxI-1;
         end;
         EditField.Image.Picture.Bitmap:= EditField.Bitmap;
       end
       );
-
-    sleep(Round(AnimationSpeedExt*4));
+    sleep(Round(AnimationSpeedExt*2));
   end;
-  EditField.Bitmap.Canvas.Rectangle(0, EditField.Box.Height div 2 -2, EditField.Box.Width, EditField.Box.Height div 2);
-  EditField.Image.Picture.Bitmap:= EditField.Bitmap;
+
+  TThread.Synchronize(nil,
+  procedure
+  begin
+    EditField.Bitmap.Canvas.Rectangle(0, EditField.Box.Height div 2 -2, EditField.Box.Width, EditField.Box.Height div 2);
+    EditField.Image.Picture.Bitmap:= EditField.Bitmap;
+  end
+  );
 
 end;
 
@@ -87,6 +92,7 @@ begin
     RectForUse.Right:= EditField.Box.Width;
     Font.Size:= 8;
     Brush.Color:= clBoxColor;
+    Font.Name:= FontFamily;
     TextRect(RectForUse,EditField.Caption,[tfVerticalCenter,tfCenter,tfSingleLine]);
 
     RectForUse.Left:= 0;
@@ -106,16 +112,8 @@ var
   Input: String;
 begin
   Input:= 'error';
-  if Key = Char(48) then Input:= '0'
-  else if Key = Char(49) then Input:= '1'
-  else if Key = Char(50) then Input:= '2'
-  else if Key = Char(51) then Input:= '3'
-  else if Key = Char(52) then Input:= '4'
-  else if Key = Char(53) then Input:= '5'
-  else if Key = Char(54) then Input:= '6'
-  else if Key = Char(55) then Input:= '7'
-  else if Key = Char(56) then Input:= '8'
-  else if Key = Char(57) then Input:= '9'
+
+  if (ord(key) >= 48) and (ord(key) <= 57) then Input:= key
   else if Key = Char(44) then Input:= ','
   else if Key = Char(#8) then Input:= '#8'
   else if Key = Char(#$D) then Input:= '#$D';

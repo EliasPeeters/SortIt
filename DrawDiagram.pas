@@ -16,22 +16,7 @@ uses DrawUI;
 
 
 
-function GiveColorBack(NumberofItems, Item: Integer):TColor;
-var
-  HueWert: Integer;
-begin
-  HueWert:= (360 div NumberofItems)*Item;
-  while HueWert > 360 do Huewert:= Huewert div 360;
 
-  if (HueWert >= 0) and (HueWert <= 60) then result:= rgb(255, Round((255 / 60) * Huewert), 0)
-  else if (HueWert > 60) and (HueWert <= 120) then result:= rgb(Round(255 - (255 / 60 * Huewert)), 255 , 0)
-  else if (HueWert > 120) and (HueWert <= 180) then result:= rgb(0, 255 , Round(255 / 60 * Huewert))
-  else if (HueWert > 180) and (HueWert <= 240) then result:= rgb(0, Round(255 - (255 / 60 * Huewert)) , 255)
-  else if (HueWert > 240) and (HueWert <= 300) then result:= rgb(Round(255 / 60 * Huewert), 0 , 255)
-  else if (HueWert > 300) and (HueWert <= 360) then
-  result:= rgb(255 , 0 , Round(255 - (255 / 60 * Huewert)));
-
-end;
 
 procedure DrawBarChart(DiagramBox: TDiagrambox);
 var

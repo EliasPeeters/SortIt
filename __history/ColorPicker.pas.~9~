@@ -1,0 +1,187 @@
+unit ColorPicker;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, CreateObjects, Types, Vcl.AppEvnts;
+
+type
+  TColorPickerForm = class(TForm)
+    ApplicationEvents1: TApplicationEvents;
+    TopBarImage: TImage;
+    procedure FormCreate(Sender: TObject);
+    procedure DrawTopBar;
+    procedure TopBarImageMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure CreateColorPicker;
+    procedure ApplicationEvents1Message(var Msg: tagMSG; var Handled: Boolean);
+    procedure FormActivate(Sender: TObject);
+  private
+    { Private-Deklarationen }
+  public
+    { Public-Deklarationen }
+  end;
+
+var
+  ColorPickerForm: TColorPickerForm;
+  TopBarBitmap: TBitmap;
+  GradientMode, ColorMode: Boolean;
+
+  SelectorGradientMode, SelectorColorode: TTab;
+  SelectorGradientModeImage, SelectorColorodeImage: TImage;
+  SelectorGradientModeBitmap, SelectorColorodeBitmap: TBitmap;
+
+  GradientSelect: TImage;
+  GradientSelectBitmap: TBitmap;
+
+implementation
+
+uses
+   MainUnit, Convert, Colors, Tab;
+
+{$R *.dfm}
+
+
+function CursorIsInArea(Area: TClickAbleArea):Boolean;
+var
+  XAchsTrue, YAchsTrue: Boolean;
+begin
+  XAchsTrue:= False;
+  YAchsTrue:= False;
+
+  if (CursorPosition.x >= Area.x1) and (CursorPosition.x <= Area.x2) then
+  begin
+    XAchsTrue:= True;
+  end;
+
+   if (CursorPosition.y >= Area.y1) and (CursorPosition.y <= Area.y2) then
+  begin
+    YAchsTrue:= True;
+  end;
+
+  if (YAchsTrue) and (XAchsTrue) then
+  begin
+    result:= true;
+  end
+  else
+  begin
+    result:= false;
+  end;
+end;
+
+procedure CreateGradientMode;
+var
+  I: Integer;
+begin
+  CreateTab(ColorPickerForm, SelectorGradientMode, 100, 10, 30, 150,SelectorGradientModeImage, SelectorGradientModeBitmap, 'Gradient Mode' );
+  CreateTab(ColorPickerForm, SelectorColorode, 350, 10, 30, 150,SelectorColorodeImage, SelectorColorodeBitmap, 'Gradient Mode' );
+  CreateImage(GradientSelect, ColorPickerForm,ColorPickerForm.Height-50, ColorPickerForm.Width, 0, 100, '');
+  ImageToBitmap(GradientSelect, GradientSelectBitmap);
+
+  with GradientSelectBitmap.Canvas do
+  begin
+    Pen.Width:= 1;
+    for I := 1 to GradientSelectBitmap.Width do
+    begin
+      Pen.Color:= GiveColorBack(GradientSelectBitmap.Width, i);
+
+      MoveTo(I, 0);
+      LineTo(I,GradientSelectBitmap.Height);
+    end;
+  end;
+  GradientSelect.Picture.Bitmap:= GradientSelectBitmap;
+end;
+
+
+procedure DrawGradientMode;
+begin
+
+end;
+
+procedure DrawTabBar;
+begin
+  DrawTab(SelectorGradientMode);
+  DrawTab(SelectorColorode);
+end;
+
+procedure TColorPickerForm.FormActivate(Sender: TObject);
+var
+  regn: HRGN;
+begin
+  DefineColors;
+  regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
+  SetWindowRgn(Handle, regn, True);
+  ColorPickerForm.Color:= clSettingsBackground;
+  DrawTopBar;
+  CreateColorPicker;
+  DrawGradientMode;
+  DrawTabBar;
+end;
+
+procedure TColorPickerForm.FormCreate(Sender: TObject);
+var
+  regn: HRGN;
+begin
+
+end;
+
+procedure TColorPickerForm.TopBarImageMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+  const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+  begin
+    ReleaseCapture;
+    Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+  end;
+end;
+
+
+procedure TColorPickerForm.ApplicationEvents1Message(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+  if Msg.message=WM_MOUSEMOVE then
+  begin
+    CursorPosition:= ScreenToClient(Mouse.CursorPos);
+  end;
+
+  if Msg.message=WM_LBUTTONDOWN then
+  begin
+    if CursorIsInArea(SelectorGradientMode.Area) then
+    begin
+      SelectorGradientMode.Selected:= true;
+      SelectorColorode.Selected:= false;
+      DrawTabBar;
+    end;
+    if CursorIsInArea(SelectorColorode.Area) then
+    begin
+      SelectorGradientMode.Selected:= false;
+      SelectorColorode.Selected:= true;
+      DrawTabBar;
+    end;
+  end;
+end;
+
+procedure TColorPickerForm.CreateColorPicker;
+begin
+  CreateGradientMode;
+end;
+
+procedure TColorPickerForm.DrawTopBar;
+begin
+  TopBarBitmap:= TBitmap.Create;
+  TopBarBitmap.Height:= 50;
+  TopBarBitmap.Width:= ColorPickerForm.Width;
+  with TopBarBitmap.Canvas do
+  begin
+    brush.Color:= clBoxColor;
+    pen.Color:= clBoxColor;
+    Rectangle(0,0, ColorPickerForm.Width, 50);
+  end;
+  TopBarImage.Picture.Bitmap:= TopBarBitmap;
+end;
+
+end.
