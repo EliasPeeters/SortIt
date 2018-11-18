@@ -115,6 +115,7 @@ begin
 
   if (ord(key) >= 48) and (ord(key) <= 57) then Input:= key
   else if Key = Char(44) then Input:= ','
+  else if Key = Char(46) then Input:= ','
   else if Key = Char(#8) then Input:= '#8'
   else if Key = Char(#$D) then Input:= '#$D';
 

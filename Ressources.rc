@@ -16,3 +16,12 @@ SinglePressed IMAGE Images/SingleP.png
 DuoPressed IMAGE Images/DuoP.png
 QuadPressed IMAGE Images/QuadP.png
 SixPressed IMAGE Images/SixP.png
+
+
+Close IMAGE Images/Menu/Close.png
+Maximize IMAGE Images/Menu/Maximize.png
+Minimize IMAGE Images/Menu/Minimize.png
+
+CloseHover IMAGE Images/Menu/CloseHover.png
+MaximizeHover IMAGE Images/Menu/MaximizeHover.png
+MinimizeHover IMAGE Images/Menu/MinimizeHover.png

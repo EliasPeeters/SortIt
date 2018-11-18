@@ -26,7 +26,10 @@ uses
   EditField in 'EditField.pas',
   ColorPicker in 'ColorPicker.pas' {ColorPickerForm},
   Tab in 'Tab.pas',
-  DropDownMenu in 'DropDownMenu.pas';
+  DropDownMenu in 'DropDownMenu.pas',
+  BubbleSort in 'BubbleSort.pas',
+  OpenSettings in 'OpenSettings.pas',
+  Quad in 'Quad.pas';
 
 {$R *.res}
 

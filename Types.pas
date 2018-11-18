@@ -132,6 +132,7 @@ type
     DiagramSelector1: TNewImage;
     DiagramSelector2: TNewImage;
     DiagramSelector3: TNewImage;
+    Area: TClickAbleArea;
   End;
 
   TEditField = Record

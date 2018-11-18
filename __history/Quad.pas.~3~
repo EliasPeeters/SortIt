@@ -1,0 +1,42 @@
+unit Quad;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Types, CreateObjects, QuickSort, SliderSelector;
+
+  procedure CreateQuad();
+  procedure DrawQuad();
+  procedure DestroyQuad();
+
+var
+  ArrayNumber: TArrayOfInteger;
+  QuadDiagrambox1, QuadDiagrambox2: TDiagramBox;
+
+implementation
+
+uses MainUnit, DrawDiagram;
+
+procedure CreateQuad();
+begin
+  QuadOpened:= true;
+  CreateDiagramBox(MainForm, QuadDiagrambox1, 100, 160, 480, 480, ArrayNumber, MaxNum, 450, 450, 15, 15);
+  CreateDiagramBox(MainForm, QuadDiagrambox2, 610, 160, 480, 480, ArrayNumber, MaxNum, 450, 450, 15, 15);
+end;
+
+procedure DrawQuad();
+begin
+  DrawDiagramProcedure(QuadDiagrambox1);
+  DrawDiagramProcedure(QuadDiagrambox1);
+end;
+
+procedure DestroyQuad();
+begin
+  QuadOpened:= false;
+  QuadDiagrambox1.Image.Free;
+  QuadDiagrambox2.Image.Free;
+end;
+
+end.

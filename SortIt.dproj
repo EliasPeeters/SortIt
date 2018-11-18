@@ -134,6 +134,9 @@
         </DCCReference>
         <DCCReference Include="Tab.pas"/>
         <DCCReference Include="DropDownMenu.pas"/>
+        <DCCReference Include="BubbleSort.pas"/>
+        <DCCReference Include="OpenSettings.pas"/>
+        <DCCReference Include="Quad.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

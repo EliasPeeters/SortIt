@@ -14,6 +14,7 @@ uses
   procedure DrawStatus(Status: TStatus);
   procedure DrawSettings(Settings: TSettings);
   procedure DrawButtonStyle1(Button: TCustomButton);
+  procedure DrawButtonStyle2(Button: TCustomButton);
 
 implementation
 
@@ -48,8 +49,8 @@ begin
   if NewListbox.ScrollLevel < 0 then
     NewListbox.ScrollLevel:= 0;
 
-  if NewListBox.ScrollLevel > length(ArrayNumber)-1 then
-    NewListbox.ScrollLevel:= length(ArrayNumber)-1;
+  if NewListBox.ScrollLevel > length(NewListBox.Content)-1 then
+    NewListbox.ScrollLevel:= length(NewListBox.Content)-1;
   FillListBox(NewListBox);
   NewListbox.Image.Picture.Bitmap:= NewListBox.Box.Bitmap;
 end;
@@ -172,6 +173,28 @@ begin
     RectForUse.Bottom:= Button.Height;
     RectForUse.Right:= Button.Width;
     Font.Size:= 20;
+    Font.Name:= FontFamily;
+    TextRect(RectForUse,Button.Caption,[tfVerticalCenter,tfCenter,tfSingleLine]);
+  end;
+
+  Button.Image.Picture.Bitmap:= Button.Bitmap;
+end;
+
+procedure DrawButtonStyle2(Button: TCustomButton);
+var
+RectForUse: TRect;
+begin
+  with Button.Bitmap.Canvas do
+  begin
+    Brush.Color:= clWhite;
+    Pen.Color:= clWhite;
+    Rectangle(0,0, Button.Width, Button.Height);
+    Brush.Color:= clBoxColor;
+    RectForUse.Left:= 0;
+    RectForUse.Top:= 0;
+    RectForUse.Bottom:= Button.Height;
+    RectForUse.Right:= Button.Width;
+    Font.Size:= 17;
     Font.Name:= FontFamily;
     TextRect(RectForUse,Button.Caption,[tfVerticalCenter,tfCenter,tfSingleLine]);
   end;

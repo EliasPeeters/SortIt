@@ -13,7 +13,7 @@ type
   TMainForm = class(TForm)
     ApplicationEvents: TApplicationEvents;
     TitleBar: TImage;
-    Button1: TButton;
+    Timer1: TTimer;
 
     procedure buttonClick(Sender: TObject);
     procedure ImageClick(Sender: TObject);
@@ -36,6 +36,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormActivate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
 
   private
     { Private-Deklarationen }
@@ -63,6 +64,7 @@ var
   ArrayLength: Integer;
   maxnum: Integer;
   sortingSpeed: Integer;
+  AbortBoolean: Boolean = true;
 
 const
   FontFamily: String = 'Bahnschrift';
@@ -124,6 +126,16 @@ end;
 
 procedure TMainForm.FormClick();
 begin
+  if CursorIsInArea(CloseMenuArea) then
+  begin
+    //DestroyDuo();
+    //DestroySingle();
+    Application.Terminate;
+    Halt;
+  end;
+  if CursorIsInArea(MinimzeArea) then
+    Application.Minimize;
+
   if not(CursorIsInArea(SideBarArea)) then
   begin
     if SingleOpened then
@@ -167,14 +179,23 @@ begin
   if Msg.message=WM_MOUSEMOVE then
   begin
     CursorPosition:= ScreenToClient(Mouse.CursorPos);
-    if SingleOpened then SingleMouseMove;
+    if not(MenuHoverBoolean) and (CursorIsInArea(CloseMenuArea) or CursorIsInArea(MaximizeArea) or CursorIsInArea(MinimzeArea)) then
+    begin
+      MenuHover();
+    end
+    else if not(CursorIsInArea(CloseMenuArea) or CursorIsInArea(MaximizeArea) or CursorIsInArea(MinimzeArea)) and MenuHoverBoolean then
+    begin
+      MenuNormal();
+    end
+    else if SingleOpened then SingleMouseMove;
 
   end;
 end;
 
 procedure TMainForm.Button1Click(Sender: TObject);
 begin
-  SettingsForm.Show;
+  //SettingsForm.Show;
+  AbortBoolean:= true;
 end;
 
 procedure TMainForm.buttonClick(Sender: TObject);
@@ -209,17 +230,33 @@ begin
   DefineColors;
   MainForm.Color:= Grey;
   DrawMainUI;
-  if ReadFileInt(FileStorage, 'last-opened') = 0 then
-  begin
-    CreateSingle;
-    DrawSingle;
-  end;
+  //if ReadFileInt(FileStorage, 'last-opened') = 0 then
+  //begin
+    //CreateSingle;
+    //DrawSingle;
+    //DestroySingle;
+    //CreateDuo;
+    //DrawDuo;
+    //DestroyDuo;
+    //CreateSingle;
+    //DrawSingle;
+  //end;
+
+  //CreateDuo;
+  //DrawDuo;
 end;
 
 procedure SetTransparent(Aform: TForm; AValue: Boolean);
 begin
   Aform.TransparentColor := AValue;
   Aform.TransparentColorValue := Aform.Color;
+end;
+
+procedure TMainForm.Timer1Timer(Sender: TObject);
+begin
+  CreateSingle;
+  DrawSingle;
+  Timer1.Enabled:= false;
 end;
 
 procedure TMainForm.TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
@@ -262,6 +299,10 @@ begin
   if SingleOpened then
   begin
     SingleKeyPress(Key);
+  end
+  else if DuoOpened then
+  begin
+    DuoKeyPress(Key);
   end;
 end;
 

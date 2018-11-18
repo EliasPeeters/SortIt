@@ -25,16 +25,13 @@ object MainForm: TMainForm
     Height = 50
     OnMouseDown = TitleBarMouseDown
   end
-  object Button1: TButton
-    Left = 224
-    Top = 8
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 0
-    OnClick = Button1Click
-  end
   object ApplicationEvents: TApplicationEvents
     OnMessage = ApplicationEventsMessage
+  end
+  object Timer1: TTimer
+    Interval = 1
+    OnTimer = Timer1Timer
+    Left = 624
+    Top = 224
   end
 end

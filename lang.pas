@@ -25,6 +25,9 @@ begin
   LanguageDE[3]:= 'ArrayLength: Zahlen Anzahl';
   LanguageDE[4]:= 'Speed: Geschwindigkeit';
   LanguageDE[5]:= 'MaxNum: Max Zahl';
+  LanguageDE[6]:= 'Stop: Stopp';
+  LanguageDE[7]:= 'More: Mehr...';
+  LanguageDE[8]:= 'Close: Schlieﬂen';
 end;
 
 procedure AssignLanguageEN();
@@ -36,6 +39,9 @@ begin
   LanguageEN[3]:= 'ArrayLength: Array Length';
   LanguageEN[4]:= 'Speed: Speed';
   LanguageEN[5]:= 'MaxNum: MaxNum';
+  LanguageEN[6]:= 'Stop: Stop';
+  LanguageEN[7]:= 'More: More...';
+  LanguageEN[8]:= 'Close: Close';
 end;
 
 procedure AssingLanguages();

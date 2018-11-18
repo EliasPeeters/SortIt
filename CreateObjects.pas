@@ -10,12 +10,12 @@ uses
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
   procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
-  procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
+  procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
   procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
   procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
   procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
   procedure CreateVertSelector(Form: TForm; var Selector: TSelectorSlider; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
-  procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption, Text: String);
+  procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Caption, Text: String);
 
 
 implementation
@@ -102,7 +102,7 @@ begin
 
 end;
 
-procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
+procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
 begin
   with DiagramBox.Box do
   begin
@@ -121,11 +121,9 @@ begin
 
   DiagramBox.MaxNum:= MaxNum;
   DiagramBox.SelectedItem:= -1;
-  DiagramBox.Box.Bitmap:= Bitmap;
   DiagramBox.Box.Bitmap:= TBitmap.Create;
   DiagramBox.Box.Bitmap.Height:= DiagramBox.Box.Height;
   Diagrambox.Box.Bitmap.Width:= DiagramBox.Box.Width;
-  Diagrambox.Image:= Image;
   Diagrambox.Content:= Content;
   CreateImage(Diagrambox.Image, Form, DiagramBox.Box.Height, DiagramBox.Box.Width, DiagramBox.Box.x, DiagramBox.Box.y, '');
 
@@ -265,9 +263,8 @@ begin
 end;
 
 
-procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption, Text: String);
+procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Caption, Text: String);
 begin
-  Editfield.Bitmap:= Bitmap;
   Editfield.Bitmap:= TBitmap.Create;
   with Editfield.Box do
   begin
@@ -281,7 +278,6 @@ begin
     Height:= Editfield.Box.Height;
     Width:= Editfield.Box.Width;
   end;
-  Editfield.Image:= Image;
   CreateImage(Editfield.Image, Form, Editfield.Box.Height, Editfield.Box.Width, Editfield.Box.x, Editfield.Box.y, '');
   ImageToArea(Editfield.Image, Editfield.Area);
   Editfield.Caption:= Caption;

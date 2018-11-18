@@ -1,0 +1,109 @@
+unit BubbleSort;
+
+interface
+  uses
+    Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+    Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+    Vcl.Imaging.pngimage;
+
+
+  procedure BubbleSortProcedure(DiagramBox: TDiagramBox; SpeedEdit: TEditfield);
+
+
+  var
+    HelperInt: Integer;
+implementation
+uses
+  DrawDiagram, DrawUI, Single,MainUnit;
+
+procedure Swoop(DiagramBox: TDiagramBox; Element1, Element2: Integer; SpeedEdit: TEditfield);
+var
+  temp, Speed, Speed2: Integer;
+begin
+  temp:= DiagramBox.Content[Element2];
+  DiagramBox.Content[Element2]:= DiagramBox.Content[Element1];
+  DiagramBox.Content[Element1]:= temp;
+  if StrToFloat(SpeedEdit.Text) < 10 then
+  begin
+    Speed2:= Round(StrToFloat(SpeedEdit.Text)*1000);
+  end
+  else
+    Speed2:= 0;
+
+  if HelperInt = Speed2 then
+  begin
+    TThread.Synchronize(nil,
+        procedure
+        begin
+          Diagrambox.SelectedItem:= Element1;
+          DrawDiagramProcedure(DiagramBox);
+          FillListBox(SingleNumberList);
+        end
+        );
+        sleep(Round(StrToFloat(SpeedEdit.Text)));
+        HelperInt:= 0;
+  end
+  else
+  HelperInt:= HelperInt+1
+end;
+
+procedure SwoopSpeed(DiagramBox: TDiagramBox; Element1, Element2: Integer);
+var
+  temp, Speed, Speed2: Integer;
+begin
+  temp:= DiagramBox.Content[Element2];
+  DiagramBox.Content[Element2]:= DiagramBox.Content[Element1];
+  DiagramBox.Content[Element1]:= temp;
+end;
+
+procedure BubbleSortProcedure(DiagramBox: TDiagramBox; SpeedEdit: TEditfield);
+var
+  I, Counter: Integer;
+  unsorted: Boolean ;
+begin
+  unsorted:= true;
+  while unsorted do
+  begin
+    Counter:= 0;
+    for I := 0 to length(DiagramBox.Content) do
+    begin
+      if AbortBoolean then Abort;
+
+      if DiagramBox.Content[I] > DiagramBox.Content[I+1] then
+        Swoop(DiagramBox, I, I+1, SpeedEdit)
+      else
+        Counter:= Counter+1;
+    end;
+    if Counter = length(DiagramBox.Content)+1 then unsorted:= false;
+
+  end;
+end;
+
+function BubbleSortSpeed(Diagrambox: TDiagrambox): Integer;
+var
+  Unsorted: Boolean;
+  Counter, I, Steps: Integer;
+begin
+  unsorted:= true;
+  Steps:= 0;
+  while unsorted do
+  begin
+    Counter:= 0;
+    for I := 0 to length(DiagramBox.Content) do
+    begin
+      if AbortBoolean then Abort;
+
+      if DiagramBox.Content[I] > DiagramBox.Content[I+1] then
+        SwoopSpeed(DiagramBox, I, I+1)
+      else
+        Counter:= Counter+1;
+      Steps:= Steps+1;
+    end;
+    if Counter = length(DiagramBox.Content)+1 then unsorted:= false;
+
+  end;
+
+  result:= 0;
+end;
+
+end.

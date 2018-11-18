@@ -9,17 +9,22 @@ uses
 
 var
   SideBarImage, SingleImage, DuoImage, QuadImage, SixImage: TImage;
+  CloseImage, MinimizeImage, MaximizeImage: TImage;
+  CloseMenuArea, MaximizeArea, MinimzeArea: TClickAbleArea;
   SideBarBitmap, TopBarBitmap: TBitmap;
-  SideBarArea, SingleArea, DuoArea: TClickAbleArea;
+  SideBarArea, SingleArea, DuoArea, QuadArea, SixArea: TClickAbleArea;
+  MenuHoverBoolean: Boolean;
 
   procedure CreateMainUI();
   procedure DrawMainUI();
   procedure DrawTopBar();
   procedure MainUIPress();
+  procedure MenuHover();
+  procedure MenuNormal();
 
 implementation
 
-uses MainUnit, DrawUI, Convert, OpenImage, Single, Duo, Colors;
+uses MainUnit, DrawUI, Convert, OpenImage, Single, Duo, Colors, Quad;
 
 
 
@@ -31,6 +36,35 @@ begin
   LoadImage('Six', SixImage);
 end;
 
+procedure MenuHover();
+begin
+  MenuHoverBoolean:= true;
+  LoadImage('CloseHover', CloseImage);
+  LoadImage('MinimizeHover', MinimizeImage);
+  LoadImage('MaximizeHover', MaximizeImage);
+end;
+
+procedure MenuNormal();
+begin
+  MenuHoverBoolean:= false;
+  LoadImage('Close', CloseImage);
+  LoadImage('Minimize', MinimizeImage);
+  LoadImage('Maximize', MaximizeImage);
+end;
+
+procedure CreateMenu();
+const
+  Size: Integer = 14;
+begin
+  MenuHoverBoolean:= false;
+  CreateImage(CloseImage, MainForm, Size, Size, 10, 20, 'Close');
+  CreateImage(MinimizeImage, MainForm, Size, Size, 30, 20, 'Minimize');
+  CreateImage(MaximizeImage, MainForm, Size, Size, 50, 20, 'Maximize');
+  ImageToArea(CloseImage, CloseMenuArea);
+  ImageToArea(MaximizeImage, MaximizeArea);
+  ImageToArea(MinimizeImage, MinimzeArea);
+end;
+
 procedure MainUIPress();
 begin
   if (MainForm.CursorIsInArea(SingleArea)) and (SingleOpened = false)  then
@@ -38,15 +72,34 @@ begin
     SwitchAllImagesSideBar();
     LoadImage('SinglePressed', SingleImage);
     DestroyDuo;
+    DestroyQuad;
     CreateSingle;
     DrawSingle;
-  end;
-
-  if (MainForm.CursorIsInArea(DuoArea)) and (DuoOpened = false) then
+  end
+  else if (MainForm.CursorIsInArea(DuoArea)) and (DuoOpened = false) then
   begin
   SwitchAllImagesSideBar();
     LoadImage('DuoPressed', DuoImage);
     DestroySingle;
+    DestroyQuad;
+    CreateDuo;
+    DrawDuo;
+  end
+  else if (MainForm.CursorIsInArea(QuadArea)) and (QuadOpened = false) then
+  begin
+    SwitchAllImagesSideBar();
+    LoadImage('QuadPressed', QuadImage);
+    DestroySingle;
+    DestroyDuo;
+    CreateQuad;
+    DrawQuad;
+  end
+  else if (MainForm.CursorIsInArea(SixArea)) and (SixOpened = false) then
+  begin
+  SwitchAllImagesSideBar();
+    LoadImage('SixPressed', SixImage);
+    DestroySingle;
+    DestroyQuad;
     CreateDuo;
     DrawDuo;
   end;
@@ -75,6 +128,8 @@ begin
   CreateImage(SixImage, MainForm, 70, 70, 0, 410, 'Six');
   ImageToArea(SingleImage, SingleArea);
   ImageToArea(DuoImage, DuoArea);
+  ImageToArea(QuadImage, QuadArea);
+  ImageToArea(SixImage, SixArea);
 end;
 
 procedure DrawSideBar();
@@ -103,6 +158,7 @@ procedure CreateMainUI();
 begin
   //CreateTopBar;
   CreateSideBar;
+  CreateMenu;
 end;
 
 procedure DrawMainUI();
