@@ -9,18 +9,20 @@ uses
 
   procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
   procedure CreateImage(var ImageName: TImage; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; LoadImageName: String);
-  procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
+  procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger);
   procedure CreateDiagramBox(Form: TForm; var DiagramBox: TDiagramBox; xInt, yInt, HeightInt, WidthInt: Integer; Content: TArrayOfInteger; MaxNum: Integer; DHeight, DWidth, Dx, Dy: Integer);
-  procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
-  procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
-  procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+  procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
+  procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer;Selector1, Selector2, Selector3: TImage; Mode: Integer);
+  procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Caption: String);
   procedure CreateVertSelector(Form: TForm; var Selector: TSelectorSlider; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
   procedure CreateEditField(Form: TForm; var Editfield: TEditfield; xInt, yInt, HeightInt, WidthInt: Integer; Caption, Text: String);
+  procedure CreateQuadSettingsDiagram(Form: TForm; var QuadSettings: TQuadSettingsDiagram; xInt, yInt, HeightInt, WidthInt: Integer);
+  procedure CreateDuoSelectorBox(Form: TForm; var QuadSettings: TQuadSettingsDiagram; xInt, yInt, HeightInt, WidthInt: Integer);
 
 
 implementation
 
-uses MainUnit, OpenImage, DrawUI, DrawDiagram, Convert;
+uses MainUnit, OpenImage, DrawUI, DrawDiagram, Convert, DropDownMenu, Sorting;
 
 procedure CreateButton(var ButtonName: TButton; Form: TForm; HeightInteger, WidthInteger, LeftInteger, TopInteger: Integer; CaptionString: String);
 begin
@@ -78,22 +80,19 @@ begin
   Area.y2:= Image.Top + Image.Height;
 end;
 
-procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger; Image: TImage; Bitmap: TBitmap);
+procedure CreateListbox(Form: TForm; var NewListBox: TNewListbox; Name: String; x, y, Height, Width: Integer; Dark: Boolean; Content: TArrayOfInteger);
 begin
   NewListbox.ScrollLevel:= 0;
   NewListbox.Box.Height:= Height;
   NewListbox.Box.Width:= Width;
   NewListbox.Box.x:= x;
   NewListbox.Box.y:= y;
-  NewListbox.Box.Bitmap:= Bitmap;
   ConvertBoxToArea(NewListbox.Box, NewListbox.Area);
   NewListbox.Dark:= false;
   NewListbox.NumberOfItems:= (Trunc((Height-60) div 20));
-  NewListbox.Box.Bitmap:= Bitmap;
   NewListbox.Box.Bitmap:= TBitmap.Create;
   NewListbox.Box.Bitmap.Height:= NewListbox.Box.Height;
   NewListBox.Box.Bitmap.Width:= NewListBox.Box.Width;
-  NewListbox.Image:= Image;
   NewListbox.Content:= Content;
   NewListbox.SelectedItem:= -1;
   CreateImage(NewListbox.Image, Form, NewListbox.Box.Height, NewListbox.Box.Width, NewListbox.Box.x, NewListbox.Box.y, '');
@@ -129,7 +128,7 @@ begin
 
 end;
 
-procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
+procedure CreateStatus(Form: TForm; var Status: TStatus; xInt, yInt, HeightInt, WidthInt: Integer; StatusBarHeight, StatusBarWidth, StatusBarX, StatusBarY: Integer);
 begin
   with Status.Box do
   begin
@@ -138,14 +137,12 @@ begin
     x:= xInt;
     y:= yInt;
   end;
-  Status.Box.Bitmap:= Bitmap;
   Status.Box.Bitmap:= TBitmap.Create;
   with Status.Box.Bitmap do
   begin
     Height:= Status.Box.Height;
     Width:= Status.Box.Width;
   end;
-  Status.Image:= Image;
   CreateImage(Status.Image, Form, Status.Box.Height, Status.Box.Width, Status.Box.x, Status.Box.y, '');
 
   with Status.Statusbar do
@@ -157,7 +154,7 @@ begin
   end;
 end;
 
-procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Selector1, Selector2, Selector3: TImage; Mode: Integer);
+procedure CreateSettingsBox(Form: TForm; var Settings: TSettings; xInt, yInt, HeightInt, WidthInt: Integer; Selector1, Selector2, Selector3: TImage; Mode: Integer);
 
 
 begin
@@ -168,14 +165,12 @@ begin
     x:= xInt;
     y:= yInt;
   end;
-  Settings.Box.Bitmap:= Bitmap;
   Settings.Box.Bitmap:= TBitmap.Create;
   with Settings.Box.Bitmap do
   begin
     Height:= Settings.Box.Height;
     Width:= Settings.Box.Width;
   end;
-  Settings.Image:= Image;
 
   if Mode = 0 then
   begin
@@ -203,9 +198,8 @@ begin
 
 end;
 
-procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Image: TImage; Bitmap: TBitmap; Caption: String);
+procedure CreateCustomButton(Form: TForm; var Button: TCustomButton; xInt, yInt, HeightInt, WidthInt: Integer; Caption: String);
 begin
-  Button.Bitmap:= Bitmap;
   Button.Bitmap:= TBitmap.Create;
   with Button do
   begin
@@ -219,7 +213,6 @@ begin
     Height:= Button.Height;
     Width:= Button.Width;
   end;
-  Button.Image:= Image;
   CreateImage(Button.Image, Form, Button.Height, Button.Width, Button.x, Button.y, '');
   Button.Area.x1:= xInt;
   Button.Area.y1:= yInt;
@@ -284,6 +277,45 @@ begin
   Editfield.Selected:= false;
   Editfield.Text:= Text;
 
+end;
+
+procedure CreateQuadSettingsDiagram(Form: TForm; var QuadSettings: TQuadSettingsDiagram; xInt, yInt, HeightInt, WidthInt: Integer);
+begin
+  QuadSettings.Bitmap:= TBitmap.Create;
+  with QuadSettings.Box do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  with QuadSettings.Bitmap do
+  begin
+    Height:= QuadSettings.Box.Height;
+    Width:= QuadSettings.Box.Width;
+  end;
+  CreateImage(QuadSettings.Image, Form, QuadSettings.Box.Height, QuadSettings.Box.Width, QuadSettings.Box.x, QuadSettings.Box.y, '');
+  ///CreateDropDownMenu(Form, QuadSettings.DropDown, QuadSettings.Box.x+20, QuadSettings.Box.y+10, 40, 200, QuadSettings.DropDownItems);
+  Sorting.FillSortingAlgoArray(QuadSettings.DropDownItems);
+end;
+
+
+procedure CreateDuoSelectorBox(Form: TForm; var QuadSettings: TQuadSettingsDiagram; xInt, yInt, HeightInt, WidthInt: Integer);
+begin
+  QuadSettings.Bitmap:= TBitmap.Create;
+  with QuadSettings.Box do
+  begin
+    Height:= HeightInt;
+    Width:= WidthInt;
+    x:= xInt;
+    y:= yInt;
+  end;
+  with QuadSettings.Bitmap do
+  begin
+    Height:= QuadSettings.Box.Height;
+    Width:= QuadSettings.Box.Width;
+  end;
+  CreateImage(QuadSettings.Image, Form, QuadSettings.Box.Height, QuadSettings.Box.Width, QuadSettings.Box.x, QuadSettings.Box.y, '');
 end;
 
 

@@ -11,8 +11,6 @@ uses
     DuoDiagrambox1, DuoDiagrambox2: TDiagramBox;
 
     DuoNumberlist: TNewListbox;
-    DuoNumberlistImage: TImage;
-    DuoNumberlistBitmap: TBitmap;
 
     DuoSettingsBox: TSettings;
     DuoSettingsBoxImage: TImage;
@@ -31,9 +29,17 @@ uses
     DuoEditSpeed: TEditField;
     DuoEditMaxNum: TEditField;
 
+    DuoSelector1: TQuadSettingsDiagram;
+    DuoSelector2: TQuadSettingsDiagram;
+    DuoSelector1DropDown: TDropDownMenu;
+    DuoSelector2DropDown: TDropDownMenu;
+    DuoSelectorDropDownItems: TArrayOfString;
+
     ArrayNumber: TArrayOfInteger;
     MaxNum: Integer = 30;
     DuoSettingsOpened: Boolean;
+
+
 
     procedure CreateDuo();
     procedure DrawDuo();
@@ -45,7 +51,7 @@ uses
 implementation
 
 uses MainUnit, DrawUI, DrawDiagram, Sorting, OpenImage, ReadLanguage, EditField, Convert,
-      OpenSettings;
+      OpenSettings, DropDownMenu, MainUI, FileLoaderUnit;
 
 
 procedure DuoScroll(WheelData: Integer);
@@ -133,6 +139,11 @@ begin
         end
         ).Start();
       //DrawEditField(SingleEditSpeed);
+    end
+
+    else if MainForm.CursorIsInArea(DuoSelector1DropDown.Area) then
+    begin
+      ShowMessage('hello');
     end
     else if not(MainForm.CursorIsInArea(DuoEditMaxNum.Area)) and DuoEditMaxNum.Selected then
     begin
@@ -271,26 +282,31 @@ end;
 procedure CreateDuo();
 begin
   DuoOpened:= true;
+  ChangeLastOpened(FileStorage, 1);
   SetLengthCustom(ArrayNumber, ArrayLength);
   CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
   DuoDiagrambox1.MaxNum:= 360;
   DuoDiagrambox2.MaxNum:= 360;
   CreateDiagramBox(MainForm, DuoDiagrambox1, 100, 160, 480, 480, ArrayNumber, MaxNum, 450, 450, 15, 15);
   CreateDiagramBox(MainForm, DuoDiagrambox2, 610, 160, 480, 480, ArrayNumber, MaxNum, 450, 450, 15, 15);
-  CreateListbox(MainForm, DuoNumberlist, 'Numberslist', 1120, 100, 650, 100, false, ArrayNumber, DuoNumberlistImage, DuoNumberlistBitmap);
-  CreateSettingsBox(MainForm, DuoSettingsBox, 100, 660, 90, 990, DuoSettingsBoxImage, DuoSettingsBoxBitmap, DuoSettingsSelector1, DuoSettingsSelector2, DuoSettingsSelector3, 1);
-  CreateCustomButton(MainForm, DuoSortButton, 780, 680, 50, 290, DuoSortButtonImage, DuoSortButtonBitmap, ReadLang('SortButton'));
-  CreateCustomButton(MainForm, DuoOpenSettings, 650, 680, 50, 130, DuoOpenSettingsImage, DuoOpenSettingsBitmap, ReadLang('More'));
+  CreateListbox(MainForm, DuoNumberlist, 'Numberslist', 1120, 70, 680, 100, false, ArrayNumber);
+  CreateSettingsBox(MainForm, DuoSettingsBox, 100, 660, 90, 990, DuoSettingsSelector1, DuoSettingsSelector2, DuoSettingsSelector3, 1);
+  CreateCustomButton(MainForm, DuoSortButton, 780, 680, 50, 290, ReadLang('SortButton'));
+  CreateCustomButton(MainForm, DuoOpenSettings, 650, 680, 50, 130, ReadLang('More'));
   CreateEditField(MainForm, DuoEditArrayLength, 360, 680, 50, 130, ReadLang('ArrayLength'), IntToStr(Arraylength));
   CreateEditField(MainForm, DuoEditMaxNum, 500, 680, 50, 130, ReadLang('MaxNum'), IntToStr(MaxNum));
   ImageToArea(DuoSettingsBox.Image, DuoSettingsBox.Area);
+  CreateDuoSelectorBox(MainForm, DuoSelector1, 100, 70, 75, 480);
+  CreateDuoSelectorBox(MainForm, DuoSelector2, 610, 70, 75, 480);
+  CreateDropDownMenu(MainForm, DuoSelector1DropDown, 138, 80, 55, 408, DuoSelectorDropDownItems);
+  CreateDropDownMenu(MainForm, DuoSelector2DropDown, 648, 80, 55, 408, DuoSelectorDropDownItems);
 end;
 
 
 
 procedure DrawDuo();
 begin
-  //LoadImage('SinglePressed', DuoImage);
+  LoadImage('DuoPressed', DuoImage);
   DrawDiagramProcedure(DuoDiagrambox1);
   DrawDiagramProcedure(DuoDiagrambox2);
   FillListBox(DuoNumberlist);
@@ -299,6 +315,10 @@ begin
   DrawButtonStyle1(DuoSortButton);
   DrawEditField(DuoEditArrayLength);
   DrawEditField(DuoEditMaxNum);
+  DrawDuoSelectorBox(DuoSelector1);
+  DrawDuoSelectorBox(DuoSelector2);
+  DrawDropDown(DuoSelector1DropDown);
+  DrawDropDown(DuoSelector2DropDown);
 end;
 
 procedure DestroyDuo();
@@ -315,6 +335,13 @@ begin
   DuoEditArrayLength.Image.Free;
   DuoEditMaxNum.Image.Free;
   DuoOpenSettings.Image.Free;
+  DuoSelector1DropDown.ImageTop.Free;
+  DuoSelector1DropDown.ImageDropDown.Free;
+  DuoSelector2DropDown.ImageTop.Free;
+  DuoSelector2DropDown.ImageDropDown.Free;
+  DuoSelector1.Image.Free;
+  DuoSelector2.Image.Free;
+
 end;
 
 end.

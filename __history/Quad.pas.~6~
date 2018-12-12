@@ -1,0 +1,65 @@
+unit Quad;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Types, CreateObjects, QuickSort, SliderSelector;
+
+  procedure CreateQuad();
+  procedure DrawQuad();
+  procedure DestroyQuad();
+
+var
+  ArrayNumber: TArrayOfInteger;
+  QuadDiagrambox1, QuadDiagrambox2, QuadDiagrambox3, QuadDiagrambox4: TDiagramBox;
+  QuadDiagrambox1Status, QuadDiagrambox2Status, QuadDiagrambox3Status, QuadDiagrambox4Status: TStatus;
+  QuadNumberlist: TNewListbox;
+  QuadSettingsBox: TSettings;
+  QuadSelector1, QuadSelector2, QuadSelector3: TImage;
+
+implementation
+
+uses MainUnit, DrawDiagram, Sorting, DrawUI;
+
+procedure CreateQuad();
+begin
+  QuadOpened:= true;
+  CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
+  CreateDiagramBox(MainForm, QuadDiagrambox1, 100, 160, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, QuadDiagrambox2, 350, 160, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, QuadDiagrambox3, 600, 160, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, QuadDiagrambox4, 850, 160, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateListbox(MainForm, QuadNumberlist, 'Numberslist', 1120, 100, 650, 100, false, ArrayNumber);
+  CreateStatus(MainForm, QuadDiagrambox1Status, 100, 100, 50, 240, 25, 200, 20, 13);
+  CreateStatus(MainForm, QuadDiagrambox2Status, 350, 100, 50, 240, 25, 200, 20, 13);
+  CreateStatus(MainForm, QuadDiagrambox3Status, 600, 100, 50, 240, 25, 200, 20, 13);
+  CreateStatus(MainForm, QuadDiagrambox4Status, 850, 100, 50, 240, 25, 200, 20, 13);
+  CreateSettingsBox(MainForm, QuadSettingsBox, 100, 660, 90, 990, QuadSelector1, QuadSelector2, QuadSelector3, 1);
+
+end;
+
+procedure DrawQuad();
+begin
+  DrawDiagramProcedure(QuadDiagrambox1);
+  DrawDiagramProcedure(QuadDiagrambox2);
+  DrawDiagramProcedure(QuadDiagrambox3);
+  DrawDiagramProcedure(QuadDiagrambox4);
+  FillListBox(QuadNumberlist);
+
+  DrawStatus(QuadDiagrambox1Status);
+  DrawStatus(QuadDiagrambox2Status);
+  DrawStatus(QuadDiagrambox3Status);
+  DrawStatus(QuadDiagrambox4Status);
+  DrawSettings(QuadSettingsBox);
+end;
+
+procedure DestroyQuad();
+begin
+  QuadOpened:= false;
+  QuadDiagrambox1.Image.Free;
+  //QuadDiagrambox2.Image.Free;
+end;
+
+end.

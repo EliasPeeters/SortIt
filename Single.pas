@@ -13,9 +13,9 @@ uses
     SingleDiagram: TDiagramBox;
     SinlgeStatusBar: TStatus;
     SingleSettings: TSettings;
-    SingleNumberListImage, StatusBarImage, SingleSettingsImage, SingleDiagramSelector1,
+    SingleSettingsImage, SingleDiagramSelector1,
     SingleDiagramSelector2, SingleDiagramSelector3: TImage;
-    SingleNumberListBitmap, StatusBarBitmap, SingleSettingsBitmap: TBitmap;
+    SingleSettingsBitmap: TBitmap;
 
     SingleSortButton: TCustomButton;
     SingleSortButtonImage: TImage;
@@ -34,10 +34,6 @@ uses
     SingleEditMaxNum: TEditField;
 
     SingleAlgoSelctMenu: TDropDownMenu;
-    SingleAlgoSelctMenuImageTop: TImage;
-    SingleAlgoSelctMenuBitmapTop: TBitmap;
-    SingleAlgoSelctMenuImageDrop: TImage;
-    SingleAlgoSelctMenuBitmapDrop: TBitmap;
     SingleAlgoSelctMenuItems: TArrayOfString;
 
    procedure CreateSingle();
@@ -52,7 +48,7 @@ implementation
 
 uses
   MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage, EditField, Convert,
-  BubbleSort;
+  BubbleSort, FileLoaderUnit;
 
 
 
@@ -157,7 +153,7 @@ begin
     else
     begin
       SingleEditSpeed.Selected:= false;
-      if (SingleEditSpeed.Text = '') or (SingleEditSpeed.Text = '0') then SingleEditSpeed.Text := '20';
+      if (SingleEditSpeed.Text = '') then SingleEditSpeed.Text := '20';
       DrawEditField(SingleEditSpeed);
     end;
 
@@ -250,8 +246,7 @@ begin
   end
   else
   begin
-    for I := 1 to 6 do
-    begin
+
       if MainForm.CursorIsInArea(SingleAlgoSelctMenu.ItemAreas[i]) then
       begin
         SingleAlgoSelctMenu.SelectedItem:= i;
@@ -266,7 +261,7 @@ begin
         DrawDropDown(SingleAlgoSelctMenu);
         SingleAlgoSelctMenu.ImageTop.Picture.Bitmap:= SingleAlgoSelctMenu.BitmapTop;
       end;
-    end;
+
   end;
 
   if MainForm.CursorIsInArea(SingleAlgoSelctMenu.Area) then
@@ -326,15 +321,16 @@ end;
 procedure CreateSingle();
 begin;
   SingleOpened:= true;
+  ChangeLastOpened(FileStorage, 0);
   //SetLengthCustom(ArrayNumber,ArrayLength);
   CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
-  CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber, SingleNumberListImage, SingleNumberListBitmap);
+  CreateListbox(MainForm, SingleNumberlist, 'Numberslist', 775, 100, 650, 100, false, ArrayNumber);
   CreateDiagramBox(MainForm, SingleDiagram, 100, 100, 650, 650, ArrayNumber, MaxNum, 600, 600, 25, 25);
-  CreateStatus(MainForm, SinlgeStatusBar, 900, 100, 66, 340, StatusBarImage, StatusBarBitmap, 30, 290, 25, 19);
-  CreateSettingsBox(MainForm, SingleSettings, 900, 190, 560, 340, SingleSettingsImage, SingleSettingsBitmap, SingleDiagramSelector1,
+  CreateStatus(MainForm, SinlgeStatusBar, 900, 100, 66, 340, 30, 290, 25, 19);
+  CreateSettingsBox(MainForm, SingleSettings, 900, 190, 560, 340, SingleDiagramSelector1,
     SingleDiagramSelector2, SingleDiagramSelector3, 0);
   SingleDiagram.Diagram.DiagramTyp:= DefautlDiagramtype;
-  CreateCustomButton(MainForm, SingleSortButton, 925, 660, 60, 290, SingleSortButtonImage, SingleSortButtonBitmap, ReadLang('SortButton'));
+  CreateCustomButton(MainForm, SingleSortButton, 925, 660, 60, 290, ReadLang('SortButton'));
   CreateVertSelector(MainForm, SingleHeightModeSelector, 925, 400, 25, 290, SingleHeightModeSelectorImage, SingleHeightModeSelectorBitmap, ReadLang('HeightMode'));
   CreateVertSelector(MainForm, SingleGradientModeSelector, 925, 450, 25, 290, SingleGradientModeSelectorImage, SingleGradientModeSelectorBitmap, ReadLang('GradientMode'));
   CreateEditField(MainForm, SingleEditArrayLength, 925, 500, 50, 130, ReadLang('ArrayLength'), IntToStr(Arraylength));
@@ -342,7 +338,7 @@ begin;
   CreateEditField(MainForm, SingleEditMaxNum, 925, 570, 50, 130, ReadLang('MaxNum'), IntToStr(MaxNum));
   SingleHeightModeSelector.Selected:= (HeightMode);
   SingleDiagram.Diagram.HeightMode:= IntToBool(HeightMode);
-  CreateDropDownMenu(MainForm, SingleAlgoSelctMenu, 925, 220, 60, 290, SingleAlgoSelctMenuItems, SingleAlgoSelctMenuImageTop,SingleAlgoSelctMenuBitmapTop, SingleAlgoSelctMenuImageDrop, SingleAlgoSelctMenuBitmapDrop);
+  CreateDropDownMenu(MainForm, SingleAlgoSelctMenu, 925, 220, 60, 290, SingleAlgoSelctMenuItems);
   FillSortingAlgoArray(SingleAlgoSelctMenuItems);
 end;
 

@@ -6,7 +6,7 @@ uses Types, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, S
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, Colors, Convert;
 
-  procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+  procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString);
   procedure DrawDropDown(var DropDown: TDropDownMenu);
   procedure AnimateDropDown(DropDownAnimate: TDropDownMenu);
   procedure DrawTextOnDropdownMenu(DropDownAnimate: TDropDownMenu);
@@ -30,7 +30,7 @@ begin
   end;
 end;
 
-procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString; ImageTop: TImage; BitmapTop: TBitmap; ImageDropDown: TImage; BitmapDropDown: TBitmap);
+procedure CreateDropDownMenu(Form: TForm; var DropDownMenu: TDropDownMenu; xInt, yInt, HeightInt, WidthInt: Integer; Items: TArrayOfString);
 var
   I: Integer;
 begin
@@ -44,15 +44,12 @@ begin
   end;
 
   ConvertCordsToArea(DropDownMenu.Cords, DropDownMenu.Area);
-  DropDownMenu.BitmapTop:= BitmapTop;
-  DropDownMenu.BitmapDropDown:= BitmapDropDown;
   DropDownMenu.BitmapTop:= TBitmap.Create;
   DropDownMenu.BitmapDropDown:= TBitmap.Create;
   DropDownMenu.BitmapTop.Height:= DropDownMenu.Cords.Height;
   DropDownMenu.BitmapTop.Width:= DropDownMenu.Cords.Width;
   DropDownMenu.BitmapDropDown.Height:= 0;
   DropDownMenu.BitmapDropDown.Width:= DropDownMenu.Cords.Width;
-  DropDownMenu.ImageDropDown:= ImageDropDown;
   DropDownMenu.Items:= Items;
   DropDownMenu.Opened:= false;
   DropDownMenu.SelectedItem:= -1;
@@ -60,7 +57,7 @@ begin
   CreateImage(DropDownMenu.ImageTop, Form, DropDownMenu.Cords.Height, DropDownMenu.Cords.Width, DropDownMenu.Cords.x, DropDownMenu.Cords.y, '');
 
   SetLength(DropDownMenu.ItemAreas, 6);
-  for I := 1 to 7 do
+  for I := 1 to 6 do
     DropDownMenu.ItemAreas[i]:= CalcAreas(DropDownMenu, i);
 end;
 
@@ -226,13 +223,11 @@ begin
   begin
   TThread.Synchronize(nil,
         procedure
-        var
-          Ii: Integer;
         begin
           DrawTextOnDropdownMenu(DropDownAnimate);
         end
         );
-
+        //ShowMessage('test');
   end;
 end;
 
@@ -245,7 +240,8 @@ begin
   DropDownAnimate.BitmapDropDown.Canvas.RoundRect(5, 5,
                                                 DropDownAnimate.ImageDropDown.Width-5,
                                                 DropDownAnimate.ImageDropDown.Height-5,
-                                                30, 30);for i := 1 to 6 do
+                                                30, 30);
+  for i := 1 to 6 do
   begin
     if i = DropDownAnimate.HoverItem  then
     begin

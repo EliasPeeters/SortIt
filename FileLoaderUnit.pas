@@ -15,7 +15,7 @@ uses
   function ReadFileInt(var ArrayForWriting: Array of String; Input: String): Integer;
   procedure ChangeLanguage(ArrayForWriting: Array of String; NeueLanguge: String);
   procedure ChangeDarkMode(ArrayForWriting: Array of String; DarkModeBoolean: String);
-
+  procedure ChangeLastOpened(ArrayForWriting: Array of String; NewLastOpened: Integer);
 implementation
 
 uses
@@ -92,6 +92,25 @@ begin
   end;
 
   ArrayForWriting[i]:= 'language: ' + NeueLanguge;
+  ArrayToTextFile(ArrayForWriting, 'config.txt');
+end;
+
+procedure ChangeLastOpened(ArrayForWriting: Array of String; NewLastOpened: Integer);
+var
+  StorageString: String;
+  I: Integer;
+begin
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, 11);
+    if StorageString = 'last-opened' then
+    begin
+      break;
+    end;
+  end;
+
+  ArrayForWriting[i]:= 'last-opened: ' + IntToStr(NewLastOpened);
   ArrayToTextFile(ArrayForWriting, 'config.txt');
 end;
 
@@ -250,7 +269,7 @@ begin
   ArrayLength:= ReadFileInt(ArrayForWriting, 'arraylength');
   maxnum:= ReadFileInt(ArrayForWriting, 'maxnum');
   sortingspeed:= ReadFileInt(ArrayForWriting, 'sortingspeed');
-
+  LastOpened:= ReadFileInt(ArrayForWriting, 'last-opened');
 
 end;
 

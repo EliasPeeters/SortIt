@@ -1,0 +1,69 @@
+unit Octa;
+
+interface
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Types, CreateObjects, QuickSort, SliderSelector;
+
+  procedure CreateOcta();
+  procedure DrawOcta();
+  procedure DestroyOcta();
+
+  var
+    OctaListbox: TNewListbox;
+    ArrayNumber: TArrayOfInteger;
+    OctaDiagrambox1, OctaDiagrambox2, OctaDiagrambox3, OctaDiagrambox4,
+    OctaDiagrambox5, OctaDiagrambox6, OctaDiagrambox7, OctaDiagrambox8: TDiagrambox;
+
+implementation
+
+uses MainUnit, DrawDiagram, MainUI, Sorting, DrawUI, FileLoaderUnit, OpenImage;
+
+procedure CreateOcta();
+begin
+  OctaOpened:= true;
+  ChangeLastOpened(FileStorage, 3);
+  CreateRandomArray(ArrayNumber, MaxNum, ArrayLength);
+  CreateListbox(MainForm, OctaListbox, 'Numberslist', 1120, 100, 650, 100, false, ArrayNumber);
+  CreateDiagramBox(MainForm, OctaDiagrambox1, 100, 100, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox2, 350, 100, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox3, 600, 100, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox4, 850, 100, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox5, 100, 350, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox6, 350, 350, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox7, 600, 350, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+  CreateDiagramBox(MainForm, OctaDiagrambox8, 850, 350, 240, 240, ArrayNumber, MaxNum, 190, 190, 25, 25);
+
+end;
+
+procedure DrawOcta();
+begin
+  LoadImage('OctaPressed', SixImage);
+  FillListbox(OctaListbox);
+  DrawDiagramProcedure(OctaDiagrambox1);
+  DrawDiagramProcedure(OctaDiagrambox2);
+  DrawDiagramProcedure(OctaDiagrambox3);
+  DrawDiagramProcedure(OctaDiagrambox4);
+  DrawDiagramProcedure(OctaDiagrambox5);
+  DrawDiagramProcedure(OctaDiagrambox6);
+  DrawDiagramProcedure(OctaDiagrambox7);
+  DrawDiagramProcedure(OctaDiagrambox8);
+end;
+
+procedure DestroyOcta();
+begin
+  OctaOpened:= false;
+  OctaListbox.Image.Free;
+  OctaDiagrambox1.Image.Free;
+  OctaDiagrambox2.Image.Free;
+  OctaDiagrambox3.Image.Free;
+  OctaDiagrambox4.Image.Free;
+  OctaDiagrambox5.Image.Free;
+  OctaDiagrambox6.Image.Free;
+  OctaDiagrambox7.Image.Free;
+  OctaDiagrambox8.Image.Free;
+
+end;
+
+end.

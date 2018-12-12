@@ -29,16 +29,19 @@ uses
   DropDownMenu in 'DropDownMenu.pas',
   BubbleSort in 'BubbleSort.pas',
   OpenSettings in 'OpenSettings.pas',
-  Quad in 'Quad.pas';
+  Quad in 'Quad.pas',
+  Octa in 'Octa.pas',
+  Selector in 'Selector.pas' {SelectorForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-
+  Application.CreateForm(TSelectorForm, SelectorForm);
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TSettingsForm, SettingsForm);
   Application.CreateForm(TColorPickerForm, ColorPickerForm);
+
   Application.Run;
 end.

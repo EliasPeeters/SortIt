@@ -175,6 +175,15 @@ type
     HoverItem: Integer;
   End;
 
+  TQuadSettingsDiagram = Record
+    Image: TImage;
+    Bitmap: TBitmap;
+    Box: TBox;
+    Cords: TCustomCords;
+    DropDown: TDropDownMenu;
+    DropDownItems: TArrayOfString;
+  End;
+
 implementation
 
 end.

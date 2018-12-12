@@ -1,0 +1,390 @@
+unit MainUnit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, Duo, DrawUI,
+  Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings, ColorPicker, ShellAPI;
+
+type
+
+  TMainForm = class(TForm)
+    ApplicationEvents: TApplicationEvents;
+    TitleBar: TImage;
+    Timer1: TTimer;
+    Timer2: TTimer;
+    Button1: TButton;
+
+    procedure buttonClick(Sender: TObject);
+    procedure ImageClick(Sender: TObject);
+
+    procedure FormCreate(Sender: TObject);
+    procedure FormClick();
+
+    procedure FormScroll(Wheeldata: Integer);
+
+    Constructor DefineButtonOnClick(Button: TButton);
+    Constructor DefineImageOnClick(Image: TImage);
+
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    function CursorIsInArea(Area: TClickAbleArea):Boolean;
+    procedure ApplicationEventsMessage(var Msg: tagMSG; var Handled: Boolean);
+    procedure LoadCompleteUI();
+    procedure TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Button1Click(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormActivate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure RestartThisApp;
+    procedure BlueScreen;
+    procedure Timer2Timer(Sender: TObject);
+
+  private
+    { Private-Deklarationen }
+
+  protected
+    { Portected-Deklarationen }
+
+  public
+    { Public-Deklarationen }
+  end;
+
+var
+  MainForm: TMainForm;
+  Test: TButton;
+  Im: TImage;
+  FileStorage: Array[0..100] of String;
+  CursorPosition: TPoint;
+  SingleOpened, DuoOpened, QuadOpened, OctaOpened : Boolean;
+
+  DarkModeBoolean: Boolean;
+  AnimationSpeedExt: Extended;
+  DefautlDiagramtype: Integer;
+  HeightMode: Integer;
+  Language, TEstString: String;
+  ArrayLength, LastOpened: Integer;
+  maxnum: Integer;
+  sortingSpeed: Integer;
+  AbortBoolean: Boolean = true;
+  ErrorImage: TImage;
+  ErrorBitmap: TBitmap;
+const
+  FontFamily: String = 'Bahnschrift';
+
+
+
+  {
+    1: Button
+    2: Image
+  }
+
+implementation
+
+{$R *.dfm}
+
+function TMainForm.CursorIsInArea(Area: TClickAbleArea):Boolean;
+var
+  XAchsTrue, YAchsTrue: Boolean;
+begin
+  XAchsTrue:= False;
+  YAchsTrue:= False;
+
+  if (CursorPosition.x >= Area.x1) and (CursorPosition.x <= Area.x2) then
+  begin
+    XAchsTrue:= True;
+  end;
+
+   if (CursorPosition.y >= Area.y1) and (CursorPosition.y <= Area.y2) then
+  begin
+    YAchsTrue:= True;
+  end;
+
+  if (YAchsTrue) and (XAchsTrue) then
+  begin
+    result:= true;
+  end
+  else
+  begin
+    result:= false;
+  end;
+end;
+
+
+Constructor TMainForm.DefineButtonOnClick(Button: TButton);
+begin
+  Button.OnClick:= ButtonClick;
+end;
+
+Constructor TMainForm.DefineImageOnClick(Image: TImage);
+begin
+  Image.OnClick:= ImageClick;
+end;
+
+procedure TMainForm.FormActivate(Sender: TObject);
+begin
+
+  MainForm.ActiveControl:= nil;
+end;
+
+procedure TMainForm.FormClick();
+begin
+  if CursorIsInArea(CloseMenuArea) then
+  begin
+    //DestroyDuo();
+    //DestroySingle();
+    Application.Terminate;
+    Halt;
+    //Application.Minimize;
+  end;
+  if CursorIsInArea(MinimzeArea) then
+    Application.Minimize;
+
+  if not(CursorIsInArea(SideBarArea)) then
+  begin
+    try
+
+      if DuoOpened then
+      begin
+       DuoPress();
+      end
+      else if SingleOpened then
+      begin
+        SinglePress();
+      end;
+    except
+      ShowMessage('Error');
+    end;
+
+  end
+  else
+  begin
+    MainUIPress();
+  end;
+end;
+
+procedure TMainForm.FormScroll(Wheeldata: Integer);
+begin
+  Wheeldata:= Wheeldata*-1;
+  try
+    if SingleOpened then
+    begin
+      SingleScroll(Wheeldata);
+    end
+
+    else if DuoOpened then
+    begin
+      DuoScroll(Wheeldata);
+    end;
+  except
+    ShowMessage('Error');
+  end;
+
+end;
+
+procedure TMainForm.BlueScreen;
+begin
+  CreateImage(ErrorImage, MainForm, MainForm.Height, MainForm.Width, 0,0, '');
+  ErrorBitmap:= TBitmap.Create;
+  ErrorBitmap.Width:= MainForm.Width;
+  ErrorBitmap.Height:= MainForm.Height;
+
+  with ErrorBitmap.Canvas do
+  begin
+    brush.Color:= rgb(28, 92, 170);
+    Rectangle(0,0,MainForm.Width,MainForm.Height);
+    Font.Size:= 150;
+    Font.Name:= 'Segoe UI';
+    Font.Color:= clWhite;
+    TextOut(200, 200, ':(');
+    Font.Size:= 18;
+    TextOut(200, 500, 'Your application ran into a problem and needs to restart. It will take a short moment');
+    TextOut(200, 600, '#Microsoft');
+
+  end;
+  ErrorImage.Picture.Bitmap:= ErrorBitmap;
+
+end;
+
+procedure TMainForm.RestartThisApp;
+begin
+
+  ShellExecute(Handle, nil, PChar(Application.ExeName), nil, nil, SW_SHOWNORMAL);
+  Application.Terminate; // or, if this is the main form, simply Close;
+end;
+
+procedure TMainForm.ApplicationEventsMessage(var Msg: tagMSG;
+  var Handled: Boolean);
+begin
+  if Msg.message=WM_LBUTTONDOWN then
+  begin
+    FormClick;
+  end;
+
+  if Msg.message=WM_MOUSEMOVE then
+  begin
+    try
+      CursorPosition:= ScreenToClient(Mouse.CursorPos);
+      if not(MenuHoverBoolean) and (CursorIsInArea(CloseMenuArea) or CursorIsInArea(MaximizeArea) or CursorIsInArea(MinimzeArea)) then
+      begin
+        MenuHover();
+      end
+      else if not(CursorIsInArea(CloseMenuArea) or CursorIsInArea(MaximizeArea) or CursorIsInArea(MinimzeArea)) and MenuHoverBoolean then
+      begin
+        MenuNormal();
+      end
+      else if SingleOpened then SingleMouseMove;
+    except
+      //showMessage('Test');
+      //BlueScreen;
+      //Timer2.Enabled:= false;
+      //Sleep(1000);
+      RestartThisApp;
+
+    end;
+
+
+  end;
+end;
+
+procedure TMainForm.Button1Click(Sender: TObject);
+begin
+  //SettingsForm.Show;
+  //AbortBoolean:= true;
+  BlueScreen;
+  Timer2.Enabled:= true;
+end;
+
+procedure TMainForm.buttonClick(Sender: TObject);
+var
+  Button: TButton;
+begin
+  Button:= Sender as TButton;
+  Button.Caption:= FloatToStr(AnimationSpeed(FileStorage));
+  //CreateRandomArray(ArrayNumber, 30);
+  //FillListBox(SingleNumberList);
+  //SingleNumberList.Image.Picture.Bitmap:= SingleNumberList.Box.Bitmap;
+  //LoadConfig(FileStorage);
+
+  {if DarkModeBoolean then DarkModeBoolean:= false
+  else if not(DarkModeBoolean) then DarkModeBoolean:= true;}
+  LoadConfig(FileStorage);
+  LoadCompleteUI;
+end;
+
+
+
+procedure TMainForm.ImageClick(Sender: TObject);
+var
+  Image: TImage;
+begin
+  Image:= Sender as TImage;
+  //LoadImage('Bar', Im);
+end;
+
+procedure TMainForm.LoadCompleteUI();
+begin
+  DefineColors;
+  MainForm.Color:= Grey;
+  DrawMainUI;
+  //if ReadFileInt(FileStorage, 'last-opened') = 0 then
+  //begin
+    //CreateSingle;
+    //DrawSingle;
+    //DestroySingle;
+    //CreateDuo;
+    //DrawDuo;
+    //DestroyDuo;
+    //CreateSingle;
+    //DrawSingle;
+  //end;
+
+  //CreateDuo;
+  //DrawDuo;
+end;
+
+procedure SetTransparent(Aform: TForm; AValue: Boolean);
+begin
+  Aform.TransparentColor := AValue;
+  Aform.TransparentColorValue := Aform.Color;
+end;
+
+procedure TMainForm.Timer1Timer(Sender: TObject);
+begin
+  if LastOpened = 0 then
+  begin
+    CreateSingle;
+    DrawSingle;
+  end
+  else if LastOpened = 1 then
+  begin
+    CreateDuo;
+    DrawDuo;
+  end;
+
+  Timer1.Enabled:= false;
+end;
+
+procedure TMainForm.Timer2Timer(Sender: TObject);
+begin
+  RestartThisApp;
+  Timer2.Enabled:= false;
+end;
+
+procedure TMainForm.TitleBarMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+const
+  SC_DRAGMOVE = $F012;
+begin
+  if Button = mbLeft then
+  begin
+    ReleaseCapture;
+    Perform(WM_SYSCOMMAND, SC_DRAGMOVE, 0);
+  end;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+var
+  regn: HRGN;
+begin
+  regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
+  SetWindowRgn(Handle, regn, True);
+  AssignLanguageDE;
+  AssignLanguageEN;
+  LoadConfig(FileStorage);
+  TEstString:= ReadLang('SortButton');
+  DefineColors;
+  //CreateButton(Test, self, 100, 100, 900, 100, IntToStr(SingleNumberList.ScrollLevel));
+  TextFileToArray(FileStorage, 'config.txt');
+  MainForm.Color:= Grey;
+  CreateMainUI;
+  LoadCompleteUI;
+  //SetTransparent(self, true);
+  MainForm.ActiveControl:= nil;
+end;
+
+
+
+
+procedure TMainForm.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if SingleOpened then
+  begin
+    SingleKeyPress(Key);
+  end
+  else if DuoOpened then
+  begin
+    DuoKeyPress(Key);
+  end;
+end;
+
+procedure TMainForm.FormMouseWheel(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  FormScroll(WheelDelta);
+end;
+
+end.

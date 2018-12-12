@@ -15,10 +15,12 @@ uses
   procedure DrawSettings(Settings: TSettings);
   procedure DrawButtonStyle1(Button: TCustomButton);
   procedure DrawButtonStyle2(Button: TCustomButton);
+  procedure DrawQuadSettingsBox(QuadSettings: TQuadSettingsDiagram);
+  procedure DrawDuoSelectorBox(QuadSettings: TQuadSettingsDiagram);
 
 implementation
 
-uses Colors, Single, OpenImage, MainUnit;
+uses Colors, Single, OpenImage, MainUnit, DropDownMenu;
 
 procedure DrawBox(Bitm: TBitmap);
 begin
@@ -200,6 +202,33 @@ begin
   end;
 
   Button.Image.Picture.Bitmap:= Button.Bitmap;
+end;
+
+procedure DrawQuadSettingsBox(QuadSettings: TQuadSettingsDiagram);
+begin
+  DrawBox(QuadSettings.Bitmap);
+
+  with QuadSettings.Bitmap.Canvas do
+  begin
+    Brush.Color:= clBoxColor;
+    Rectangle(0,0, QuadSettings.Box.Width, 100);
+  end;
+  QuadSettings.Image.Picture.Bitmap:= QuadSettings.Bitmap;
+  //DrawDropDown(QuadSettings.DropDown);
+end;
+
+procedure DrawDuoSelectorBox(QuadSettings: TQuadSettingsDiagram);
+begin
+
+
+  with QuadSettings.Bitmap.Canvas do
+  begin
+    Brush.Color:= clBoxColor;
+    Rectangle(0,0, QuadSettings.Box.Width, 100);
+  end;
+  DrawBox(QuadSettings.Bitmap);
+  QuadSettings.Image.Picture.Bitmap:= QuadSettings.Bitmap;
+  //DrawDropDown(QuadSettings.DropDown);
 end;
 
 end.

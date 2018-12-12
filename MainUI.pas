@@ -12,7 +12,7 @@ var
   CloseImage, MinimizeImage, MaximizeImage: TImage;
   CloseMenuArea, MaximizeArea, MinimzeArea: TClickAbleArea;
   SideBarBitmap, TopBarBitmap: TBitmap;
-  SideBarArea, SingleArea, DuoArea, QuadArea, SixArea: TClickAbleArea;
+  SideBarArea, SingleArea, DuoArea, QuadArea, OctaArea: TClickAbleArea;
   MenuHoverBoolean: Boolean;
 
   procedure CreateMainUI();
@@ -24,7 +24,7 @@ var
 
 implementation
 
-uses MainUnit, DrawUI, Convert, OpenImage, Single, Duo, Colors, Quad;
+uses MainUnit, DrawUI, Convert, OpenImage, Single, Duo, Colors, Quad, Octa;
 
 
 
@@ -33,7 +33,7 @@ begin
   LoadImage('Single', SingleImage);
   LoadImage('Duo', DuoImage);
   LoadImage('Quad', QuadImage);
-  LoadImage('Six', SixImage);
+  LoadImage('Octa', SixImage);
 end;
 
 procedure MenuHover();
@@ -71,8 +71,9 @@ begin
   begin
     SwitchAllImagesSideBar();
     LoadImage('SinglePressed', SingleImage);
-    DestroyDuo;
-    DestroyQuad;
+    if DuoOpened then DestroyDuo;
+    if QuadOpened then DestroyQuad;
+    if OctaOpened then DestroyOcta;
     CreateSingle;
     DrawSingle;
   end
@@ -80,8 +81,10 @@ begin
   begin
   SwitchAllImagesSideBar();
     LoadImage('DuoPressed', DuoImage);
-    DestroySingle;
-    DestroyQuad;
+    if SingleOpened then DestroySingle;
+    if QuadOpened then DestroyQuad;
+    if OctaOpened then DestroyOcta;
+    SingleOpened:= false;
     CreateDuo;
     DrawDuo;
   end
@@ -89,19 +92,21 @@ begin
   begin
     SwitchAllImagesSideBar();
     LoadImage('QuadPressed', QuadImage);
-    DestroySingle;
-    DestroyDuo;
+    if SingleOpened then DestroySingle;
+    if DuoOpened then DestroyDuo;
+    if OctaOpened then DestroyOcta;
     CreateQuad;
     DrawQuad;
   end
-  else if (MainForm.CursorIsInArea(SixArea)) and (SixOpened = false) then
+  else if (MainForm.CursorIsInArea(OctaArea)) and (OCtaOpened = false) then
   begin
   SwitchAllImagesSideBar();
-    LoadImage('SixPressed', SixImage);
-    DestroySingle;
-    DestroyQuad;
-    CreateDuo;
-    DrawDuo;
+    LoadImage('OctaPressed', SixImage);
+    if SingleOpened then DestroySingle;
+    if DuoOpened then DestroyDuo;
+    if QuadOpened then DestroyQuad;
+    CreateOcta;
+    DrawOcta;
   end;
 end;
 
@@ -125,11 +130,11 @@ begin
   CreateImage(SingleImage, MainForm, 70, 70, 0, 200, 'Single');
   CreateImage(DuoImage, MainForm, 70, 70, 0, 270, 'Duo');
   CreateImage(QuadImage, MainForm, 70, 70, 0, 340, 'Quad');
-  CreateImage(SixImage, MainForm, 70, 70, 0, 410, 'Six');
+  CreateImage(SixImage, MainForm, 70, 70, 0, 410, 'Octa');
   ImageToArea(SingleImage, SingleArea);
   ImageToArea(DuoImage, DuoArea);
   ImageToArea(QuadImage, QuadArea);
-  ImageToArea(SixImage, SixArea);
+  ImageToArea(SixImage, OctaArea);
 end;
 
 procedure DrawSideBar();
