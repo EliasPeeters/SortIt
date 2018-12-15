@@ -28,6 +28,7 @@ begin
   LanguageDE[6]:= 'Stop: Stopp';
   LanguageDE[7]:= 'More: Mehr...';
   LanguageDE[8]:= 'Close: Schlieﬂen';
+  LanguageDE[9]:= 'New: Neu';
 end;
 
 procedure AssignLanguageEN();
@@ -42,6 +43,7 @@ begin
   LanguageEN[6]:= 'Stop: Stop';
   LanguageEN[7]:= 'More: More...';
   LanguageEN[8]:= 'Close: Close';
+  LanguageEN[8]:= 'New: New';
 end;
 
 procedure AssingLanguages();

@@ -66,25 +66,13 @@ begin
 
   if DropDown.SelectedItem = 1 then
   begin
-    Steps:= 100;
-    SortingAlgos.SelectionSortProcedure(Diagram, SpeedEdit, Steps, Status);
-    SortButton.Caption:= ReadLang('SortButton');
+    Steps:= QuickSortProcedureQuick(Diagram, SpeedEdit, Steps, Status);
+    SortingAlgos.QuickSortProcedure(Diagram, SpeedEdit, Steps, Status);
   end
   else if DropDown.SelectedItem = 2 then
   begin
-
-
-
     Steps:= BubbleSortSpeed(Diagram);
     SortingAlgos.BubbleSortProcedure(Diagram, SpeedEdit, Steps, Status);
-    SortButton.Caption:= ReadLang('SortButton');
-
-    TThread.Synchronize(nil,
-        procedure
-        begin
-          DrawButtonStyle1(Single.SingleSortButton);
-        end
-        );
   end
   else
   begin
@@ -96,6 +84,15 @@ begin
     end;
     DropDown.ImageTop.Picture.Bitmap:= DropDown.BitmapTop;
   end;
+  SortButton.Caption:= ReadLang('New');
+
+  TThread.Synchronize(nil,
+    procedure
+    begin
+      DrawButtonStyle1(Single.SingleSortButton);
+    end
+    );
+
   DrawDiagramProcedure(Diagram);
 end;
 

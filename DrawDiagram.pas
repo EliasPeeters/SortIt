@@ -61,7 +61,7 @@ begin
 
         for I := 0 to length(DiagramBox.Content)-1 do
         begin
-          if Diagrambox.Diagram.ColorMode = false then
+          if Diagrambox.Diagram.ColorMode then
           begin
             if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
             else Brush.Color:= DiagramColor;
@@ -117,7 +117,7 @@ begin
     Winkel:= 2 * pi / Length(Diagrambox.Content);
     for I := 1 to Length(DiagramBox.Content) do
     begin
-      if Diagrambox.Diagram.ColorMode = false then
+      if Diagrambox.Diagram.ColorMode then
       begin
         if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
         else

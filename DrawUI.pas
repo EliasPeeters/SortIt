@@ -132,6 +132,8 @@ end;
 
 
 procedure DrawStatus(Status: TStatus);
+var
+  RectForUse: TRect;
 begin
   DrawBox(Status.Box.Bitmap);
   with Status.Box.Bitmap.Canvas do
@@ -143,8 +145,16 @@ begin
               Status.StatusBar.y,
               Status.StatusBar.x+Status.StatusBar.Width,
               Status.StatusBar.y+Status.StatusBar.Height);
+    RectForUse.Left:= 0;
+    RectForUse.Top:= 0;
+    RectForUse.Bottom:= Status.StatusBar.Height;
+    RectForUse.Right:= Status.StatusBar.Width;
+    Font.Size:= 20;
+    Font.Name:= FontFamily;
+    //TextRect(RectForUse,'0',[tfVerticalCenter,tfCenter,tfSingleLine]);
   end;
-  StatusBar(Status);
+  //StatusBar(Status);
+
   Status.Image.Picture.Bitmap:= Status.Box.Bitmap;
 end;
 

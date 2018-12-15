@@ -1,11 +1,11 @@
 {
 animation-speed: 10
 dark-mode: false
-default-diagram-type: 0
+default-diagram-type: 1
 language: en
-last-opened: 1
-height-mode: 0
-gradient-mode: 1
+last-opened: 0
+height-mode: 1
+gradient-mode: 0
 arraylength: 100
 maxnum: 360
 sortingspeed: 1

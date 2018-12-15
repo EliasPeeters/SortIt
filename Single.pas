@@ -196,23 +196,32 @@ begin
 
     if MainForm.CursorIsInArea(SingleSortButton.Area) then
     begin
-      if AbortBoolean then
+      if SingleSortButton.Caption = ReadLang('New') then
       begin
-      TThread.CreateAnonymousThread(
-        procedure
-        begin
-          AbortBoolean:= false;
-
-          Sort(SingleDiagram, SingleAlgoSelctMenu,SingleEditSpeed,SingleSortButton, SinlgeStatusBar);
-          AbortBoolean:= true;
-        end
-        ).Start();
+        DestroySingle;
+        CreateSingle;
+        DrawSingle;
       end
       else
       begin
-        AbortBoolean:= true;
-        SingleSortButton.Caption:= ReadLang('SortButton');
-        DrawButtonStyle1(SingleSortButton)
+        if AbortBoolean then
+        begin
+        TThread.CreateAnonymousThread(
+          procedure
+          begin
+            AbortBoolean:= false;
+
+            Sort(SingleDiagram, SingleAlgoSelctMenu,SingleEditSpeed,SingleSortButton, SinlgeStatusBar);
+            AbortBoolean:= true;
+          end
+          ).Start();
+        end
+        else
+        begin
+          AbortBoolean:= true;
+          SingleSortButton.Caption:= ReadLang('SortButton');
+          DrawButtonStyle1(SingleSortButton)
+        end;
       end;
 
 
@@ -220,17 +229,15 @@ begin
 
     if MainForm.CursorIsInArea(SingleHeightModeSelector.Area) then
     begin
-
+      SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
+      SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
+      DrawDiagramProcedure(SingleDiagram);
+      ChangeConfig(FileStorage, 'height-mode', IntToStr(SingleHeightModeSelector.Selected));
       TThread.CreateAnonymousThread(
         procedure
         begin
-          SingleDiagram.Box.Bitmap.Canvas.Lock;
           MoveSlider(SingleHeightModeSelector);
-          SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
-          SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
-          DrawDiagramProcedure(SingleDiagram);
-          SingleDiagram.Box.Bitmap.Canvas.Unlock;
-          ChangeConfig(FileStorage, 'height-mode', IntToStr(SingleHeightModeSelector.Selected));
+
         end
         ).Start();
 
@@ -239,18 +246,16 @@ begin
 
     if MainForm.CursorIsInArea(SingleGradientModeSelector.Area) then
     begin
+      SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
+      SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
+      DrawDiagramProcedure(SingleDiagram);
+      ChangeConfig(FileStorage, 'gradient-mode', IntToStr(SingleGradientModeSelector.Selected));
 
       TThread.CreateAnonymousThread(
         procedure
         begin
-          SingleDiagram.Box.Bitmap.Canvas.Lock;
           MoveSlider(SingleGradientModeSelector);
-          SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
-          SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
-          DrawDiagramProcedure(SingleDiagram);
-          SingleDiagram.Box.Bitmap.Canvas.Unlock;
-          ChangeConfig(FileStorage, 'gradient-mode', IntToStr(SingleGradientModeSelector.Selected));
-        end
+          end
         ).Start();
 
     end;
