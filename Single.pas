@@ -48,7 +48,7 @@ implementation
 
 uses
   MainUnit, DrawUI, DrawDiagram, OpenImage, MainUI, ReadLanguage, EditField, Convert,
-  BubbleSort, FileLoaderUnit;
+  SortingAlgos, FileLoaderUnit;
 
 
 
@@ -82,6 +82,7 @@ begin
       LoadImage('Column', SingleSettings.DiagramSelector3.Image);
       SingleDiagram.Diagram.DiagramTyp:= 0;
       DrawDiagramProcedure(SingleDiagram);
+      ChangeConfig(FileStorage, 'default-diagram-type', '0');
     end;
 
     if MainForm.CursorIsInArea(SingleSettings.DiagramSelector2.Area) then
@@ -91,6 +92,7 @@ begin
       LoadImage('Column', SingleSettings.DiagramSelector3.Image);
       SingleDiagram.Diagram.DiagramTyp:= 1;
       DrawDiagramProcedure(SingleDiagram);
+      ChangeConfig(FileStorage, 'default-diagram-type', '1');
     end;
 
     if MainForm.CursorIsInArea(SingleSettings.DiagramSelector3.Area) then
@@ -100,6 +102,7 @@ begin
       LoadImage('ColumnPressed', SingleSettings.DiagramSelector3.Image);
       SingleDiagram.Diagram.DiagramTyp:= 2;
       DrawDiagramProcedure(SingleDiagram);
+      ChangeConfig(FileStorage, 'default-diagram-type', '2');
     end;
 
 
@@ -131,6 +134,7 @@ begin
           SingleNumberList.Content:= SingleDiagram.Content;
           DrawDiagramProcedure(SingleDiagram);
           FillListBox(SingleNumberList);
+          ChangeConfig(FileStorage, 'arraylength', SingleEditArrayLength.Text);
         end;
       end;
     end;
@@ -155,6 +159,7 @@ begin
       SingleEditSpeed.Selected:= false;
       if (SingleEditSpeed.Text = '') then SingleEditSpeed.Text := '20';
       DrawEditField(SingleEditSpeed);
+      ChangeConfig(FileStorage, 'sortingspeed', SingleEditSpeed.Text);
     end;
 
     if MainForm.CursorIsInArea(SingleEditMaxNum.Area) then
@@ -185,6 +190,7 @@ begin
         SingleNumberList.Content:= ArrayNumber;
         DrawDiagramProcedure(SingleDiagram);
         FillListBox(SingleNumberList);
+        ChangeConfig(FileStorage, 'maxnum', SingleEditMaxNum.Text);
       end;
     end;
 
@@ -199,7 +205,6 @@ begin
 
           Sort(SingleDiagram, SingleAlgoSelctMenu,SingleEditSpeed,SingleSortButton, SinlgeStatusBar);
           AbortBoolean:= true;
-          //BubbleSortProcedure(SingleDiagram, 30);
         end
         ).Start();
       end
@@ -219,10 +224,13 @@ begin
       TThread.CreateAnonymousThread(
         procedure
         begin
+          SingleDiagram.Box.Bitmap.Canvas.Lock;
           MoveSlider(SingleHeightModeSelector);
           SingleHeightModeSelector.Selected:= Bool(SingleHeightModeSelector.Selected);
           SingleDiagram.Diagram.HeightMode:= IntToBool(SingleHeightModeSelector.Selected);
           DrawDiagramProcedure(SingleDiagram);
+          SingleDiagram.Box.Bitmap.Canvas.Unlock;
+          ChangeConfig(FileStorage, 'height-mode', IntToStr(SingleHeightModeSelector.Selected));
         end
         ).Start();
 
@@ -235,9 +243,13 @@ begin
       TThread.CreateAnonymousThread(
         procedure
         begin
+          SingleDiagram.Box.Bitmap.Canvas.Lock;
           MoveSlider(SingleGradientModeSelector);
-          //SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
-          //SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
+          SingleGradientModeSelector.Selected:= Bool(SingleGradientModeSelector.Selected);
+          SingleDiagram.Diagram.ColorMode:= IntToBool(SingleGradientModeSelector.Selected);
+          DrawDiagramProcedure(SingleDiagram);
+          SingleDiagram.Box.Bitmap.Canvas.Unlock;
+          ChangeConfig(FileStorage, 'gradient-mode', IntToStr(SingleGradientModeSelector.Selected));
         end
         ).Start();
 
@@ -246,7 +258,8 @@ begin
   end
   else
   begin
-
+    for I := 1 to 7 do
+    begin
       if MainForm.CursorIsInArea(SingleAlgoSelctMenu.ItemAreas[i]) then
       begin
         SingleAlgoSelctMenu.SelectedItem:= i;
@@ -261,6 +274,7 @@ begin
         DrawDropDown(SingleAlgoSelctMenu);
         SingleAlgoSelctMenu.ImageTop.Picture.Bitmap:= SingleAlgoSelctMenu.BitmapTop;
       end;
+    end;
 
   end;
 
@@ -337,7 +351,9 @@ begin;
   CreateEditField(MainForm, SingleEditSpeed, 1085, 500, 50, 130, ReadLang('Speed'), IntToStr(SortingSpeed));
   CreateEditField(MainForm, SingleEditMaxNum, 925, 570, 50, 130, ReadLang('MaxNum'), IntToStr(MaxNum));
   SingleHeightModeSelector.Selected:= (HeightMode);
+  SingleGradientModeSelector.Selected:= (GradientMode);
   SingleDiagram.Diagram.HeightMode:= IntToBool(HeightMode);
+  SingleDiagram.Diagram.ColorMode:= IntToBool(GradientMode);
   CreateDropDownMenu(MainForm, SingleAlgoSelctMenu, 925, 220, 60, 290, SingleAlgoSelctMenuItems);
   FillSortingAlgoArray(SingleAlgoSelctMenuItems);
 end;

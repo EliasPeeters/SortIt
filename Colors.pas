@@ -16,7 +16,7 @@ var
   clBoxColor: TColor;
   clSelectColor: TColor;
   clBackground: TColor;
-  TextColor, DiagramColor, StatusBarColor: TColor;
+  TextColor, DiagramColor, DiagramColorSecond, StatusBarColor: TColor;
   clSettingsBackground: TColor;
 
 
@@ -50,6 +50,7 @@ begin
     //LightBlueSelected:= rgb(226, 190, 76);
     TextColor:= clBlack;
     DiagramColor:= clSelectColor;
+    DiagramColorSecond:= rgb(181, 210, 255);
     StatusBarColor:= rgb(107, 205, 0);
     clSettingsBackground:= rgb(220,220, 220)
   end;

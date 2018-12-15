@@ -300,6 +300,14 @@ begin
   CreateDuoSelectorBox(MainForm, DuoSelector2, 610, 70, 75, 480);
   CreateDropDownMenu(MainForm, DuoSelector1DropDown, 138, 80, 55, 408, DuoSelectorDropDownItems);
   CreateDropDownMenu(MainForm, DuoSelector2DropDown, 648, 80, 55, 408, DuoSelectorDropDownItems);
+  DuoDiagrambox1.Diagram.HeightMode:= IntToBool(HeightMode);
+  DuoDiagrambox1.Diagram.ColorMode:= IntToBool(GradientMode);
+  DuoDiagrambox1.Diagram.DiagramTyp:= DefautlDiagramtype;
+
+  DuoDiagrambox2.Diagram.HeightMode:= IntToBool(HeightMode);
+  DuoDiagrambox2.Diagram.ColorMode:= IntToBool(GradientMode);
+  DuoDiagrambox2.Diagram.DiagramTyp:= DefautlDiagramtype;
+
 end;
 
 

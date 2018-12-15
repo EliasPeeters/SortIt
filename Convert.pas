@@ -13,7 +13,8 @@ uses
   function BoolToInt(BooleanInput: Boolean): Integer;
   procedure ConvertCordsToArea(var CustomCord: TCustomCords; var Area: TClickAbleArea);
   procedure ImageToBitmap(Image: TImage; var Bitmap: TBitmap);
-  function SwitchBool(Bool: Boolean):Boolean;
+  function SwitchBool(var Bool: Boolean):Boolean;
+  function SwitchInt(Int: Integer):Integer;
 
 implementation
 
@@ -38,10 +39,16 @@ begin
   else if Bool = 0 then result:= 1;
 end;
 
-function SwitchBool(Bool: Boolean):Boolean;
+function SwitchBool(var Bool: Boolean):Boolean;
 begin
   if Bool then result:= false
   else result:= true;
+end;
+
+function SwitchInt(Int: Integer):Integer;
+begin
+  if Int = 0 then result:= 1
+  else result:= 0;
 end;
 
 function IntToBool(Int: Integer): Boolean;

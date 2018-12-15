@@ -27,7 +27,7 @@ uses
   ColorPicker in 'ColorPicker.pas' {ColorPickerForm},
   Tab in 'Tab.pas',
   DropDownMenu in 'DropDownMenu.pas',
-  BubbleSort in 'BubbleSort.pas',
+  SortingAlgos in 'SortingAlgos.pas',
   OpenSettings in 'OpenSettings.pas',
   Quad in 'Quad.pas',
   Octa in 'Octa.pas',
@@ -38,10 +38,9 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TSelectorForm, SelectorForm);
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TSettingsForm, SettingsForm);
   Application.CreateForm(TColorPickerForm, ColorPickerForm);
-
+  Application.CreateForm(TSelectorForm, SelectorForm);
   Application.Run;
 end.

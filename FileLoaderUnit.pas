@@ -16,6 +16,7 @@ uses
   procedure ChangeLanguage(ArrayForWriting: Array of String; NeueLanguge: String);
   procedure ChangeDarkMode(ArrayForWriting: Array of String; DarkModeBoolean: String);
   procedure ChangeLastOpened(ArrayForWriting: Array of String; NewLastOpened: Integer);
+  procedure ChangeConfig(var ArrayForWriting: Array of String; Change: String; ChangeInput: String);
 implementation
 
 uses
@@ -111,6 +112,25 @@ begin
   end;
 
   ArrayForWriting[i]:= 'last-opened: ' + IntToStr(NewLastOpened);
+  ArrayToTextFile(ArrayForWriting, 'config.txt');
+end;
+
+procedure ChangeConfig(var ArrayForWriting: Array of String; Change: String; ChangeInput: String);
+var
+  StorageString: String;
+  I: Integer;
+begin
+  for I := 1 to StrToInt(ArrayForWriting[0])  do
+  begin
+    StorageString:= ArrayForWriting[i];
+    StorageString:= Copy(StorageString, 1, length(Change));
+    if StorageString = Change then
+    begin
+      break;
+    end;
+  end;
+
+  ArrayForWriting[i]:= Change + ': ' + ChangeInput;
   ArrayToTextFile(ArrayForWriting, 'config.txt');
 end;
 
@@ -266,6 +286,7 @@ begin
   DefautlDiagramtype:= ReadFileInt(ArrayForWriting, 'default-diagram-type');
   Language:= ReadFileString(ArrayForWriting, 'language');
   HeightMode:= ReadFileInt(ArrayForWriting, 'height-mode');
+  GradientMode:= ReadFileInt(ArrayForWriting, 'gradient-mode');
   ArrayLength:= ReadFileInt(ArrayForWriting, 'arraylength');
   maxnum:= ReadFileInt(ArrayForWriting, 'maxnum');
   sortingspeed:= ReadFileInt(ArrayForWriting, 'sortingspeed');

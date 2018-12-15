@@ -18,7 +18,7 @@ uses
 implementation
 
 uses
-  BubbleSort,DrawDiagram, DropDownMenu, Single, DrawUI, ReadLanguage;
+  SortingAlgos,DrawDiagram, DropDownMenu, Single, DrawUI, ReadLanguage;
 
 procedure SetLengthCustom(var ArrayNumber: TArrayOfInteger; Length: Integer);
 begin
@@ -55,24 +55,28 @@ end;
 
 procedure Sort(Diagram: TDiagramBox;var DropDown: TDropDownMenu; SpeedEdit: TEditfield;var SortButton: TCustomButton; var Status: TStatus);
 begin
+  SortButton.Caption:= ReadLang('Stop');
+
+  TThread.Synchronize(nil,
+      procedure
+      begin
+        DrawButtonStyle1(Single.SingleSortButton);
+      end
+      );
+
   if DropDown.SelectedItem = 1 then
   begin
-
+    Steps:= 100;
+    SortingAlgos.SelectionSortProcedure(Diagram, SpeedEdit, Steps, Status);
+    SortButton.Caption:= ReadLang('SortButton');
   end
   else if DropDown.SelectedItem = 2 then
   begin
-    SortButton.Caption:= ReadLang('Stop');
 
-    TThread.Synchronize(nil,
-        procedure
-        begin
-          DrawButtonStyle1(Single.SingleSortButton);
-        end
-        );
 
 
     Steps:= BubbleSortSpeed(Diagram);
-    BubbleSort.BubbleSortProcedure(Diagram, SpeedEdit, Steps, Status);
+    SortingAlgos.BubbleSortProcedure(Diagram, SpeedEdit, Steps, Status);
     SortButton.Caption:= ReadLang('SortButton');
 
     TThread.Synchronize(nil,

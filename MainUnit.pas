@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.pngimage, CreateObjects, OpenImage, Colors, FileLoaderUnit, Types, Single, Duo, Quad, Octa,
-  DrawUI, Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings, ColorPicker, ShellAPI;
+  DrawUI, Vcl.AppEvnts, MainUI, lang, ReadLanguage, settings, ColorPicker, ShellAPI,
+  Vcl.Menus;
 
 type
 
@@ -42,6 +43,7 @@ type
     procedure RestartThisApp;
     procedure BlueScreen;
     procedure Timer2Timer(Sender: TObject);
+    procedure MyExceptionHandler(Sender:TObject;E:Exception);
 
   private
     { Private-Deklarationen }
@@ -64,7 +66,7 @@ var
   DarkModeBoolean: Boolean;
   AnimationSpeedExt: Extended;
   DefautlDiagramtype: Integer;
-  HeightMode: Integer;
+  HeightMode, GradientMode: Integer;
   Language, TEstString: String;
   ArrayLength, LastOpened: Integer;
   maxnum: Integer;
@@ -156,7 +158,7 @@ begin
         SinglePress();
       end;
     except
-      ShowMessage('Error');
+      //ShowMessage('Error');
     end;
 
   end
@@ -242,7 +244,7 @@ begin
       //BlueScreen;
       //Timer2.Enabled:= false;
       //Sleep(1000);
-      RestartThisApp;
+      //RestartThisApp;
 
     end;
 
@@ -291,20 +293,6 @@ begin
   DefineColors;
   MainForm.Color:= Grey;
   DrawMainUI;
-  //if ReadFileInt(FileStorage, 'last-opened') = 0 then
-  //begin
-    //CreateSingle;
-    //DrawSingle;
-    //DestroySingle;
-    //CreateDuo;
-    //DrawDuo;
-    //DestroyDuo;
-    //CreateSingle;
-    //DrawSingle;
-  //end;
-
-  //CreateDuo;
-  //DrawDuo;
 end;
 
 procedure SetTransparent(Aform: TForm; AValue: Boolean);
@@ -357,10 +345,16 @@ begin
   end;
 end;
 
+procedure TMainForm.MyExceptionHandler(Sender:TObject;E:Exception);
+begin
+    //Do nothing
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 var
   regn: HRGN;
 begin
+  Application.OnException:= MyExceptionHandler;
   regn := CreateRoundRectRgn(0, 0,ClientWidth,ClientHeight,40,40);
   SetWindowRgn(Handle, regn, True);
   AssignLanguageDE;
@@ -375,6 +369,7 @@ begin
   LoadCompleteUI;
   //SetTransparent(self, true);
   MainForm.ActiveControl:= nil;
+
 end;
 
 

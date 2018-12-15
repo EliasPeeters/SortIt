@@ -12,7 +12,7 @@ interface
 implementation
 
 
-uses DrawUI;
+uses DrawUI, Convert;
 
 
 
@@ -61,8 +61,15 @@ begin
 
         for I := 0 to length(DiagramBox.Content)-1 do
         begin
-          if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
-          else Brush.Color:= DiagramColor;
+          if Diagrambox.Diagram.ColorMode = false then
+          begin
+            if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
+            else Brush.Color:= DiagramColor;
+          end
+          else
+          begin
+            Brush.Color:= GiveColorBack(DiagramBox.MaxNum, Diagrambox.Content[i]);
+          end;
 
           BarHeight:= (DiagramBox.Diagram.Height div DiagramBox.MaxNum)*DiagramBox.Content[i];
           if DiagramBox.Diagram.HeightMode = false then BarHeight:= DiagramBox.Diagram.Height;
@@ -100,6 +107,7 @@ end;
 procedure DrawCirleChart(DiagramBox: TDiagrambox);
 var
 I: Integer;
+HelperForColor: Boolean;
 Winkel, LengthInt: Extended;
 test: TColor;
 begin
@@ -109,7 +117,28 @@ begin
     Winkel:= 2 * pi / Length(Diagrambox.Content);
     for I := 1 to Length(DiagramBox.Content) do
     begin
-      Brush.Color:= GiveColorBack(DiagramBox.MaxNum, Diagrambox.Content[i]);
+      if Diagrambox.Diagram.ColorMode = false then
+      begin
+        if I = DiagramBox.SelectedItem then Brush.Color:= rgb(88, 206, 162)
+        else
+        begin
+          if HelperForColor then
+          begin
+            Brush.Color:= DiagramColor;
+            HelperForColor:= false;
+          end
+          else
+          begin
+            Brush.Color:= DiagramColorSecond;
+            HelperForColor:= true;
+          end;
+        end;
+      end
+      else
+      begin
+        Brush.Color:= GiveColorBack(DiagramBox.MaxNum, Diagrambox.Content[i]);
+      end;
+
       Pen.Color:= Brush.Color;
       DrawPie(Diagrambox.Box.Bitmap.Canvas, Diagrambox.Diagram.x, Diagrambox.Diagram.y, Diagrambox.Diagram.height, Diagrambox.Diagram.Width, Winkel*(i), Winkel*(i-1));
     end;

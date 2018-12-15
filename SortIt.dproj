@@ -134,7 +134,7 @@
         </DCCReference>
         <DCCReference Include="Tab.pas"/>
         <DCCReference Include="DropDownMenu.pas"/>
-        <DCCReference Include="BubbleSort.pas"/>
+        <DCCReference Include="SortingAlgos.pas"/>
         <DCCReference Include="OpenSettings.pas"/>
         <DCCReference Include="Quad.pas"/>
         <DCCReference Include="Octa.pas"/>

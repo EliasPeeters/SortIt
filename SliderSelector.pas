@@ -56,10 +56,10 @@ end;
 
 procedure MoveSlider(Selector: TSelectorSlider);
 var
-I: Integer;
+I, Helper: Integer;
 begin
   //T
-  for I := 0 to (Selector.Slider.Width div 2) div Round(AnimationSpeedExt) do
+  for I := 0 to (Selector.Slider.Width div 2) div 6 do
   begin
     with Selector.Bitmap.Canvas do
     begin
@@ -76,15 +76,18 @@ begin
           Brush.Color:= Grey
         else
           Brush.Color:= clSelectColor;
+
+        Helper:= I*6;
         if Selector.Selected = 0 then
-            RoundRect(0+ (i * Round(AnimationSpeedExt)) , 0, Selector.Slider.Width div 2 +(i * Round(AnimationSpeedExt)), Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+            RoundRect(0+Helper, 0, Selector.Slider.Width div 2 + Helper, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+
         if Selector.Selected = 1 then
-          RoundRect((Selector.Slider.Width div 2) - (i * Round(AnimationSpeedExt)), 0, Selector.Slider.Width- (i * Round(AnimationSpeedExt)), Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
+          RoundRect((Selector.Slider.Width div 2) - Helper , 0, Selector.Slider.Width - Helper, Selector.Slider.Height, Selector.Slider.Height, Selector.Slider.Height);
 
         Selector.Image.Picture.Bitmap:= Selector.Bitmap;
       end
       );
-      sleep(10);
+      sleep(30);
     end;
 
   end;
